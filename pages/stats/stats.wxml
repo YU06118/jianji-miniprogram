@@ -1,0 +1,138 @@
+<view class="page {{theme}} {{modeClass}}">
+
+  <!-- ============ 月份切换 ============ -->
+  <view class="month-bar">
+    <view class="mb-btn" hover-class="mb-on" bindtap="prevMonth">‹</view>
+    <view class="mb-txt">
+      <text>{{monthLabelText}}</text>
+      <text class="mb-live" wx:if="{{isThisMonth}}">进行中</text>
+    </view>
+    <view class="mb-btn {{canNext ? '' : 'off'}}" hover-class="{{canNext ? 'mb-on' : ''}}" bindtap="nextMonth">›</view>
+  </view>
+
+  <!-- ============ 总额 ============ -->
+  <view class="wrap">
+    <view class="card total-card">
+      <view class="row-between">
+        <text class="card-sub">{{monthLabelText}}一共花了</text>
+        <text class="pill {{diffTone}}" wx:if="{{diffText}}">{{diffText}}</text>
+      </view>
+      <view class="total-num num">
+        <text class="total-cur">¥</text>{{expenseText}}
+      </view>
+      <view class="total-sub">
+        <text wx:if="{{countNum}}">{{countNum}} 笔 · 日均 ¥{{avgText}}</text>
+        <text wx:else>这个月还没有记录</text>
+      </view>
+      <view class="hr"></view>
+      <view class="row-between">
+        <text class="t-sm muted-2">收入 ¥{{incomeText}}</text>
+        <text class="t-sm muted-2">结余 ¥{{balanceText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============ 环形图 + 排行 ============ -->
+  <view class="wrap">
+    <view class="card">
+      <text class="card-title">钱花在哪了</text>
+
+      <block wx:if="{{byCat.length}}">
+        <view class="donut-box">
+          <canvas type="2d" id="donut" class="donut"></canvas>
+          <view class="donut-legend">
+            <view class="lg" wx:for="{{legendCats}}" wx:key="key">
+              <view class="lg-dot" style="background:{{item.color}}"></view>
+              <text class="lg-name">{{item.name}}</text>
+              <text class="lg-pct num">{{item.pct}}%</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="hr"></view>
+
+        <view class="rank">
+          <view class="rk" wx:for="{{byCat}}" wx:key="key"
+                data-k="{{item.key}}" bindtap="onCatTap">
+            <view class="rk-head">
+              <image class="rk-ico" src="/assets/icons/{{item.key}}.svg" mode="aspectFit"/>
+              <text class="rk-name">{{item.name}}</text>
+              <text class="rk-count">{{item.count}}笔</text>
+              <text class="rk-amt num">¥{{item.amountText}}</text>
+              <text class="rk-pct num">{{item.pct}}%</text>
+            </view>
+            <view class="rk-bar">
+              <view class="rk-fill" style="width:{{item.pctW}}%;background:{{item.color}}"></view>
+            </view>
+
+            <!-- 展开该分类明细 -->
+            <view class="rk-detail" wx:if="{{expandedCat === item.key}}">
+              <view class="rd-row" wx:for="{{item.records}}" wx:for-item="rec" wx:key="id">
+                <text class="rd-date">{{rec.when}}</text>
+                <text class="rd-note">{{rec.note}}</text>
+                <text class="rd-amt num">¥{{rec.amountText}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="tap-hint">点分类可以展开看每一笔</view>
+      </block>
+
+      <view class="empty" wx:else>
+        <image class="empty-emoji" src="/assets/icons/empty-chart.svg" mode="aspectFit"/>
+        <view class="empty-txt">这个月还没有记录</view>
+        <view class="empty-txt">记上几笔，这里就能看出钱去哪了</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============ 分项预算进度 ============ -->
+  <view class="wrap" wx:if="{{catBudgets.length}}">
+    <view class="card">
+      <view class="row-between">
+        <text class="card-title">分项预算</text>
+        <text class="card-sub" bindtap="goBudget">调整 ›</text>
+      </view>
+      <view class="cb" wx:for="{{catBudgets}}" wx:key="key">
+        <view class="cb-head">
+          <text class="cb-name">{{item.name}}</text>
+          <view class="cb-right">
+            <text class="cb-amt num">¥{{item.usedText}}</text>
+            <text class="cb-of num">/ ¥{{item.budgetText}}</text>
+          </view>
+        </view>
+        <view class="bar bar-dark">
+          <view class="bar-fill {{item.status}}" style="width:{{item.w}}%"></view>
+        </view>
+        <view class="cb-foot">
+          <text class="cb-pct {{item.status}}">已用 {{item.pct}}%</text>
+          <text class="cb-tip">{{item.tip}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============ 近 6 个月趋势 ============ -->
+  <view class="wrap">
+    <view class="card">
+      <view class="row-between">
+        <text class="card-title">近 6 个月</text>
+        <text class="card-sub" wx:if="{{trendAvgText}}">月均 ¥{{trendAvgText}}</text>
+      </view>
+      <view class="trend">
+        <view class="tr-col" wx:for="{{trend}}" wx:key="ym">
+          <view class="tr-track">
+            <view class="tr-fill"
+                  style="height:{{item.h}}%;background:{{item.color}}"></view>
+          </view>
+          <text class="tr-x {{item.isCur ? 'cur' : ''}}">{{item.label}}</text>
+        </view>
+      </view>
+      <view class="trend-foot" wx:if="{{trendTopText}}">
+        花得最多的是 <text class="bold">{{trendTopLabel}}</text>，¥{{trendTopText}}
+      </view>
+    </view>
+  </view>
+
+</view>

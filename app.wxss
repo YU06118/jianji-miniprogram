@@ -1,0 +1,456 @@
+/* app.wxss —— 全局设计系统 v4 · Fluent 2 暗色默认 + 手动外观模式
+ * ---------------------------------------------------------------------------
+ * 主题机制：page 定义浅色基准 + @media 深色兜底；根节点 .mode-dark/.mode-light
+ *   由 JS 按用户外观选择挂载，显式 class 优先于 page 上继承的 media 值。
+ * 双强调色：--pink = 前景（文字/图标，深色提亮）；--accent-solid = 背景（按钮/hero，深底配白字）。
+ * 对比度：所有 solid 背景配白字 ≥4.5:1，--ink-3 各底色 ≥4.5:1（WCAG AA）。
+ * 换色不换名：保留 --pink / --mint 等旧变量名。
+ * --------------------------------------------------------------------------- */
+
+page {
+  /* ---------- 表面色（浅色基准） ---------- */
+  --bg: #F3F3F3;
+  --bg-2: #EBEBEB;
+  --card: #FFFFFF;
+  --line: #E8E8E8;
+  --line-2: #D6D6D6;
+
+  /* ---------- 强调色（前景用法） ---------- */
+  --pink: #0078D4;
+  --pink-deep: #005A9E;
+  --pink-soft: #E8F1FB;
+  --pink-mist: #F4F8FD;
+  --accent-solid: #0078D4;   /* 背景用法：配白字 4.5+ */
+
+  /* ---------- 辅助强调 ---------- */
+  --lilac: #6B4EFF;
+  --lilac-deep: #5B3FD6;
+  --lilac-soft: #EFEBFF;
+
+  /* ---------- 语义色 ---------- */
+  --mint: #0E7C3A;
+  --mint-soft: #E6F4EB;
+  --mint-solid: #0E7C3A;
+  --amber: #9D5D00;
+  --amber-soft: #FFF4E5;
+  --amber-solid: #9D5D00;
+  --danger: #C42B1C;
+  --danger-soft: #FDE7E5;
+  --danger-solid: #C42B1C;
+
+  /* ---------- 文字 ---------- */
+  --ink: #242424;
+  --ink-2: #616161;
+  --ink-3: #686868;          /* 5.57:1 on white / 4.67:1 on bg-2（原 #9D9D9D 仅 2.7:1 不达标） */
+
+  /* ---------- 圆角 / 阴影 / 缓动 ---------- */
+  --r-card: 12rpx;
+  --r-ctrl: 8rpx;
+  --r-chip: 8rpx;
+  --r-full: 999rpx;
+  --sh-card: 0 1rpx 3rpx rgba(0, 0, 0, .04), 0 8rpx 24rpx rgba(0, 0, 0, .05);
+  --sh-pop: 0 6rpx 18rpx rgba(0, 120, 212, .22);
+  --ease: cubic-bezier(.33, 0, .67, 1);
+  --bounce: cubic-bezier(.2, .9, .3, 1.05);
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei UI", -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- 首屏兜底：JS class 未挂上时跟随系统（page 层，优先级低于根节点 class） ---------- */
+@media (prefers-color-scheme: dark) {
+  page {
+    --bg: #202020;
+    --bg-2: #323232;
+    --card: #2C2C2C;
+    --line: #3F3F3F;
+    --line-2: #595959;
+    --pink: #4CC2FF;
+    --pink-deep: #7CD4FF;
+    --pink-soft: #12364B;
+    --pink-mist: #1A2933;
+    --accent-solid: #0067BC;
+    --lilac: #B39AFF;
+    --lilac-deep: #B39AFF;
+    --lilac-soft: #2E2745;
+    --mint: #6CCB8F;
+    --mint-soft: #1B3A29;
+    --mint-solid: #0A6B31;
+    --amber: #E8B55A;
+    --amber-soft: #3E311A;
+    --amber-solid: #8A5400;
+    --danger: #FF7B66;
+    --danger-soft: #47231E;
+    --danger-solid: #A82316;
+    --ink: #F5F5F5;
+    --ink-2: #C8C8C8;
+    --ink-3: #9E9E9E;
+    --sh-card: 0 1rpx 3rpx rgba(0, 0, 0, .28), 0 8rpx 24rpx rgba(0, 0, 0, .16);
+    --sh-pop: 0 6rpx 18rpx rgba(0, 0, 0, .38);
+  }
+}
+
+view, text, input, textarea, scroll-view, button {
+  box-sizing: border-box;
+}
+
+/* =========================================================================
+   外观模式：根节点显式 class，重声明全部 token（含阴影）
+   系统深 + 用户浅 时靠子元素声明盖过 page 的继承值
+   ========================================================================= */
+.mode-dark {
+  --bg: #202020;
+  --bg-2: #323232;
+  --card: #2C2C2C;
+  --line: #3F3F3F;
+  --line-2: #595959;
+  --pink: #4CC2FF;
+  --pink-deep: #7CD4FF;
+  --pink-soft: #12364B;
+  --pink-mist: #1A2933;
+  --accent-solid: #0067BC;
+  --lilac: #B39AFF;
+  --lilac-deep: #B39AFF;
+  --lilac-soft: #2E2745;
+  --mint: #6CCB8F;
+  --mint-soft: #1B3A29;
+  --mint-solid: #0A6B31;
+  --amber: #E8B55A;
+  --amber-soft: #3E311A;
+  --amber-solid: #8A5400;
+  --danger: #FF7B66;
+  --danger-soft: #47231E;
+  --danger-solid: #A82316;
+  --ink: #F5F5F5;
+  --ink-2: #C8C8C8;
+  --ink-3: #9E9E9E;
+  --sh-card: 0 1rpx 3rpx rgba(0, 0, 0, .28), 0 8rpx 24rpx rgba(0, 0, 0, .16);
+  --sh-pop: 0 6rpx 18rpx rgba(0, 0, 0, .38);
+}
+.mode-light {
+  --bg: #F3F3F3;
+  --bg-2: #EBEBEB;
+  --card: #FFFFFF;
+  --line: #E8E8E8;
+  --line-2: #D6D6D6;
+  --pink: #0078D4;
+  --pink-deep: #005A9E;
+  --pink-soft: #E8F1FB;
+  --pink-mist: #F4F8FD;
+  --accent-solid: #0078D4;
+  --lilac: #6B4EFF;
+  --lilac-deep: #5B3FD6;
+  --lilac-soft: #EFEBFF;
+  --mint: #0E7C3A;
+  --mint-soft: #E6F4EB;
+  --mint-solid: #0E7C3A;
+  --amber: #9D5D00;
+  --amber-soft: #FFF4E5;
+  --amber-solid: #9D5D00;
+  --danger: #C42B1C;
+  --danger-soft: #FDE7E5;
+  --danger-solid: #C42B1C;
+  --ink: #242424;
+  --ink-2: #616161;
+  --ink-3: #686868;
+  --sh-card: 0 1rpx 3rpx rgba(0, 0, 0, .04), 0 8rpx 24rpx rgba(0, 0, 0, .05);
+  --sh-pop: 0 6rpx 18rpx rgba(0, 120, 212, .22);
+}
+
+/* =========================================================================
+   主题色：四套强调色（前景 + solid 背景）
+   注意：不再用 media 定义深色 accent——改为 .mode-dark.t-xxx 复合选择器，
+   避免「系统深 + 用户浅」时 accent 被系统主题污染。
+   ========================================================================= */
+.t-pink {
+  --pink: #0078D4; --pink-deep: #005A9E; --pink-soft: #E8F1FB; --pink-mist: #F4F8FD;
+  --accent-solid: #0078D4; --sh-pop: 0 6rpx 18rpx rgba(0, 120, 212, .22);
+}
+.t-lilac {
+  --pink: #6B4EFF; --pink-deep: #4E38C4; --pink-soft: #EFEBFF; --pink-mist: #F6F4FF;
+  --accent-solid: #6B4EFF; --sh-pop: 0 6rpx 18rpx rgba(107, 78, 255, .22);
+}
+.t-blue {
+  --pink: #00809D; --pink-deep: #006275; --pink-soft: #E5F4F7; --pink-mist: #F2FAFC;
+  --accent-solid: #00758E; --sh-pop: 0 6rpx 18rpx rgba(0, 117, 142, .22);
+}
+.t-matcha {
+  --pink: #0E7C3A; --pink-deep: #0A5E2C; --pink-soft: #E6F4EB; --pink-mist: #F2FAF5;
+  --accent-solid: #0E7C3A; --sh-pop: 0 6rpx 18rpx rgba(14, 124, 58, .22);
+}
+/* 深色档：solid 色配白字均 ≥5.7:1 */
+.mode-dark.t-pink {
+  --pink: #4CC2FF; --pink-deep: #7CD4FF; --pink-soft: #12364B; --pink-mist: #1A2933;
+  --accent-solid: #0067BC;
+}
+.mode-dark.t-lilac {
+  --pink: #B39AFF; --pink-deep: #CBB8FF; --pink-soft: #2E2745; --pink-mist: #221D35;
+  --accent-solid: #6246E0;
+}
+.mode-dark.t-blue {
+  --pink: #4CC9E5; --pink-deep: #7FDBEF; --pink-soft: #123C46; --pink-mist: #1A2E34;
+  --accent-solid: #006B85;
+}
+.mode-dark.t-matcha {
+  --pink: #6CCB8F; --pink-deep: #94DBAB; --pink-soft: #1B3A29; --pink-mist: #1A2E22;
+  --accent-solid: #0A6B31;
+}
+
+/* ---------- 布局 ---------- */
+.page, .add-page {
+  min-height: 100vh;
+  padding-bottom: 60rpx;
+  background: var(--bg);
+  color: var(--ink);
+}
+.wrap { padding: 0 28rpx; }
+.row { display: flex; align-items: center; }
+.row-between { display: flex; align-items: center; justify-content: space-between; }
+.row-center { display: flex; align-items: center; justify-content: center; }
+.col { display: flex; flex-direction: column; }
+.flex-1 { flex: 1; min-width: 0; }
+.gap-8 { gap: 16rpx; }
+
+/* ---------- 卡片（Fluent：细描边 + 淡阴影 + 小圆角） ---------- */
+.card {
+  background: var(--card);
+  border-radius: var(--r-card);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: var(--sh-card);
+}
+.card-flat {
+  background: var(--card);
+  border-radius: var(--r-card);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  border: 2rpx solid var(--line);
+}
+.card-tap { transition: transform .16s var(--ease), box-shadow .16s var(--ease); }
+.card-tap.tap-on {
+  transform: scale(.985);
+  box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, .06);
+}
+.card-title { font-size: 30rpx; font-weight: 600; color: var(--ink); margin-bottom: 8rpx; }
+.card-sub { font-size: 24rpx; color: var(--ink-3); }
+
+/* ---------- 文字 ---------- */
+.t-hero { font-size: 76rpx; font-weight: 600; letter-spacing: -2rpx; line-height: 1.1; }
+.t-xl { font-size: 40rpx; font-weight: 600; }
+.t-lg { font-size: 34rpx; font-weight: 600; }
+.t-md { font-size: 29rpx; font-weight: 500; }
+.t-sm { font-size: 25rpx; }
+.t-xs { font-size: 22rpx; }
+.bold { font-weight: 600; }
+.muted { color: var(--ink-3); }
+.muted-2 { color: var(--ink-2); }
+.num {
+  font-family: "Segoe UI Variable", "Segoe UI", -apple-system, sans-serif;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ---------- 按钮（Fluent：圆角矩形、纯色 accent、克制反馈） ---------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: var(--r-ctrl);
+  font-size: 30rpx;
+  font-weight: 600;
+  transition: transform .12s var(--ease), opacity .12s var(--ease), box-shadow .12s var(--ease);
+}
+.btn.tap-on { transform: scale(.98); opacity: .88; }
+.btn-primary {
+  background: var(--accent-solid);
+  color: #FFFFFF;
+  box-shadow: var(--sh-pop);
+}
+.btn-primary.tap-on { background: var(--pink-deep); box-shadow: none; }
+.btn-ghost { background: var(--pink-soft); color: var(--pink-deep); }
+.btn-plain { background: var(--bg-2); color: var(--ink-2); }
+.btn-sm { height: 64rpx; border-radius: var(--r-ctrl); font-size: 26rpx; padding: 0 28rpx; }
+.btn-danger { background: var(--danger-soft); color: var(--danger); }
+.btn-block { width: 100%; }
+
+/* ---------- 分段控件（Fluent Pivot 观感） ---------- */
+.seg {
+  display: flex;
+  padding: 4rpx;
+  background: var(--bg-2);
+  border-radius: var(--r-ctrl);
+}
+.seg-item {
+  flex: 1;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: var(--ink-2);
+  border-radius: 6rpx;
+  transition: all .2s var(--ease);
+}
+.seg-item.on {
+  background: var(--card);
+  color: var(--pink-deep);
+  font-weight: 600;
+  box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, .10);
+}
+
+/* ---------- 胶囊标签 ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: var(--r-chip);
+  font-size: 22rpx;
+  font-weight: 500;
+}
+.pill-ok { background: var(--mint-soft); color: var(--mint); }
+.pill-warn { background: var(--amber-soft); color: var(--amber); }
+.pill-over { background: var(--danger-soft); color: var(--danger); }
+.pill-plain { background: var(--bg-2); color: var(--ink-2); }
+.pill-brand { background: var(--pink-soft); color: var(--pink-deep); }
+.pill-lilac { background: var(--lilac-soft); color: var(--lilac-deep); font-size: 24rpx; }
+
+/* ---------- 进度条 ---------- */
+.bar { height: 14rpx; border-radius: 7rpx; background: rgba(255, 255, 255, .35); overflow: hidden; }
+.bar-dark { background: var(--bg-2); }
+.bar-fill {
+  height: 100%;
+  border-radius: 7rpx;
+  background: #fff;
+  transition: width .4s var(--ease);
+}
+.bar-fill.ok { background: var(--mint); }
+.bar-fill.warn { background: var(--amber); }
+.bar-fill.over { background: var(--danger); }
+.bar-fill.brand { background: #fff; }
+
+/* ---------- 分割线 ---------- */
+.hr { height: 2rpx; background: var(--line); margin: 24rpx 0; }
+
+/* ---------- 空状态 ---------- */
+.empty { padding: 100rpx 40rpx; text-align: center; color: var(--ink-3); }
+.empty-emoji { width: 112rpx; height: 112rpx; margin: 0 auto 24rpx; display: block; opacity: .7; }
+.empty-txt { font-size: 27rpx; line-height: 1.7; }
+
+/* ---------- 表单（Fluent：标签在上/左，下描边） ---------- */
+.field { display: flex; align-items: center; min-height: 100rpx; border-bottom: 2rpx solid var(--line); }
+.field:last-child { border-bottom: none; }
+.field-label { width: 190rpx; font-size: 28rpx; color: var(--ink-2); flex-shrink: 0; }
+.field-input { flex: 1; font-size: 30rpx; color: var(--ink); text-align: right; }
+.field-input.left { text-align: left; }
+.field-unit { font-size: 26rpx; color: var(--ink-3); margin-left: 10rpx; }
+
+/* ---------- 列表行 ---------- */
+.list { background: var(--card); border-radius: var(--r-card); overflow: hidden; box-shadow: var(--sh-card); }
+.list-row {
+  display: flex;
+  align-items: center;
+  min-height: 104rpx;
+  padding: 0 30rpx;
+  border-bottom: 2rpx solid var(--line);
+  transition: background .12s var(--ease);
+}
+.list-row:last-child { border-bottom: none; }
+.list-row.tap-on { background: var(--bg-2); }
+.list-row-label { flex: 1; font-size: 29rpx; }
+.list-row-value { font-size: 27rpx; color: var(--ink-3); }
+.chev { color: var(--ink-3); font-size: 30rpx; margin-left: 10rpx; }
+
+/* ---------- 图标容器（Fluent：微圆角方块 + 淡底，图标为 SVG） ---------- */
+.ico {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: var(--r-ctrl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ico-img { width: 44rpx; height: 44rpx; display: block; }
+
+/* ---------- 底部弹层（半屏抽屉） ---------- */
+.sheet-mask {
+  position: fixed;
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(0, 0, 0, .4);
+  z-index: 90;
+  opacity: 0;
+  transition: opacity .2s var(--ease);
+}
+.sheet-mask.show { opacity: 1; }
+.sheet {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 91;
+  background: var(--card);
+  border-radius: 16rpx 16rpx 0 0;
+  padding: 32rpx 32rpx 0;
+  transform: translateY(100%);
+  transition: transform .26s var(--ease);
+  padding-bottom: calc(32rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+.sheet.show { transform: translateY(0); }
+.sheet-handle {
+  width: 72rpx;
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: var(--line-2);
+  margin: 0 auto 24rpx;
+}
+
+/* ---------- 骨架屏 ---------- */
+.sk {
+  background: linear-gradient(90deg, var(--bg-2) 25%, var(--card) 37%, var(--bg-2) 63%);
+  background-size: 400% 100%;
+  animation: sk-shine 1.3s ease-in-out infinite;
+  border-radius: var(--r-ctrl);
+}
+.sk-line { height: 26rpx; margin-bottom: 16rpx; }
+.sk-line.w60 { width: 60%; }
+.sk-line.w40 { width: 40%; }
+@keyframes sk-shine {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* ---------- 头像 / 贴纸 ---------- */
+.avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42rpx;
+  background: var(--pink-soft);
+}
+
+/* ---------- 安全区 ---------- */
+.safe-bottom {
+  padding-bottom: calc(24rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}
+
+/* ---------- 动画（Fluent：淡入 + 轻微上移，克制） ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise .26s var(--ease) both; }
+.rise-2 { animation: rise .26s var(--ease) .05s both; }
+.rise-3 { animation: rise .26s var(--ease) .1s both; }
+
+/* 尊重系统「减弱动态效果」设置 */
+@media (prefers-reduced-motion: reduce) {
+  .rise, .rise-2, .rise-3, .sk, .bar-fill, .btn, .card-tap { animation: none !important; transition: none !important; }
+}

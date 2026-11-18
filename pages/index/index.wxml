@@ -1,0 +1,173 @@
+<view class="page {{theme}} {{modeClass}}">
+
+  <!-- ================= 顶部：本月还能花多少 ================= -->
+  <view class="hero tone-{{bs.tone}}">
+    <view class="hero-mask1"></view>
+    <view class="hero-mask2"></view>
+
+    <block wx:if="{{bs.hasBudget}}">
+      <view class="hero-top">
+        <text class="hero-label">{{heroLabel}}</text>
+        <view class="hero-pill" bindtap="goBudget">改预算</view>
+      </view>
+      <view class="hero-num">
+        <text class="hero-cur">¥</text>
+        <text class="hero-amt num">{{leftText}}</text>
+      </view>
+
+      <view class="hero-bar">
+        <view class="bar">
+          <view class="bar-fill" style="width:{{barWidth}}%"></view>
+        </view>
+      </view>
+
+      <view class="hero-meta">
+        <text>预算 ¥{{budgetText}}</text>
+        <text class="dot">·</text>
+        <text>已花 ¥{{usedText}}（{{bs.pct}}%）</text>
+      </view>
+
+      <view class="hero-foot">
+        <block wx:if="{{bs.daysLeft > 0}}">
+          <text class="foot-k">还剩 {{bs.daysLeft}} 天</text>
+          <text class="foot-v">{{dailyLeftText}}</text>
+        </block>
+        <block wx:else>
+          <text class="foot-k">本月已结束</text>
+          <text class="foot-v">共花 ¥{{usedText}}</text>
+        </block>
+      </view>
+    </block>
+
+    <!-- 未设预算：先引导设预算，再谈预警 -->
+    <block wx:else>
+      <view class="hero-top">
+        <text class="hero-label">本月已花</text>
+      </view>
+      <view class="hero-num">
+        <text class="hero-cur">¥</text>
+        <text class="hero-amt num">{{usedText}}</text>
+      </view>
+      <view class="hero-meta solo">
+        <text>还没有预算，就没法帮你盯住超支</text>
+      </view>
+      <view class="hero-cta" bindtap="goBudget">
+        <text>设一个本月预算 · 30 秒</text>
+        <text class="arrow">→</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- ================= 预警提示条 ================= -->
+  <view class="wrap">
+    <view class="alert tone-{{bs.tone}}" bindtap="onAlertTap">
+      <view class="alert-badge">{{bs.tone === 'ok' ? '👍' : (bs.tone === 'over' ? '🛑' : '⚠️')}}</view>
+      <view class="alert-body">
+        <view class="alert-title">{{bs.advice.title}}</view>
+        <view class="alert-text">{{bs.advice.body}}</view>
+      </view>
+      <view class="alert-go" wx:if="{{bs.advice.action}}">›</view>
+    </view>
+  </view>
+
+  <!-- ================= 一键记账 ================= -->
+  <view class="wrap">
+    <scroll-view class="quick-scroll" scroll-x show-scrollbar="{{false}}">
+      <view class="quick-wrap">
+        <view class="q-add" bindtap="goAdd">
+          <text class="q-add-plus">＋</text>
+          <text class="q-add-txt">记一笔</text>
+        </view>
+        <view class="q-item" wx:for="{{quickTags}}" wx:key="key"
+              hover-class="q-on" hover-stay-time="60"
+              data-i="{{index}}" bindtap="onQuick">
+          <image class="q-ico" src="/assets/icons/{{item.cat}}.svg" mode="aspectFit"/>
+          <text class="q-note">{{item.displayNote}}</text>
+          <text class="q-amt num">¥{{item.amountText}}</text>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="quick-sub" wx:if="{{learnedCount > 0}}">
+      带 ⚡ 的是按你的习惯学出来的，点一下就记好
+    </view>
+  </view>
+
+  <!-- ================= 本月概览 ================= -->
+  <view class="wrap">
+    <view class="stat-row">
+      <view class="stat" bindtap="goStats">
+        <text class="stat-k">今日花掉</text>
+        <text class="stat-v num">¥{{todayText}}</text>
+      </view>
+      <view class="stat-line"></view>
+      <view class="stat" bindtap="goStats">
+        <text class="stat-k">{{monthLabelText}}支出</text>
+        <text class="stat-v num">¥{{usedText}}</text>
+      </view>
+      <view class="stat-line"></view>
+      <view class="stat" bindtap="goStats">
+        <text class="stat-k">收入</text>
+        <text class="stat-v num income">¥{{incomeText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ================= 近 7 天 ================= -->
+  <view class="wrap">
+    <view class="card">
+      <view class="row-between">
+        <text class="card-title">最近 7 天</text>
+        <text class="card-sub" bindtap="goStats">看全部 ›</text>
+      </view>
+      <view class="bars">
+        <view class="bar-col" wx:for="{{days}}" wx:key="date">
+          <view class="bar-track">
+            <view class="bar-col-fill" style="height:{{item.h}}%;background:{{item.color}}"></view>
+          </view>
+          <text class="bar-x">{{item.label}}</text>
+        </view>
+      </view>
+      <view class="bars-foot">
+        <text>7 天共花 <text class="bold">¥{{weekText}}</text></text>
+        <text class="muted">最高一天 ¥{{weekMaxText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ================= 最近记录 ================= -->
+  <view class="wrap">
+    <view class="card">
+      <view class="row-between">
+        <text class="card-title">最近记的账</text>
+        <text class="card-sub" bindtap="goStats">全部 ›</text>
+      </view>
+
+      <block wx:if="{{recent.length}}">
+        <view class="rec" wx:for="{{recent}}" wx:key="id"
+              data-ym="{{item.ym}}" data-id="{{item.id}}"
+              bindtap="onRecTap" bindlongpress="onRecLong">
+          <view class="rec-ico">
+            <image class="ico-img" src="/assets/icons/{{item.cat}}.svg" mode="aspectFit"/>
+          </view>
+          <view class="rec-mid">
+            <view class="rec-note">{{item.note || item.catName}}</view>
+            <view class="rec-sub">{{item.when}} · {{item.catName}}</view>
+          </view>
+          <view class="rec-amt num {{item.type === 'income' ? 'income' : ''}}">
+            {{item.type === 'income' ? '+' : '-'}}¥{{item.amountText}}
+          </view>
+        </view>
+        <view class="rec-hint">点击可以改，长按可以删</view>
+      </block>
+
+      <view class="empty" wx:else>
+        <image class="empty-emoji" src="/assets/icons/empty-receipt.svg" mode="aspectFit"/>
+        <view class="empty-txt">还没有记录</view>
+        <view class="empty-txt">从上面点「记一笔」开始吧</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="foot-tip">数据只存在你自己的手机里，不上传、不联网 🌿</view>
+
+</view>

@@ -1,0 +1,105 @@
+<view class="page {{theme}} {{modeClass}}">
+
+  <view class="wrap">
+
+    <!-- ============ 外观 ============ -->
+    <view class="group-title">外观</view>
+    <view class="group">
+      <view class="cell no-tap">
+        <text class="c-ico">🌗</text>
+        <text class="c-t">外观模式</text>
+      </view>
+      <view class="seg-appear">
+        <view class="seg-a {{appearance === item.key ? 'on' : ''}}"
+              wx:for="{{appearances}}" wx:key="key"
+              data-v="{{item.key}}" bindtap="onPickAppearance">{{item.name}}</view>
+      </view>
+      <view class="cell no-tap">
+        <text class="c-ico">🎨</text>
+        <text class="c-t">主题色</text>
+        <text class="c-v">{{themeName}}</text>
+      </view>
+      <view class="theme-row">
+        <view class="th-item {{item.cls}} {{item.on ? 'on' : ''}}" wx:for="{{themes}}" wx:key="key"
+              data-k="{{item.key}}" bindtap="onPickTheme" hover-class="th-on" hover-stay-time="60">
+          <view class="th-dot"></view>
+          <text class="th-name">{{item.name}}</text>
+          <text class="th-check" wx:if="{{item.on}}">✓</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ============ 记账 ============ -->
+    <view class="group-title">记账</view>
+    <view class="group">
+      <view class="cell" bindtap="goBudget" hover-class="cell-on">
+        <text class="c-ico">🎯</text>
+        <text class="c-t">预算设置</text>
+        <text class="c-v">{{budgetText}}</text>
+        <text class="c-go">›</text>
+      </view>
+      <view class="cell" bindtap="goStats" hover-class="cell-on">
+        <text class="c-ico">📊</text>
+        <text class="c-t">钱去哪了</text>
+        <text class="c-go">›</text>
+      </view>
+    </view>
+
+    <!-- ============ 数据工具 ============ -->
+    <view class="group-title">数据工具</view>
+    <view class="group">
+      <view class="cell" bindtap="doBackup" hover-class="cell-on">
+        <text class="c-ico">📤</text>
+        <text class="c-t">备份数据</text>
+        <text class="c-sub">复制到剪贴板</text>
+        <text class="c-go">›</text>
+      </view>
+      <view class="cell" bindtap="doRestore" hover-class="cell-on">
+        <text class="c-ico">📥</text>
+        <text class="c-t">恢复数据</text>
+        <text class="c-sub">从剪贴板读回</text>
+        <text class="c-go">›</text>
+      </view>
+    </view>
+
+    <view class="group">
+      <view class="cell" bindtap="doSeed" hover-class="cell-on">
+        <text class="c-ico">🧪</text>
+        <text class="c-t">填一份示例数据</text>
+        <text class="c-sub">看看用起来什么样</text>
+        <text class="c-go">›</text>
+      </view>
+      <view class="cell" bindtap="toggleHow" hover-class="cell-on">
+        <text class="c-ico">❓</text>
+        <text class="c-t">怎么用</text>
+        <text class="c-go">{{showHow ? '⌄' : '›'}}</text>
+      </view>
+      <view class="how" wx:if="{{showHow}}">
+        <view class="how-line">1 · 点「记一笔」，输金额 → 选分类 → 完成。备注里写「菜市场」，分类会自动跳过去。</view>
+        <view class="how-line">2 · 记过两次的东西会自动变成常用标签，以后点一下就记好了。</view>
+        <view class="how-line">3 · 首页最上面是「本月还能花多少」。花超了会提前提醒你，不用等到月底才发现。</view>
+        <view class="how-line">4 · 数据只存在这台手机上，不上传也不联网。换手机前记得先「备份数据」。</view>
+      </view>
+    </view>
+
+    <view class="group">
+      <view class="cell danger" bindtap="doClear" hover-class="cell-on">
+        <text class="c-ico">🗑</text>
+        <text class="c-t">清空所有数据</text>
+        <text class="c-sub">不可恢复</text>
+        <text class="c-go">›</text>
+      </view>
+    </view>
+
+    <!-- ============ 关于 ============ -->
+    <view class="group-title">关于</view>
+    <view class="group">
+      <view class="about">
+        <text class="about-t">简记 · 数据只在本机</text>
+        <text class="about-s">不联网 · 不上传 · 不注册</text>
+        <text class="about-s">v1.0.0</text>
+      </view>
+    </view>
+
+  </view>
+</view>

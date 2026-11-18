@@ -1,0 +1,22 @@
+<!-- 自定义数字键盘：只负责抛按键事件，金额状态由页面维护 -->
+<view class="pad">
+  <view class="grid">
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="1" bindtap="onTap">1</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="2" bindtap="onTap">2</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="3" bindtap="onTap">3</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="4" bindtap="onTap">4</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="5" bindtap="onTap">5</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="6" bindtap="onTap">6</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="7" bindtap="onTap">7</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="8" bindtap="onTap">8</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="9" bindtap="onTap">9</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="." bindtap="onTap">.</view>
+    <view class="k" hover-class="k-on" hover-stay-time="60" data-k="0" bindtap="onTap">0</view>
+    <view class="k k-fn" hover-class="k-on" hover-stay-time="60" data-k="del" bindtap="onTap">⌫</view>
+  </view>
+  <view class="side">
+    <view class="ok" hover-class="ok-on" hover-stay-time="60" bindtap="onConfirm">
+      <text class="ok-txt">完成</text>
+    </view>
+  </view>
+</view>

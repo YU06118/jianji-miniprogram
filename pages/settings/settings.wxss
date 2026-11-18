@@ -1,0 +1,167 @@
+/* pages/settings/settings.wxss —— 统一设置页 */
+
+.group-title {
+  font-size: 24rpx;
+  color: var(--ink-3);
+  padding: 28rpx 8rpx 4rpx;
+  font-weight: 500;
+}
+
+/* 外观模式 segmented */
+.seg-appear {
+  display: flex;
+  margin: 0 30rpx 12rpx;
+  padding: 4rpx;
+  background: var(--bg-2);
+  border-radius: var(--r-ctrl);
+}
+.seg-a {
+  flex: 1;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: var(--ink-2);
+  border-radius: 6rpx;
+  transition: all .2s var(--ease);
+}
+.seg-a.on {
+  background: var(--accent-solid);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+/* ============ 分组列表 ============ */
+.group {
+  background: var(--card);
+  border-radius: var(--r-card);
+  margin-top: 24rpx;
+  overflow: hidden;
+  box-shadow: var(--sh-card);
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 30rpx;
+  border-bottom: 2rpx solid var(--line);
+}
+.cell:last-child {
+  border-bottom: none;
+}
+.cell.no-tap {
+  border-bottom: none;
+  padding-bottom: 14rpx;
+}
+.cell-on {
+  background: var(--pink-soft);
+}
+
+/* ---------- 主题色选择 ---------- */
+.theme-row {
+  display: flex;
+  padding: 4rpx 22rpx 26rpx;
+  gap: 16rpx;
+}
+.th-item {
+  flex: 1;
+  height: 116rpx;
+  border-radius: var(--r-card);
+  background: var(--bg-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform .18s var(--bounce);
+}
+.th-on {
+  transform: scale(.94);
+}
+.th-item.on {
+  background: var(--pink-soft);
+  box-shadow: inset 0 0 0 3rpx var(--pink);
+}
+.th-dot {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, .10);
+  margin-bottom: 10rpx;
+}
+.th-name {
+  font-size: 21rpx;
+  color: var(--ink-2);
+}
+.th-item.on .th-name {
+  color: var(--pink-deep);
+  font-weight: 600;
+}
+.th-check {
+  position: absolute;
+  top: 6rpx;
+  right: 10rpx;
+  font-size: 20rpx;
+  color: var(--pink-deep);
+  font-weight: 700;
+}
+.c-ico {
+  width: 56rpx;
+  font-size: 34rpx;
+  flex-shrink: 0;
+}
+.c-t {
+  font-size: 29rpx;
+  color: var(--ink);
+  font-weight: 500;
+}
+.c-sub {
+  font-size: 22rpx;
+  color: var(--ink-3);
+  margin-left: 16rpx;
+}
+.c-v {
+  margin-left: auto;
+  font-size: 26rpx;
+  color: var(--ink-3);
+}
+.c-go {
+  font-size: 34rpx;
+  color: var(--ink-3);
+  margin-left: 14rpx;
+  flex-shrink: 0;
+}
+.cell.danger .c-t {
+  color: var(--danger);
+}
+
+/* ============ 使用说明 ============ */
+.how {
+  padding: 8rpx 30rpx 28rpx;
+  background: var(--bg-2);
+}
+.how-line {
+  font-size: 24rpx;
+  color: var(--ink-2);
+  line-height: 1.75;
+  margin-top: 14rpx;
+}
+
+/* ============ 关于 ============ */
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 0 50rpx;
+}
+.about-t {
+  font-size: 24rpx;
+  color: var(--ink-3);
+}
+.about-s {
+  font-size: 21rpx;
+  color: var(--ink-3);
+  margin-top: 10rpx;
+}

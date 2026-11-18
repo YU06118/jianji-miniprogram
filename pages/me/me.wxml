@@ -1,0 +1,36 @@
+<view class="page {{theme}} {{modeClass}}">
+
+  <!-- ============ 概览 ============ -->
+  <view class="head-card">
+    <view class="hc-mask"></view>
+    <text class="hc-t">简记</text>
+    <text class="hc-s">{{stats.months ? '已经记了 ' + stats.records + ' 笔，坚持了 ' + stats.months + ' 个月' : '还没有开始记录'}}</text>
+    <view class="hc-grid">
+      <view class="hc-i">
+        <text class="hc-v num">{{stats.records}}</text>
+        <text class="hc-k">记账笔数</text>
+      </view>
+      <view class="hc-line"></view>
+      <view class="hc-i">
+        <text class="hc-v num">{{stats.months}}</text>
+        <text class="hc-k">记账月数</text>
+      </view>
+      <view class="hc-line"></view>
+      <view class="hc-i">
+        <text class="hc-v num">{{stats.days}}</text>
+        <text class="hc-k">使用天数</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="wrap">
+    <view class="group">
+      <view class="cell" bindtap="goSettings" hover-class="cell-on">
+        <text class="c-ico">⚙️</text>
+        <text class="c-t">设置</text>
+        <text class="c-v">外观 · 主题 · 数据</text>
+        <text class="c-go">›</text>
+      </view>
+    </view>
+  </view>
+</view>

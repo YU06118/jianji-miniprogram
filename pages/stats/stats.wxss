@@ -1,0 +1,311 @@
+/* pages/stats/stats.wxss */
+
+/* ============ 月份切换 ============ */
+.month-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22rpx 0 10rpx;
+}
+.mb-btn {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  color: var(--pink);
+  background: var(--card);
+  box-shadow: var(--sh-card);
+  line-height: 1;
+  padding-bottom: 6rpx;
+}
+.mb-btn.off {
+  color: var(--ink-3);
+  box-shadow: none;
+  background: var(--bg-2);
+}
+.mb-on {
+  transform: scale(0.92);
+}
+.mb-txt {
+  min-width: 260rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mb-live {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: var(--mint);
+  background: var(--mint-soft);
+  border-radius: var(--r-chip);
+  padding: 3rpx 12rpx;
+  margin-left: 12rpx;
+}
+
+/* ============ 总额卡 ============ */
+.total-card {
+  background: var(--card);
+}
+.total-num {
+  font-size: 76rpx;
+  font-weight: 700;
+  letter-spacing: -2rpx;
+  line-height: 1.15;
+  margin: 10rpx 0 6rpx;
+  color: var(--ink);
+}
+.total-cur {
+  font-size: 36rpx;
+  font-weight: 700;
+  margin-right: 6rpx;
+}
+.total-sub {
+  font-size: 24rpx;
+  color: var(--ink-3);
+}
+
+/* ============ 环形图 ============ */
+.donut-box {
+  display: flex;
+  align-items: center;
+  margin-top: 28rpx;
+}
+.donut {
+  width: 300rpx;
+  height: 300rpx;
+  flex-shrink: 0;
+}
+.donut-legend {
+  flex: 1;
+  min-width: 0;
+  padding-left: 26rpx;
+}
+.lg {
+  display: flex;
+  align-items: center;
+  padding: 9rpx 0;
+}
+.lg-dot {
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 5rpx;
+  margin-right: 14rpx;
+  flex-shrink: 0;
+}
+.lg-name {
+  font-size: 25rpx;
+  color: var(--ink-2);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lg-pct {
+  font-size: 25rpx;
+  font-weight: 600;
+  color: var(--ink);
+  margin-left: 10rpx;
+}
+
+/* ============ 分类排行 ============ */
+.rank {
+  padding-top: 6rpx;
+}
+.rk {
+  padding: 20rpx 0 6rpx;
+}
+.rk:active {
+  opacity: 0.72;
+}
+.rk-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+.rk-ico {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+.rk-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+.rk-count {
+  font-size: 21rpx;
+  color: var(--ink-3);
+  margin-left: 12rpx;
+  background: var(--bg-2);
+  padding: 2rpx 12rpx;
+  border-radius: var(--r-chip);
+}
+.rk-amt {
+  margin-left: auto;
+  font-size: 29rpx;
+  font-weight: 700;
+  color: var(--ink);
+}
+.rk-pct {
+  width: 84rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: var(--ink-3);
+}
+.rk-bar {
+  height: 14rpx;
+  border-radius: 7rpx;
+  background: var(--bg-2);
+  overflow: hidden;
+}
+.rk-fill {
+  height: 100%;
+  border-radius: 7rpx;
+  min-width: 8rpx;
+  transition: width 0.45s cubic-bezier(0.25, 0.8, 0.3, 1);
+}
+
+.rk-detail {
+  margin-top: 16rpx;
+  padding: 6rpx 20rpx;
+  background: var(--bg-2);
+  border-radius: var(--r-ctrl);
+}
+.rd-row {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 2rpx solid var(--line);
+}
+.rd-row:last-child {
+  border-bottom: none;
+}
+.rd-date {
+  font-size: 22rpx;
+  color: var(--ink-3);
+  width: 170rpx;
+  flex-shrink: 0;
+}
+.rd-note {
+  flex: 1;
+  font-size: 25rpx;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rd-amt {
+  font-size: 25rpx;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-left: 12rpx;
+}
+
+.tap-hint {
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--ink-3);
+  padding-top: 24rpx;
+}
+
+/* ============ 分项预算 ============ */
+.cb {
+  margin-top: 28rpx;
+}
+.cb-head {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 12rpx;
+}
+.cb-name {
+  font-size: 27rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+.cb-right {
+  margin-left: auto;
+  display: flex;
+  align-items: baseline;
+}
+.cb-amt {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--ink);
+}
+.cb-of {
+  font-size: 22rpx;
+  color: var(--ink-3);
+  margin-left: 6rpx;
+}
+.cb-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10rpx;
+}
+.cb-pct {
+  font-size: 22rpx;
+  color: var(--ink-3);
+}
+.cb-pct.warn {
+  color: var(--amber);
+  font-weight: 600;
+}
+.cb-pct.over {
+  color: var(--danger);
+  font-weight: 600;
+}
+.cb-tip {
+  font-size: 22rpx;
+  color: var(--ink-3);
+}
+
+/* ============ 趋势 ============ */
+.trend {
+  display: flex;
+  align-items: flex-end;
+  height: 220rpx;
+  margin: 30rpx 0 12rpx;
+}
+.tr-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tr-track {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.tr-fill {
+  width: 40rpx;
+  min-height: 8rpx;
+  border-radius: 14rpx;
+  transition: height 0.45s ease;
+}
+.tr-x {
+  font-size: 21rpx;
+  color: var(--ink-3);
+  margin-top: 12rpx;
+}
+.tr-x.cur {
+  color: var(--pink);
+  font-weight: 700;
+}
+.trend-foot {
+  font-size: 24rpx;
+  color: var(--ink-2);
+  margin-top: 8rpx;
+}

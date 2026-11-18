@@ -1,0 +1,150 @@
+<view class="page {{theme}} {{modeClass}}">
+
+  <!-- ============ 汇总 ============ -->
+  <view class="hero">
+    <view class="hero-mask"></view>
+    <text class="hero-label">已经攒下</text>
+    <view class="hero-num">
+      <text class="hero-cur">¥</text>
+      <text class="num">{{totalSavedText}}</text>
+    </view>
+    <view class="hero-sub" wx:if="{{goals.length}}">
+      目标总额 ¥{{totalTargetText}} · 完成 {{totalPct}}%
+    </view>
+    <view class="hero-sub" wx:else>给未来的自己定一个目标吧</view>
+    <view class="hero-bar">
+      <view class="bar">
+        <view class="bar-fill" style="width:{{totalPctW}}%;background:#FFFFFF"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============ 目标列表 ============ -->
+  <view class="wrap">
+    <view class="gcard" wx:for="{{goals}}" wx:key="id">
+      <view class="gc-head" bindtap="openEdit" data-i="{{index}}">
+        <view class="gc-ico">
+          <text>{{item.emoji}}</text>
+        </view>
+        <view class="gc-title">
+          <text class="gc-name">{{item.name}}</text>
+          <text class="gc-sub">{{item.subline}}</text>
+        </view>
+        <text class="gc-pct num" style="color:{{item.done ? '#3FAE9F' : '#EF5478'}}">{{item.pct}}%</text>
+      </view>
+
+      <view class="bar bar-dark">
+        <view class="bar-fill" style="width:{{item.w}}%;background:{{item.barColor}}"></view>
+      </view>
+
+      <view class="gc-foot">
+        <text class="gc-saved num">¥{{item.savedText}}</text>
+        <text class="gc-target num">/ ¥{{item.targetText}}</text>
+        <view class="gc-btn" catchtap="openDeposit" data-i="{{index}}">存一笔</view>
+      </view>
+
+      <view class="gc-tip" wx:if="{{item.tip}}">
+        <text>{{item.tip}}</text>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!goals.length}}">
+      <image class="empty-emoji" src="/assets/icons/empty-pig.svg" mode="aspectFit"/>
+      <view class="empty-txt">还没有攒钱目标</view>
+      <view class="empty-txt">宝宝教育金、家庭旅行、换台冰箱……</view>
+      <view class="empty-txt">写下来，才知道每个月该留多少</view>
+    </view>
+
+    <view class="btn btn-ghost new-btn" bindtap="openNew">＋ 新的攒钱目标</view>
+
+    <view class="foot-note">攒钱进度是手动记的，不会自动从账本里扣 —— 免得你记错了还要对账。</view>
+  </view>
+
+  <!-- ============ 遮罩 ============ -->
+  <view class="mask" wx:if="{{sheetMode}}" bindtap="closeSheet"></view>
+
+  <!-- ============ 编辑目标 ============ -->
+  <view class="sheet" wx:if="{{sheetMode === 'edit'}}">
+    <view class="sheet-head">
+      <text class="sh-cancel" bindtap="closeSheet">取消</text>
+      <text class="sh-title">{{form.id ? '修改目标' : '新目标'}}</text>
+      <text class="sh-ok" bindtap="submitForm">保存</text>
+    </view>
+
+    <view class="sheet-body">
+      <view class="fl">
+        <text class="fl-k">叫什么</text>
+        <input class="fl-in" value="{{form.name}}" data-k="name" bindinput="onFormInput"
+               placeholder="比如：宝宝教育金" placeholder-class="ph" maxlength="12" />
+      </view>
+
+      <view class="fl">
+        <text class="fl-k">图标</text>
+        <view class="emoji-row">
+          <view class="em {{form.emoji === item ? 'on' : ''}}" wx:for="{{emojis}}" wx:key="*this"
+                data-e="{{item}}" bindtap="pickEmoji">{{item}}</view>
+        </view>
+      </view>
+
+      <view class="fl">
+        <text class="fl-k">目标金额</text>
+        <input class="fl-in num" type="digit" value="{{form.target}}" data-k="target" bindinput="onFormInput"
+               placeholder="0" placeholder-class="ph" />
+        <text class="fl-unit">元</text>
+      </view>
+
+      <view class="fl">
+        <text class="fl-k">已经存了</text>
+        <input class="fl-in num" type="digit" value="{{form.saved}}" data-k="saved" bindinput="onFormInput"
+               placeholder="0" placeholder-class="ph" />
+        <text class="fl-unit">元</text>
+      </view>
+
+      <view class="fl">
+        <text class="fl-k">想什么时候存够</text>
+        <picker mode="date" value="{{form.deadline}}" bindchange="onDeadline">
+          <view class="fl-picker">{{form.deadline || '不设期限'}}</view>
+        </picker>
+        <text class="fl-clear" wx:if="{{form.deadline}}" catchtap="clearDeadline">清除</text>
+      </view>
+
+      <view class="sheet-del" wx:if="{{form.id}}" bindtap="removeGoal">删除这个目标</view>
+    </view>
+
+    <view class="sheet-safe"></view>
+  </view>
+
+  <!-- ============ 存一笔 ============ -->
+  <view class="sheet" wx:if="{{sheetMode === 'deposit'}}">
+    <view class="sheet-head">
+      <text class="sh-cancel" bindtap="closeSheet">取消</text>
+      <text class="sh-title">给「{{depositGoal.name}}」存一笔</text>
+      <text class="sh-ok" bindtap="submitDeposit">确认</text>
+    </view>
+
+    <view class="sheet-body">
+      <view class="dp-seg">
+        <view class="dp-seg-i {{depositMode === 'in' ? 'on' : ''}}"
+              data-m="in" bindtap="setDepositMode">存入</view>
+        <view class="dp-seg-i {{depositMode === 'out' ? 'on' : ''}}"
+              data-m="out" bindtap="setDepositMode">取出</view>
+      </view>
+
+      <view class="dp-amt">
+        <text class="dp-cur">¥</text>
+        <input class="dp-in num" type="digit" value="{{depositAmount}}" bindinput="onDepositInput"
+               placeholder="0" placeholder-class="ph" />
+      </view>
+
+      <view class="dp-quick">
+        <view class="dq" wx:for="{{depositQuick}}" wx:key="*this"
+              data-v="{{item}}" bindtap="pickDeposit">+{{item}}</view>
+      </view>
+
+      <view class="dp-tip">还差 ¥{{depositNeedText}} 就够目标了</view>
+    </view>
+
+    <view class="sheet-safe"></view>
+  </view>
+
+</view>

@@ -1,0 +1,70 @@
+<view class="page {{theme}} {{modeClass}}">
+
+  <!-- ============ 总预算 ============ -->
+  <view class="wrap">
+    <view class="card">
+      <text class="card-title">每月总预算</text>
+      <view class="sub">设一个数，我每天帮你看住它</view>
+
+      <view class="total-input">
+        <text class="ti-cur">¥</text>
+        <input class="ti-in num"
+               type="digit"
+               value="{{total}}"
+               bindinput="onTotal"
+               placeholder="0"
+               placeholder-class="ph" />
+        <text class="ti-unit">元 / 月</text>
+      </view>
+
+      <view class="sug-row" wx:if="{{sugText}}">
+        <text class="sug-pill" bindtap="onUseSug">按上个月花销填 ¥{{sugText}}</text>
+        <text class="sug-pill" wx:if="{{historyText}}" bindtap="fillByHistory">按近 3 个月平均填 ¥{{historyText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ============ 分项预算 ============ -->
+  <view class="wrap">
+    <view class="card">
+      <view class="row-between">
+        <text class="card-title">分项预算</text>
+        <text class="card-sub link" bindtap="fillByHistory" wx:if="{{historyText}}">按历史自动填 ›</text>
+      </view>
+      <view class="sub">可以只填你在意的那几项，其余留空</view>
+
+      <view class="cb-item" wx:for="{{cats}}" wx:key="key">
+        <view class="cb-ico">
+          <image class="ico-img" src="/assets/icons/{{item.key}}.svg" mode="aspectFit"/>
+        </view>
+        <text class="cb-name">{{item.name}}</text>
+        <view class="cb-right">
+          <text class="cb-cur">¥</text>
+          <input class="cb-in num"
+                 type="digit"
+                 value="{{item.value}}"
+                 data-i="{{index}}"
+                 bindinput="onCatInput"
+                 placeholder="不限"
+                 placeholder-class="ph" />
+        </view>
+      </view>
+
+      <view class="cb-sum {{sumWarn ? 'warn' : ''}}">
+        <text>分项合计 ¥{{sumCatsText}}</text>
+        <text class="cb-diff">{{sumDiffText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="tip-box">
+    <view class="tip-line">💡 预算不是越省越好。定得太低会天天报警，报警多了就不看了 —— 那还不如不设。</view>
+    <view class="tip-line">💡 建议先按「近 3 个月平均」填一次，用一个月再微调。</view>
+  </view>
+
+  <view class="save-bar">
+    <view class="btn btn-primary" bindtap="save">保存预算</view>
+    <view class="btn btn-plain btn-clear" wx:if="{{hasBudget}}" bindtap="clearBudget">清空预算</view>
+  </view>
+
+</view>

@@ -1,0 +1,95 @@
+<view class="add-page {{theme}} {{modeClass}}">
+
+  <!-- ========== 顶部输入区 ========== -->
+  <view class="head">
+    <!-- 支出 / 收入 -->
+    <view class="seg">
+      <view class="seg-i {{type === 'expense' ? 'on' : ''}}"
+            data-t="expense" bindtap="onType">支出</view>
+      <view class="seg-i {{type === 'income' ? 'on' : ''}}"
+            data-t="income" bindtap="onType">收入</view>
+    </view>
+
+    <!-- 金额 -->
+    <view class="amt-row">
+      <text class="cur">¥</text>
+      <text class="amt num {{amountStr ? '' : 'dim'}}">{{amountStr || '0'}}</text>
+      <view class="caret {{amountStr ? '' : 'blink'}}"></view>
+      <view class="cat-badge">
+        <image class="badge-ico" src="/assets/icons/{{curCat.key}}.svg" mode="aspectFit"/>
+        <text>{{curCat.name}}</text>
+      </view>
+    </view>
+
+    <!-- 日期 + 备注 -->
+    <view class="meta-row">
+      <picker mode="date" value="{{date}}" end="{{today}}" bindchange="onDate">
+        <view class="meta-pill">
+          <text>📅 {{dateLabel}}</text>
+        </view>
+      </picker>
+      <view class="note-box">
+        <input class="note-input"
+               value="{{note}}"
+               placeholder="加个备注，我会自动猜分类"
+               placeholder-class="ph"
+               maxlength="20"
+               confirm-type="done"
+               bindinput="onNote"
+               bindconfirm="onNoteDone" />
+        <view class="note-clear" wx:if="{{note}}" catchtap="clearNote">✕</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 中部滚动区 ========== -->
+  <scroll-view class="mid" scroll-y enable-flex>
+
+    <!-- 常用：点一下就记好 -->
+    <view class="sec" wx:if="{{quickTags.length}}">
+      <view class="sec-t">
+        <text>⚡ 常用</text>
+        <text class="sec-hint">点一下直接记好</text>
+      </view>
+      <scroll-view class="quick-scroll" scroll-x show-scrollbar="{{false}}">
+        <view class="quick-wrap">
+          <view class="quick" wx:for="{{quickTags}}" wx:key="key"
+                hover-class="quick-on" hover-stay-time="60"
+                data-i="{{index}}" bindtap="onQuick">
+          <image class="q-ico" src="/assets/icons/{{item.cat}}.svg" mode="aspectFit"/>
+          <text class="q-note">{{item.note}}</text>
+            <text class="q-amt num">¥{{item.amountText}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 分类 -->
+    <view class="sec">
+      <view class="sec-t">
+        <text>{{type === 'expense' ? '支出分类' : '收入分类'}}</text>
+        <text class="sec-hint" wx:if="{{catTouched}}">已手动选</text>
+        <text class="sec-hint auto" wx:elif="{{autoHint}}">已自动猜中</text>
+      </view>
+      <view class="cats">
+        <view class="cat {{cat === item.key ? 'on' : ''}}"
+              wx:for="{{cats}}" wx:key="key"
+              hover-class="cat-on" hover-stay-time="60"
+              data-k="{{item.key}}" bindtap="onCat">
+          <image class="c-ico" src="/assets/icons/{{item.key}}.svg" mode="aspectFit"/>
+          <text class="c-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="tip">
+      <text class="tip-txt">连记账也嫌麻烦？把最常买的那几样记一次，下次点「常用」就完事了。</text>
+    </view>
+  </scroll-view>
+
+  <!-- ========== 键盘 ========== -->
+  <view class="pad-wrap">
+    <numpad bind:key="onKey" bind:confirm="onConfirm" />
+  </view>
+
+</view>
