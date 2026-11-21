@@ -69,7 +69,7 @@ App({
       wx.setTabBarStyle({
         color: dark ? '#9E9E9E' : '#686868',
         selectedColor: accent,
-        backgroundColor: dark ? '#2C2C2C' : '#FFFFFF',
+        backgroundColor: dark ? '#1D1D1F' : '#FFFFFF',
         borderStyle: dark ? 'black' : 'white',
         fail() { }
       })
@@ -78,7 +78,7 @@ App({
     // 窗口背景（下拉露出的区域），避免边缘露白/露黑
     if (wx.setBackgroundColor) {
       wx.setBackgroundColor({
-        backgroundColor: dark ? '#202020' : '#F3F3F3',
+        backgroundColor: dark ? '#202020' : '#F5F5F7',
         fail() { }
       })
     }
