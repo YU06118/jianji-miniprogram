@@ -17,8 +17,16 @@ function appendAmount(cur, k) {
   if (dot >= 0 && s.length - dot > 2) return s        // 小数位已满
   if (s === '0') return k                              // 避免 01
   const digits = s.replace('.', '')
-  if (digits.length >= 7) return s                     // 上限 999999.99
+  if (digits.length >= 7) return s                     // 上限 7 位数字（整数 9999999 / 带两位小数 99999.99）
   return s + k
+}
+
+/** 把系统输入法产出的任意串规整为 appendAmount 等价的合法串 */
+function sanitizeAmount(raw) {
+  const s = String(raw == null ? '' : raw).replace(/[^0-9.]/g, '')
+  let out = ''
+  for (let i = 0; i < s.length; i++) out = appendAmount(out, s[i])
+  return out
 }
 
 Page({
@@ -27,6 +35,7 @@ Page({
     modeClass: store.modeClass(),
     type: 'expense',
     amountStr: '',
+    amountFocus: false,
     cat: 'food',
     note: '',
     date: '',
@@ -78,6 +87,9 @@ Page({
     }
 
     if (q && q.type === 'income') patch.type = patch.type || 'income'
+
+    // 新增页自动聚焦金额，编辑态不自动弹键盘
+    patch.amountFocus = !patch.editingId
 
     this.setData(patch, () => {
       this.refreshCats()
@@ -139,10 +151,9 @@ Page({
     })
   },
 
-  onKey(e) {
-    const k = e.detail.key
-    const next = appendAmount(this.data.amountStr, k)
-    this.setData({ amountStr: next })
+  onAmountInput(e) {
+    // 受控输入：系统键盘的任意产出都即时清洗，非法字符立即被清除
+    this.setData({ amountStr: sanitizeAmount(e.detail.value) })
     this.reguess()
   },
 
@@ -160,11 +171,6 @@ Page({
   onNote(e) {
     this.setData({ note: e.detail.value })
     this.reguess()
-  },
-
-  onNoteDone() {
-    // 收起系统键盘，交还自定义键盘
-    wx.hideKeyboard({ fail() {} })
   },
 
   clearNote() {
@@ -216,11 +222,15 @@ Page({
   },
 
   onConfirm() {
+    // 回车与按钮可能在 420ms 跳转窗口内各触发一次，用实例标志防重复写入
+    if (this._submitting) return
     const amount = M.parse(this.data.amountStr)
     if (!(amount > 0)) {
       wx.showToast({ title: '先输入金额', icon: 'none' })
       return
     }
+    this._submitting = true
+    wx.hideKeyboard && wx.hideKeyboard({ fail() {} })
     this.commit({
       type: this.data.type,
       amount: amount,

@@ -122,9 +122,6 @@ function themeList() {
 
 /* ---------------- 外观模式（深色 / 浅色 / 跟随系统） ---------------- */
 const APPEARANCES = ['dark', 'light', 'system']
-/* 导航栏用色：深色档用 solid 色（配白字 ≥4.5:1），与 app.wxss .mode-dark.t-xxx --accent-solid 对齐 */
-const THEME_NAV_DARK = { pink: '#0067BC', lilac: '#6246E0', blue: '#006B85', matcha: '#0A6B31' }
-
 function getAppearance() {
   const a = String(getSettings().appearance || 'dark')
   return APPEARANCES.indexOf(a) >= 0 ? a : 'dark'
@@ -153,9 +150,9 @@ function modeClass() {
   return isDark() ? 'mode-dark' : 'mode-light'
 }
 
-/** 原生导航栏底色：深色用 solid 深色，浅色用 themeColor() */
+/** 原生导航栏底色：固定深紫黑 + 白字（四套主题、深浅模式统一，不随主题变化） */
 function navColor() {
-  return isDark() ? (THEME_NAV_DARK[getTheme()] || THEME_NAV_DARK.pink) : themeColor()
+  return '#1E1A2E'
 }
 
 /** 外观模式选项列表（设置页 segmented 用） */
@@ -821,7 +818,6 @@ module.exports = {
   modeClass,
   navColor,
   appearanceList,
-  THEME_NAV_DARK,
   // 目标
   getGoals,
   saveGoals,

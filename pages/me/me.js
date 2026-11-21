@@ -1,11 +1,13 @@
 // pages/me/me.js —— 我的（概览 + 设置入口）
 const store = require('../../utils/store.js')
+const M = require('../../utils/money.js')
 
 Page({
   data: {
     theme: 't-pink',
     modeClass: store.modeClass(),
-    stats: { records: 0, months: 0, days: 0 }
+    stats: { records: 0, months: 0, days: 0 },
+    goalText: '还没有目标'
   },
 
   onShow() {
@@ -19,13 +21,21 @@ Page({
     const meta = store.getMeta()
     const created = meta.createdAt || Date.now()
     const days = Math.max(1, Math.round((Date.now() - created) / 86400000))
+    const goals = store.getGoals()
+    let savedCents = 0
+    for (let i = 0; i < goals.length; i++) savedCents += M.toCents(M.parse(goals[i].saved))
     this.setData({
       stats: {
         records: s.records,
         months: s.months,
         days: days
-      }
+      },
+      goalText: goals.length ? '已攒 ¥' + M.fmt(M.toYuan(savedCents)) : '还没有目标'
     })
+  },
+
+  goGoal() {
+    wx.navigateTo({ url: '/pages/goal/goal' })
   },
 
   goSettings() {

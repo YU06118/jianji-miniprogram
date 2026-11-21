@@ -25,6 +25,12 @@
 
   <view class="wrap">
     <view class="group">
+      <view class="cell" bindtap="goGoal" hover-class="cell-on">
+        <text class="c-ico">🐷</text>
+        <text class="c-t">攒钱目标</text>
+        <text class="c-v">{{goalText}}</text>
+        <text class="c-go">›</text>
+      </view>
       <view class="cell" bindtap="goSettings" hover-class="cell-on">
         <text class="c-ico">⚙️</text>
         <text class="c-t">设置</text>

@@ -2,7 +2,5 @@
   "navigationBarTitleText": "记一笔",
   "navigationBarBackgroundColor": "@navBgColor",
   "navigationBarTextStyle": "@navTxtStyle",
-  "usingComponents": {
-    "numpad": "/components/numpad/numpad"
-  }
+  "usingComponents": {}
 }

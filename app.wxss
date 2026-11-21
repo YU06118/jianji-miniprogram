@@ -207,6 +207,13 @@ view, text, input, textarea, scroll-view, button {
   background: var(--bg);
   color: var(--ink);
 }
+/* 深底紫→黑渐变：仅 mode-dark（显式深色 / 跟随系统深色）生效；
+   浅色档 mode-light 不命中，回退上面的 var(--bg) 浅底。
+   复合选择器（0,2,0）压过 add.wxss 后加载的 .add-page。 */
+.mode-dark.page,
+.mode-dark.add-page {
+  background: linear-gradient(180deg, #2E2745 0%, #202020 100%);
+}
 .wrap { padding: 0 28rpx; }
 .row { display: flex; align-items: center; }
 .row-between { display: flex; align-items: center; justify-content: space-between; }

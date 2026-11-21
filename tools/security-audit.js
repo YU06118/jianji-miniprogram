@@ -12,7 +12,7 @@
  *   [FAIL] 无富文本渲染    —— rich-text 渲染用户内容
  *   [FAIL] 金融与诱导文案  —— 只扫「用户看得见的文案」，不扫代码
  *   [WARN] 绝对化用语      —— 广告法风险，交人工判断
- *   [WARN] 剪贴板用法      —— 仅允许在「我的」页人工触发
+ *   [WARN] 剪贴板用法      —— 仅允许在「我的」/「设置」页人工触发
  *   [INFO] 包体与文件清单
  *
  * 设计原则：宁可漏报噪音，不可误报。一个天天报假警的检查等于没有检查。
@@ -161,8 +161,9 @@ function walk(dir) {
 
     /* --- 2. 剪贴板（允许，但必须集中在人工触发入口） --- */
     if (/wx\s*\.\s*(setClipboardData|getClipboardData)/.test(raw)) {
-      if (rel !== 'pages/me/me.js') {
-        warnings.push({ file: rel, hit: '剪贴板 API 出现在非「我的」页', why: '剪贴板读写必须集中在用户主动点击的入口里' })
+      const CLIPBOARD_ENTRY = ['pages/me/me.js', 'pages/settings/settings.js']
+      if (CLIPBOARD_ENTRY.indexOf(rel) < 0) {
+        warnings.push({ file: rel, hit: '剪贴板 API 出现在非备份入口页', why: '剪贴板读写必须集中在用户主动点击的入口里' })
       } else {
         warnings.push({
           file: rel, hit: '使用了剪贴板（备份 / 恢复）',

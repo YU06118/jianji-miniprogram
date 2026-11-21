@@ -13,8 +13,16 @@
     <!-- 金额 -->
     <view class="amt-row">
       <text class="cur">¥</text>
-      <text class="amt num {{amountStr ? '' : 'dim'}}">{{amountStr || '0'}}</text>
-      <view class="caret {{amountStr ? '' : 'blink'}}"></view>
+      <input class="amt-input num"
+             type="digit"
+             value="{{amountStr}}"
+             bindinput="onAmountInput"
+             bindconfirm="onConfirm"
+             confirm-type="done"
+             placeholder="0"
+             placeholder-class="amt-ph"
+             focus="{{amountFocus}}"
+             maxlength="10" />
       <view class="cat-badge">
         <image class="badge-ico" src="/assets/icons/{{curCat.key}}.svg" mode="aspectFit"/>
         <text>{{curCat.name}}</text>
@@ -35,8 +43,7 @@
                placeholder-class="ph"
                maxlength="20"
                confirm-type="done"
-               bindinput="onNote"
-               bindconfirm="onNoteDone" />
+               bindinput="onNote" />
         <view class="note-clear" wx:if="{{note}}" catchtap="clearNote">✕</view>
       </view>
     </view>
@@ -87,9 +94,11 @@
     </view>
   </scroll-view>
 
-  <!-- ========== 键盘 ========== -->
-  <view class="pad-wrap">
-    <numpad bind:key="onKey" bind:confirm="onConfirm" />
+  <!-- ========== 底部保存 ========== -->
+  <view class="save-bar">
+    <view class="btn btn-primary btn-block" bindtap="onConfirm">
+      {{editingId ? '保存修改' : '保存这一笔'}}
+    </view>
   </view>
 
 </view>

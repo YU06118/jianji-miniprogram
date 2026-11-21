@@ -2,7 +2,6 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--bg);
   overflow: hidden;
 }
 
@@ -37,7 +36,7 @@
 
 .amt-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   margin-top: 22rpx;
   min-height: 108rpx;
 }
@@ -47,32 +46,23 @@
   margin-right: 10rpx;
   flex-shrink: 0;
 }
-.amt {
+.amt-input {
+  flex: 1;
+  min-width: 0;
+  height: 108rpx;
   font-size: 88rpx;
   font-weight: 700;
   letter-spacing: -2rpx;
   line-height: 1;
-  max-width: 460rpx;
-  overflow: hidden;
-  white-space: nowrap;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  padding: 0;
 }
-.amt.dim {
+.amt-ph {
   color: var(--ink-3);
-}
-.caret {
-  width: 5rpx;
-  height: 60rpx;
-  background: var(--pink);
-  border-radius: 3rpx;
-  margin-left: 8rpx;
-  align-self: center;
-}
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.12; }
-}
-.caret.blink {
-  animation: blink 1.05s ease-in-out infinite;
+  font-size: 88rpx;
+  font-weight: 700;
 }
 
 .cat-badge {
@@ -263,10 +253,11 @@
   line-height: 1.65;
 }
 
-/* ========== 键盘容器 ========== */
-.pad-wrap {
+/* ========== 底部保存 ========== */
+.save-bar {
   flex-shrink: 0;
+  padding: 16rpx 28rpx calc(16rpx + constant(safe-area-inset-bottom));
+  padding: 16rpx 28rpx calc(16rpx + env(safe-area-inset-bottom));
   background: var(--bg-2);
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 2rpx solid var(--line);
 }
