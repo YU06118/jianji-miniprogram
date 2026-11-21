@@ -77,23 +77,12 @@
 
   <!-- ================= 一键记账 ================= -->
   <view class="wrap">
-    <scroll-view class="quick-scroll" scroll-x show-scrollbar="{{false}}">
-      <view class="quick-wrap">
-        <view class="q-add" bindtap="goAdd">
-          <text class="q-add-plus">＋</text>
-          <text class="q-add-txt">记一笔</text>
-        </view>
-        <view class="q-item" wx:for="{{quickTags}}" wx:key="key"
-              hover-class="q-on" hover-stay-time="60"
-              data-i="{{index}}" bindtap="onQuick" bindlongpress="onQuickLong">
-          <image class="q-ico" src="/assets/icons/{{item.cat}}.svg" mode="aspectFit"/>
-          <text class="q-note">{{item.displayNote}}</text>
-          <text class="q-amt num">¥{{item.amountText}}</text>
-        </view>
-      </view>
-    </scroll-view>
+    <view class="q-add" bindtap="goAdd" hover-class="q-add-on" hover-stay-time="60">
+      <text class="q-add-plus">＋</text>
+      <text class="q-add-txt">记一笔</text>
+    </view>
     <view class="quick-sub">
-      点一下就记好，长按可自定义金额档位<block wx:if="{{learnedCount > 0}}">，⚡ 是按习惯学出来的</block>
+      点开填金额就能记，常用的可以存成档位，下次一点就记
     </view>
   </view>
 
@@ -179,12 +168,24 @@
     <view class="sheet-handle"></view>
     <view class="sheet-head cq-head">
       <text class="sh-cancel" bindtap="closeCq">取消</text>
-      <text class="sh-title">{{cqEditIndex >= 0 ? '修改档位' : '自定义金额档位'}}</text>
-      <text class="sh-ok" bindtap="saveCq">保存</text>
+      <text class="sh-title">记一笔</text>
+      <text class="sh-ok" bindtap="saveCq">记账</text>
     </view>
 
     <view class="sheet-body">
-      <view class="cq-tip">选分类、写备注、填金额，保存后点一下即可记账</view>
+      <view class="cq-tip">选分类、写备注、填金额，点右上角「记账」即完成</view>
+
+      <view class="cq-existing" wx:if="{{cqList.length}}">
+        <view class="cq-existing-title">常用档位（点一下直接记，✕ 删除）</view>
+        <view class="cq-row" wx:for="{{cqList}}" wx:key="index"
+              hover-class="cq-row-on" hover-stay-time="60"
+              data-i="{{item.index}}" bindtap="useCq">
+          <text class="cq-row-emoji">{{item.emoji}}</text>
+          <text class="cq-row-note">{{item.note}}</text>
+          <text class="cq-row-amt num">¥{{item.amountText}}</text>
+          <text class="cq-row-del" data-i="{{item.index}}" catchtap="delCq">✕</text>
+        </view>
+      </view>
 
       <view class="cq-cats">
         <view class="cq-cat {{cqCat === item.key ? 'on' : ''}}"
@@ -207,35 +208,9 @@
         <text class="field-unit">元</text>
       </view>
 
-      <view class="cq-existing" wx:if="{{cqList.length}}">
-        <view class="cq-existing-title">已有档位（点 ✕ 删除）</view>
-        <view class="cq-row" wx:for="{{cqList}}" wx:key="index">
-          <text class="cq-row-emoji">{{item.emoji}}</text>
-          <text class="cq-row-note">{{item.note}}</text>
-          <text class="cq-row-amt num">¥{{item.amountText}}</text>
-          <text class="cq-row-del" data-i="{{item.index}}" bindtap="delCq">✕</text>
-        </view>
-      </view>
+      <view class="cq-keep" bindtap="keepCq">💾 存为常用档位（只存模板，不记账）</view>
     </view>
     <view class="sheet-safe"></view>
-  </view>
-
-  <!-- ============ 长按标签的气泡菜单（按压位置下方） ============ -->
-  <view class="pop-mask" wx:if="{{popShow}}" bindtap="closePop" catchtouchmove="noop"></view>
-  <view class="pop-menu pop-in" wx:if="{{popShow}}"
-        style="left:{{popX}}px;top:{{popY}}px" catchtap="noop">
-    <view class="pop-item" bindtap="onPopEdit">
-      <text class="pop-ico">✎</text>
-      <text class="pop-txt">{{popIsCustom ? '改金额' : '自定义金额'}}</text>
-    </view>
-    <view class="pop-item pop-danger" wx:if="{{popIsCustom}}" bindtap="onPopDelete">
-      <text class="pop-ico">✕</text>
-      <text class="pop-txt">删这个档位</text>
-    </view>
-    <view class="pop-item" bindtap="onPopNew">
-      <text class="pop-ico">＋</text>
-      <text class="pop-txt">新建一个</text>
-    </view>
   </view>
 
 </view>

@@ -161,7 +161,7 @@
         <view class="py-nav-btn {{canNextDecade ? '' : 'off'}}" bindtap="nextDecade">›</view>
       </view>
       <view class="py-grid">
-        <view class="py-cell {{item === pickedYear ? 'on' : ''}} {{item > maxYear || item < minYear ? 'off' : ''}}"
+        <view class="py-cell {{item === pickedYear ? 'on' : ''}} {{item > maxYear ? 'off' : ''}}"
               wx:for="{{years}}" wx:key="*this" data-y="{{item}}"
               bindtap="pickYear">{{item}}</view>
       </view>
@@ -176,7 +176,7 @@
               wx:for="{{months}}" wx:key="*this" data-m="{{item}}"
               bindtap="pickMonth">{{item}}月</view>
       </view>
-      <view class="py-tip">灰色月份尚无记录，也可选择查看空账</view>
+      <view class="py-tip">灰色月份还没到，选不了；没有记录的月份会显示空账</view>
     </view>
     <view class="sheet-safe"></view>
   </view>

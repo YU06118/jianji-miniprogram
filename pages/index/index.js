@@ -20,25 +20,17 @@ Page({
     incomeText: '0',
     dailyLeftText: '0',
     barWidth: 0,
-    quickTags: [],
-    learnedCount: 0,
     days: [],
     weekText: '0',
     weekMaxText: '0',
     recent: [],
-    // 自定义金额档位管理 sheet
+    // 记一笔弹窗：表单保存即记账；常用档位在面板内一点即记
     cqSheet: false,
     cqCats: C.catsOf('expense'),
-    cqEditIndex: -1,          // -1=新增，>=0=编辑第几个档位
     cqCat: 'food',
     cqNote: '',
     cqAmount: '',
-    cqList: [],
-    // 长按气泡菜单
-    popShow: false,
-    popX: 0, popY: 0,          // 视口坐标(px)，fixed 直接定位
-    popIdx: -1,                // 当前操作的 quickTags 下标
-    popIsCustom: false         // 是否自定义档位（决定菜单项）
+    cqList: []
   },
 
   onShow() {
@@ -65,42 +57,6 @@ Page({
       return s + M.toCents(r.amount)
     }, 0)
     const todayExpense = M.toYuan(todayCents)
-
-    // 常用标签（首页聚焦支出）：自定义档位优先展示，其后是习惯学习标签
-    const custom = store.getCustomQuick().map(function (it, i) {
-      const c = C.getCat(it.cat)
-      return {
-        key: 'c|' + it.cat + '|' + i,
-        type: 'expense',
-        cat: it.cat,
-        note: it.note,
-        displayNote: '✦' + it.note,     // ✦ 表示用户自定义档位
-        amount: it.amount,
-        amountText: M.fmt(it.amount),
-        emoji: c.emoji,
-        learned: false,
-        custom: true,
-        customIndex: i
-      }
-    })
-    const rawTags = store.quickTags(8).filter(function (t) { return t.type === 'expense' })
-    const learnedTags = rawTags.map(function (t) {
-      const c = C.getCat(t.cat)
-      return {
-        key: t.cat + '|' + t.note,
-        type: t.type,
-        cat: t.cat,
-        note: t.note,
-        displayNote: (t.learned ? '⚡' : '') + t.note,
-        amount: t.amount,
-        amountText: M.fmt(t.amount),
-        emoji: c.emoji,
-        learned: t.learned,
-        custom: false
-      }
-    })
-    // 合计最多 8 个，避免横向溢出
-    const quickTags = custom.concat(learnedTags).slice(0, 8)
 
     // 近 7 天柱状
     const rawDays = store.recentDays(7)
@@ -161,8 +117,6 @@ Page({
         ? '已超 ¥' + M.fmt(Math.abs(bs.left))
         : '每天可花 ¥' + M.fmt(bs.dailyLeft),
       barWidth: Math.min(100, Math.max(bs.pct, 0)),
-      quickTags: quickTags,
-      learnedCount: quickTags.filter(function (t) { return t.learned }).length,
       days: days,
       weekText: M.fmt(M.toYuan(weekCents)),
       weekMaxText: M.fmt(maxAmt),
@@ -172,8 +126,13 @@ Page({
 
   /* ---------------- 跳转 ---------------- */
 
+  /** 「记一笔」：直接弹记账面板（原 navigateTo 跳 tabBar 页会静默失败，故弃用跳页） */
   goAdd() {
-    wx.navigateTo({ url: '/pages/add/add' })
+    this.setData({
+      cqSheet: true,
+      cqCat: 'food', cqNote: '', cqAmount: '',
+      cqList: this.decorateCq(store.getCustomQuick())
+    })
   },
 
   goStats() {
@@ -190,126 +149,9 @@ Page({
     else this.goStats()
   },
 
-  /* ---------------- 快捷记账 ---------------- */
+  /* ---------------- 记一笔弹窗 ---------------- */
 
-  onQuick(e) {
-    const t = this.data.quickTags[e.currentTarget.dataset.i]
-    if (!t) return
-    store.addRecord({ type: t.type, amount: t.amount, cat: t.cat, note: t.note, date: D.today() })
-    // P0：写库失败时不弹成功，避免误导
-    if (!store.lastWriteOk()) {
-      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
-      return
-    }
-    wx.vibrateShort && wx.vibrateShort({ type: 'light', fail() {} })
-    wx.showToast({ title: '记好了 ' + t.emoji + ' ¥' + t.amountText, icon: 'none' })
-    this.refresh()
-  },
-
-  /* ---------------- 自定义金额档位（长按标签进入） ---------------- */
-
-  /** 长按标签：在按压位置下方弹气泡菜单（不直接进表单） */
-  onQuickLong(e) {
-    const idx = Number(e.currentTarget.dataset.i)
-    const t = this.data.quickTags[idx]
-    if (!t) return
-    wx.vibrateShort && wx.vibrateShort({ type: 'light', fail() {} })
-
-    // clientX/clientY 是视口坐标，fixed 定位直接用，无需校正 scroll-left
-    const touch = (e.changedTouches && e.changedTouches[0]) || {}
-    const px = Number(touch.clientX) || 0
-    const py = Number(touch.clientY) || 0
-
-    let winW = 375, winH = 667
-    try {
-      const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
-      winW = info.windowWidth || winW
-      winH = info.windowHeight || winH
-    } catch (err) { /* 用兜底值 */ }
-
-    const isCustom = !!t.custom
-    // 与 .pop-menu 的 width:300rpx 对齐，按实际屏宽换算，避免右缘翻转失准
-    const MENU_W = Math.round(300 * winW / 750) + 2   // rpx→px + 边框余量
-    const MENU_H = (isCustom ? 3 : 2) * 44 + 16
-    const PAD = 8
-
-    let x = px + 6                            // 略右偏，贴合手指
-    let y = py + 12                           // 按压点下方
-    if (x + MENU_W > winW - PAD) x = px - MENU_W - 6   // 右缘不足 → 翻到左侧
-    if (y + MENU_H > winH - PAD) y = py - MENU_H - 12  // 底部不足 → 翻到上方
-    if (x < PAD) x = PAD
-    if (y < PAD) y = PAD
-
-    this.setData({
-      popShow: true, popX: x, popY: y,
-      popIdx: idx, popIsCustom: isCustom
-    })
-  },
-
-  closePop() { this.setData({ popShow: false }) },
   noop() {},   // 拦截冒泡与 touchmove，避免底层 scroll-view 跟着滚
-
-  /** 菜单：改金额 / 自定义金额 → 进大表单 */
-  onPopEdit() {
-    const t = this.data.quickTags[this.data.popIdx]
-    this.closePop()
-    if (!t) return
-    if (t.custom) this._openCqSheet(t.customIndex, null)  // 编辑已有档位
-    else this._openCqSheet(-1, t)                         // 以普通标签为模板新建
-  },
-
-  /** 菜单：删这个档位（仅自定义档位可达） */
-  onPopDelete() {
-    const t = this.data.quickTags[this.data.popIdx]
-    this.closePop()
-    if (!t || !t.custom) return                           // 防御
-    const ci = t.customIndex
-    const list = store.getCustomQuick()
-    if (ci < 0 || ci >= list.length) return
-    const that = this
-    wx.showModal({
-      title: '删掉这个档位？',
-      content: '只删快捷档位，不影响已记的账',
-      confirmText: '删除', confirmColor: '#C42B1C', cancelText: '留着',
-      success(res) {
-        if (!res.confirm) return
-        list.splice(ci, 1)
-        if (!store.saveCustomQuick(list)) {
-          wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
-          return
-        }
-        wx.showToast({ title: '已删除', icon: 'none' })
-        that.refresh()
-      }
-    })
-  },
-
-  /** 菜单：新建一个（始终可用） */
-  onPopNew() {
-    this.closePop()
-    this._openCqSheet(-1, null)
-  },
-
-  /** 统一打开大表单：editIndex>=0 编辑，否则新建；templateTag 提供默认值 */
-  _openCqSheet(editIndex, templateTag) {
-    const list = store.getCustomQuick()
-    let cat = 'food', note = '', amount = ''
-    if (editIndex >= 0) {
-      const it = list[editIndex] || {}
-      cat = it.cat || 'food'
-      note = it.note || ''
-      amount = M.fmt(it.amount || 0)
-    } else if (templateTag) {
-      cat = templateTag.cat || 'food'
-      note = templateTag.note || ''
-      amount = String(templateTag.amount || '')
-    }
-    this.setData({
-      cqSheet: true, cqEditIndex: editIndex,
-      cqCat: cat, cqNote: note, cqAmount: amount,
-      cqList: this.decorateCq(list)
-    })
-  },
 
   /** 给档位渲染层补分类名/emoji/金额文本 */
   decorateCq(list) {
@@ -336,7 +178,7 @@ Page({
     this.setData({ cqAmount: s })
   },
 
-  /** 保存档位：新增或覆盖编辑项，写库失败不提示成功 */
+  /** 面板「保存」＝直接记一笔账（写库失败不提示成功，保留表单重试） */
   saveCq() {
     const amount = M.parse(this.data.cqAmount)
     if (!(amount > 0)) {
@@ -344,16 +186,52 @@ Page({
       return
     }
     const note = String(this.data.cqNote || '').trim() || C.getCat(this.data.cqCat).name
+    store.addRecord({ type: 'expense', amount: amount, cat: this.data.cqCat, note: note, date: D.today() })
+    if (!store.lastWriteOk()) {
+      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+      return
+    }
+    wx.vibrateShort && wx.vibrateShort({ type: 'light', fail() {} })
+    wx.showToast({ title: '记好了 ¥' + M.fmt(amount), icon: 'none' })
+    this.setData({ cqSheet: false })
+    this.refresh()
+  },
+
+  /** 面板「存为常用档位」＝只存模板不记账，列表即时可见、下次一点即记 */
+  keepCq() {
+    const amount = M.parse(this.data.cqAmount)
+    if (!(amount > 0)) {
+      wx.showToast({ title: '金额要大于 0', icon: 'none' })
+      return
+    }
+    const cat = this.data.cqCat
+    const note = String(this.data.cqNote || '').trim() || C.getCat(cat).name
     const list = store.getCustomQuick()
-    const item = { cat: this.data.cqCat, note: note, amount: amount }
-    const idx = this.data.cqEditIndex
-    if (idx >= 0 && idx < list.length) list[idx] = item
-    else list.push(item)
+    // 同分类+同备注视为同一档位，覆盖金额
+    const hit = list.findIndex(function (x) { return x.cat === cat && x.note === note })
+    if (hit >= 0) list[hit].amount = amount
+    else list.push({ cat: cat, note: note, amount: amount })
     if (!store.saveCustomQuick(list)) {
       wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
       return
     }
-    wx.showToast({ title: idx >= 0 ? '已改好' : '已添加', icon: 'success' })
+    wx.showToast({ title: '已存为档位', icon: 'none' })
+    this.setData({ cqList: this.decorateCq(list) })
+  },
+
+  /** 点档位行＝按该档位直接记账 */
+  useCq(e) {
+    const i = Number(e.currentTarget.dataset.i)
+    const it = store.getCustomQuick()[i]
+    if (!it) return
+    store.addRecord({ type: 'expense', amount: it.amount, cat: it.cat, note: it.note, date: D.today() })
+    if (!store.lastWriteOk()) {
+      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+      return
+    }
+    const c = C.getCat(it.cat)
+    wx.vibrateShort && wx.vibrateShort({ type: 'light', fail() {} })
+    wx.showToast({ title: '记好了 ' + c.emoji + ' ¥' + M.fmt(it.amount), icon: 'none' })
     this.setData({ cqSheet: false })
     this.refresh()
   },
@@ -375,7 +253,7 @@ Page({
           wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
           return
         }
-        that.setData({ cqList: that.decorateCq(list), cqEditIndex: -1 })
+        that.setData({ cqList: that.decorateCq(list) })
         that.refresh()
       }
     })

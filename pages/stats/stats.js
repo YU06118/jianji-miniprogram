@@ -264,11 +264,10 @@ Page({
     return out
   },
 
-  /** 打开抽屉：范围 = [最早有记录月, 当前月]，默认定位到当前所选年月的十年页 */
+  /** 打开抽屉：下界放宽到固定 2000 年（无记录的空月也可选，选了显示空账），
+   *  仅禁未来。历史版本把下界收窄到「最早有记录年」，全新用户 9/10 年份点击被静默拦截，形同失灵。 */
   openMonthPicker() {
     const cur = D.parseMonth(D.thisMonth())
-    const keys = store.getMonthKeys().filter(function (k) { return k <= D.thisMonth() })
-    const first = keys.length ? D.parseMonth(keys[keys.length - 1]) : cur
     const sel = D.parseMonth(this.data.ym || D.thisMonth())
     const decade = Math.floor(sel.y / 10) * 10     // 落在所选年份所在十年页
     const maxDecade = Math.floor(cur.y / 10) * 10
@@ -279,7 +278,7 @@ Page({
       decadeStart: decade,
       pickedYear: sel.y,
       pickedMonth: sel.m,
-      minYear: first.y,
+      minYear: 2000,
       maxYear: cur.y,
       maxMonth: cur.y === sel.y ? cur.m : 12,
       canNextDecade: decade < maxDecade
@@ -291,8 +290,7 @@ Page({
 
   prevDecade() {
     const start = this.data.decadeStart - 10
-    // 不允许翻到早于最早记录年的十年页
-    if (start + 9 < this.data.minYear) return
+    if (start < this.data.minYear) return
     this.setData({
       decadeStart: start,
       years: this.buildDecade(start),
@@ -313,7 +311,10 @@ Page({
 
   pickYear(e) {
     const y = Number(e.currentTarget.dataset.y)
-    if (y > this.data.maxYear || y < this.data.minYear) return
+    if (y > this.data.maxYear) {
+      wx.showToast({ title: '还没到这一年', icon: 'none' })
+      return
+    }
     this.setData({
       pickerStep: 'month',
       pickedYear: y,
@@ -325,7 +326,10 @@ Page({
 
   pickMonth(e) {
     const m = Number(e.currentTarget.dataset.m)
-    if (m > this.data.maxMonth) return
+    if (m > this.data.maxMonth) {
+      wx.showToast({ title: '还不能选未来的月份', icon: 'none' })
+      return
+    }
     const ym = this.data.pickedYear + '-' + (m < 10 ? '0' + m : m)
     this.closePicker()
     this.load(ym)   // 一处联动全部统计区块 + 环形图重绘

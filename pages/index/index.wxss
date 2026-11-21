@@ -202,85 +202,36 @@
   flex-shrink: 0;
 }
 
-/* ================= 快捷记账 ================= */
-.quick-scroll {
-  width: 100%;
-  margin-top: var(--sp-4);
-  white-space: nowrap;
-}
-.quick-wrap {
-  display: inline-flex;
-  padding-bottom: 8rpx;
-}
-
+/* ================= 快捷记账：全宽「记一笔」 ================= */
 .q-add {
-  display: inline-flex;
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 168rpx;
-  height: 168rpx;
-  margin-right: var(--sp-4);
+  width: 100%;
+  height: 128rpx;
+  margin-top: var(--sp-4);
   border-radius: var(--r-card);
   border: 1rpx solid var(--pink);
   background: var(--pink-mist);
-  flex-shrink: 0;
+  transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
-.q-add:active {
+.q-add-on, .q-add:active {
   background: var(--pink-soft);
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 .q-add-plus {
-  font-size: 48rpx;
+  font-size: 44rpx;
   font-weight: 300;
   color: var(--pink);
   line-height: 1;
+  margin-right: var(--sp-2);
 }
 .q-add-txt {
-  font-size: var(--fs-footnote);
-  font-weight: 600;
-  color: var(--pink);
-  margin-top: var(--sp-1);
-}
-
-.q-item {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 168rpx;
-  height: 168rpx;
-  padding: 0 var(--sp-3);
-  margin-right: var(--sp-4);
-  border-radius: var(--r-card);
-  background: var(--card);
-  border: 1rpx solid var(--line);
-  box-shadow: var(--sh-card);
-  flex-shrink: 0;
-}
-.q-on {
-  background: var(--pink-soft);
-  transform: scale(0.97);
-}
-.q-ico {
-  width: 48rpx;
-  height: 48rpx;
-  flex-shrink: 0;
-}
-.q-note {
-  font-size: var(--fs-caption);
-  color: var(--ink-2);
-  margin-top: var(--sp-1);
-  max-width: 176rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.q-amt {
-  font-size: var(--fs-footnote);
+  font-size: var(--fs-body-lg);
   font-weight: 700;
   color: var(--pink);
-  margin-top: var(--sp-1);
+  letter-spacing: 2rpx;
 }
 
 .quick-sub {
@@ -432,10 +383,6 @@
 
 
 /* 内容加载：列表项逐个渐显（合成器 opacity，仅在首次挂载时播放一次） */
-.q-item:nth-child(2) { animation: fade-in var(--dur) var(--ease) both; }
-.q-item:nth-child(3) { animation: fade-in var(--dur) var(--ease) .04s both; }
-.q-item:nth-child(4) { animation: fade-in var(--dur) var(--ease) .08s both; }
-.q-item:nth-child(5) { animation: fade-in var(--dur) var(--ease) .12s both; }
 .rec:nth-child(1) { animation: fade-in var(--dur) var(--ease) both; }
 .rec:nth-child(2) { animation: fade-in var(--dur) var(--ease) .04s both; }
 .rec:nth-child(3) { animation: fade-in var(--dur) var(--ease) .08s both; }
@@ -489,45 +436,14 @@
 .sheet-body { overflow-y: auto; flex: 1; }
 .sheet-safe { height: constant(safe-area-inset-bottom); height: env(safe-area-inset-bottom); flex-shrink: 0; }
 
-
-/* ================= 长按气泡菜单（按压位置下方） ================= */
-.pop-mask {
-  position: fixed;
-  left: 0; right: 0; top: 0; bottom: 0;
-  z-index: 96;
-  background: transparent;   /* 仅承接点击与挡滚动，不暗化底层 */
+/* 记一笔面板新增部件 */
+.cq-row-on { background: var(--pink-soft); }
+.cq-keep {
+  margin-top: var(--sp-3);
+  padding: 20rpx 0;
+  text-align: center;
+  font-size: var(--fs-footnote);
+  color: var(--ink-2);
+  border-top: 1rpx dashed var(--line);
 }
-.pop-menu {
-  position: fixed;
-  z-index: 97;
-  /* 文字横向平铺：菜单需容纳最长文案「自定义金额/删这个档位」(5×32rpx=160rpx)
-     + 左右 padding(64rpx) + 图标(56rpx) = 280rpx，取 300rpx 留余量。
-     文字区 flex:1 保留自动换行能力，正常单行显示，长文案才折行，不再一字一行。 */
-  width: 300rpx;
-  padding: 8rpx 0;
-  background: var(--card);
-  border: 1rpx solid var(--line);
-  border-radius: var(--r-card);
-  box-shadow: var(--sh-raised);
-  overflow: hidden;
-  transform-origin: top center;
-}
-.pop-item {
-  display: flex;
-  align-items: center;
-  min-height: 88rpx;
-  padding: 0 var(--sp-4);
-  font-size: var(--fs-body);
-  color: var(--ink);
-}
-.pop-item:active { background: var(--pink-soft); }
-.pop-item + .pop-item { border-top: 1rpx solid var(--line); }
-.pop-ico {
-  width: 56rpx;
-  font-size: 32rpx;
-  color: var(--pink);
-  flex-shrink: 0;
-}
-.pop-txt { flex: 1; min-width: 0; }
-.pop-danger .pop-ico, .pop-danger .pop-txt { color: var(--danger); }
-.pop-danger:active { background: var(--danger-soft); }
+.cq-keep:active { opacity: .6; }

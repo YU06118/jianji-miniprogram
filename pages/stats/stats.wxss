@@ -383,7 +383,7 @@
   color: var(--on-accent);
   box-shadow: var(--sh-pop);
 }
-.py-cell.off { color: var(--ink-3); background: transparent; border: 1rpx solid var(--line); }
+.py-cell.off { color: var(--ink-3); background: transparent; border: 1rpx solid var(--line); opacity: .45; }
 .py-tip {
   font-size: var(--fs-caption);
   color: var(--ink-3);
