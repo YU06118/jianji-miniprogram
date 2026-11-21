@@ -293,7 +293,8 @@
 .stat-row {
   display: flex;
   align-items: center;
-  margin-top: var(--sp-4);
+  /* 上下都留白：与上方快捷区、下方「最近 7 天」卡片分离，避免两窗相连 */
+  margin: var(--sp-4) 0;
   padding: var(--sp-4) 0;
   background: var(--card);
   border-radius: var(--r-card);
