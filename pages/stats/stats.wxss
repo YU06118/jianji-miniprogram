@@ -175,7 +175,7 @@
   height: 100%;
   border-radius: 7rpx;
   min-width: 8rpx;
-  transition: width 0.45s cubic-bezier(0.25, 0.8, 0.3, 1);
+  transition: width var(--dur) var(--ease);
 }
 
 .rk-detail {
@@ -298,7 +298,7 @@
   width: 40rpx;
   min-height: 8rpx;
   border-radius: 14rpx;
-  transition: height 0.45s ease;
+  transition: height var(--dur) var(--ease);
 }
 .tr-x {
   font-size: 21rpx;

@@ -481,11 +481,15 @@ function recentMonths(n, endYm) {
 function recentDays(n) {
   const out = []
   const base = Date.now()
+  // 性能：n 天最多跨 2 个月，但原实现逐日 getStorageSync（n 次同步读）。
+  // 这里按月份去重，同一月份只读盘一次，其余日期在内存里过滤。
+  const monthCache = {}
   for (let i = n - 1; i >= 0; i--) {
     const d = new Date(base - i * 86400000)
     const ds = D.toDateStr(d)
     const ym = ds.slice(0, 7)
-    const list = getRecords(ym).filter(function (r) { return r.type === 'expense' && r.date === ds })
+    if (!Object.prototype.hasOwnProperty.call(monthCache, ym)) monthCache[ym] = getRecords(ym)
+    const list = monthCache[ym].filter(function (r) { return r.type === 'expense' && r.date === ds })
     const cents = list.reduce(function (s, r) { return s + M.toCents(r.amount) }, 0)
     out.push({ date: ds, label: ds.slice(8, 10), amount: M.toYuan(cents) })
   }

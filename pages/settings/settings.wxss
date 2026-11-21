@@ -24,7 +24,7 @@
   font-size: 26rpx;
   color: var(--ink-2);
   border-radius: 6rpx;
-  transition: all .2s var(--ease);
+  transition: background-color .2s var(--ease), color .2s var(--ease);
 }
 .seg-a.on {
   background: var(--accent-solid);

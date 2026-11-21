@@ -4,7 +4,8 @@ const store = require('./utils/store.js')
 App({
   globalData: {
     needRefresh: false,
-    systemTheme: 'light'
+    systemTheme: 'light',
+    lowEnd: false   // 低端设备降级：关流光/毛玻璃，见 applyPerfClass
   },
 
   onLaunch() {
@@ -27,8 +28,14 @@ App({
     meta.lastOpen = Date.now()
     store.saveMeta(meta)
 
-    // 记录系统主题（跟随系统档需要）
-    try { this.globalData.systemTheme = wx.getSystemInfoSync().theme || 'light' } catch (e) { }
+    // 记录系统主题 + 设备性能分档（复用同一次 getSystemInfoSync，不额外增同步开销）
+    try {
+      const info = wx.getSystemInfoSync()
+      this.globalData.systemTheme = info.theme || 'light'
+      // benchmarkLevel：仅 Android 提供（0~+，越高越强；-1=未知）。低端关重特效保流畅。
+      const bl = info.benchmarkLevel
+      this.globalData.lowEnd = (typeof bl === 'number' && bl >= 0 && bl <= 1)
+    } catch (e) { }
 
     // 跟随系统时监听系统主题变化 → 单向驱动页面与原生栏刷新
     if (wx.onThemeChange) {

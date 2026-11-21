@@ -384,3 +384,11 @@
   margin-top: 18rpx;
   padding-bottom: 30rpx;
 }
+
+
+/* 低端设备降级：关毛玻璃，保留实底与阴影 */
+.low-end .sheet {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: var(--card) !important;
+}

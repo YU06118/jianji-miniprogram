@@ -1,4 +1,4 @@
-<view class="page {{theme}} {{modeClass}}">
+<view class="page {{theme}} {{modeClass}} {{perf}}">
 
   <view class="aurora" aria-hidden="true">
     <view class="aurora-blob aurora-b1"></view>
@@ -6,7 +6,7 @@
   </view>
 
   <!-- ============ 概览 ============ -->
-  <view class="head-card">
+  <view class="head-card page-enter">
     <view class="hc-mask"></view>
     <text class="hc-t">简记</text>
     <text class="hc-s">{{stats.months ? '已经记了 ' + stats.records + ' 笔，坚持了 ' + stats.months + ' 个月' : '还没有开始记录'}}</text>

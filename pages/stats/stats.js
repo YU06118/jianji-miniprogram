@@ -268,6 +268,10 @@ Page({
     const m = store.modeClass()
     if (t !== this.data.theme) patch.theme = t
     if (m !== this.data.modeClass) patch.modeClass = m
+    // 低端设备降级：关流光/毛玻璃，保首屏与滚动流畅
+    const app = getApp()
+    const perf = app && app.globalData && app.globalData.lowEnd ? ' low-end' : ''
+    if (perf !== (this.data.perf || '')) patch.perf = perf
     if (Object.keys(patch).length) {
       this.setData(patch)
       // P0：暗/浅切换后 canvas 需重绘，否则中心金额仍是旧色

@@ -1,4 +1,4 @@
-<view class="page {{theme}} {{modeClass}}">
+<view class="page {{theme}} {{modeClass}} {{perf}}">
 
   <view class="aurora" aria-hidden="true">
     <view class="aurora-blob aurora-b1"></view>

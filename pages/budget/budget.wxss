@@ -176,3 +176,11 @@
   flex: 0 0 210rpx !important;
   margin-left: 20rpx;
 }
+
+
+/* 低端设备降级：关毛玻璃，保留实底与阴影 */
+.low-end .save-bar {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: var(--card) !important;
+}

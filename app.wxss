@@ -59,7 +59,7 @@ page {
   --ease: cubic-bezier(.16, 1, .3, 1);
   --ease-standard: cubic-bezier(.25, .1, .25, 1);
   --dur: 280ms;
-  --bounce: cubic-bezier(.16, 1, .3, 1);
+  --bounce: cubic-bezier(.2, 1.3, .4, 1);   /* 轻量回弹，仅用于短暂按压 */
   --on-accent: #FFFFFF;
   /* ---------- 液态玻璃 ---------- */
   --glass: rgba(255, 255, 255, .72);        /* 浮层半透明底（card 白） */
@@ -283,8 +283,8 @@ view, text, input, textarea, scroll-view, button {
   margin-bottom: var(--sp-4);
   border: 1rpx solid var(--line);
 }
-.card-tap { transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
-.card-tap.tap-on { transform: translateY(-4rpx); box-shadow: var(--sh-raised); }
+.card-tap { transition: transform var(--dur) var(--ease); }
+.card-tap:active { transform: scale(.98); }
 .card-title { font-size: var(--fs-headline); font-weight: 700; letter-spacing: -1rpx; color: var(--ink); margin-bottom: var(--sp-2); }
 .card-sub { font-size: var(--fs-footnote); color: var(--ink-3); }
 
@@ -313,15 +313,15 @@ view, text, input, textarea, scroll-view, button {
   border-radius: var(--r-ctrl);
   font-size: var(--fs-body);
   font-weight: 600;
-  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
 }
-.btn.tap-on { transform: translateY(-2rpx); opacity: .9; }
+.btn:active { transform: scale(.97); opacity: .9; }
 .btn-primary {
   background: var(--accent-solid);
   color: var(--on-accent);
   box-shadow: var(--sh-pop);
 }
-.btn-primary.tap-on { background: var(--pink-deep); box-shadow: none; }
+.btn-primary:active { opacity: .85; }
 .btn-ghost { background: var(--pink-soft); color: var(--pink-deep); }
 .btn-plain { background: var(--bg-2); color: var(--ink-2); }
 .btn-sm { height: 72rpx; border-radius: var(--r-ctrl); font-size: var(--fs-footnote); padding: 0 var(--sp-4); }
@@ -344,7 +344,7 @@ view, text, input, textarea, scroll-view, button {
   font-size: var(--fs-footnote);
   color: var(--ink-2);
   border-radius: var(--r-ctrl);
-  transition: all var(--dur) var(--ease);
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 .seg-item.on {
   background: var(--card);
@@ -376,6 +376,8 @@ view, text, input, textarea, scroll-view, button {
   height: 100%;
   border-radius: var(--r-full);
   background: var(--on-accent);
+  /* 进度条为一次性过渡（非持续动画），width 过渡开销可忽略；
+     若改 scaleX 会压缩胶囊圆角造成变形，故保留 width */
   transition: width var(--dur) var(--ease);
 }
 .bar-fill.ok { background: var(--mint); }
@@ -387,7 +389,7 @@ view, text, input, textarea, scroll-view, button {
 .hr { height: 2rpx; background: var(--line); margin: 24rpx 0; }
 
 /* ---------- 空状态 ---------- */
-.empty { padding: 100rpx 40rpx; text-align: center; color: var(--ink-3); }
+.empty { padding: 100rpx 40rpx; text-align: center; color: var(--ink-3); animation: rise var(--dur) var(--ease) both; }
 .empty-emoji { width: 112rpx; height: 112rpx; margin: 0 auto 24rpx; display: block; opacity: .7; }
 .empty-txt { font-size: 27rpx; line-height: 1.7; }
 
@@ -407,10 +409,10 @@ view, text, input, textarea, scroll-view, button {
   min-height: 112rpx;
   padding: 0 var(--sp-4);
   border-bottom: 1rpx solid var(--line);
-  transition: background var(--dur) var(--ease);
+  transition: background-color var(--dur) var(--ease);
 }
 .list-row:last-child { border-bottom: none; }
-.list-row.tap-on { background: var(--bg-2); }
+.list-row:active { background: var(--bg-2); }
 .list-row-label { flex: 1; font-size: 29rpx; }
 .list-row-value { font-size: 27rpx; color: var(--ink-3); }
 .chev { color: var(--ink-3); font-size: 30rpx; margin-left: 10rpx; }
@@ -440,7 +442,7 @@ view, text, input, textarea, scroll-view, button {
 .cell:last-child, .cell.no-tap { border-bottom: none; }
 .cell.no-tap { padding-bottom: var(--sp-2); }
 .cell-on { background: var(--pink-soft); }
-.cell.tap-on { background: var(--bg-2); }
+.cell:active { background: var(--bg-2); }
 .c-ico { width: 64rpx; font-size: 36rpx; flex-shrink: 0; }
 .c-t { font-size: var(--fs-body); color: var(--ink); font-weight: 600; }
 .c-sub { font-size: var(--fs-caption); color: var(--ink-3); margin-top: 4rpx; }
@@ -467,7 +469,7 @@ view, text, input, textarea, scroll-view, button {
   background: rgba(0, 0, 0, .4);
   z-index: 90;
   opacity: 0;
-  transition: opacity .2s var(--ease);
+  transition: opacity var(--dur) var(--ease);
 }
 .sheet-mask.show { opacity: 1; }
 .sheet {
@@ -542,10 +544,48 @@ view, text, input, textarea, scroll-view, button {
 .rise-2 { animation: rise var(--dur) var(--ease) .04s both; }
 .rise-3 { animation: rise var(--dur) var(--ease) .08s both; }
 
+/* 页面转场：整页内容轻微淡入 + 右侧滑入（合成器 transform/opacity，不触发重排） */
+@keyframes page-enter {
+  from { opacity: 0; transform: translate3d(0, 12rpx, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.page-enter { animation: page-enter 320ms var(--ease) both; }
+
+/* 内容加载：列表项逐个渐显（animation-fill-mode: both 避免闪烁） */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.fade-in { animation: fade-in var(--dur) var(--ease) both; }
+.fade-in-2 { animation: fade-in var(--dur) var(--ease) .06s both; }
+.fade-in-3 { animation: fade-in var(--dur) var(--ease) .12s both; }
+
+/* 数据变化提示：数字滚动前的轻微缩放（合成器） */
+@keyframes pop-in {
+  0%   { opacity: 0; transform: scale(.92); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pop-in { animation: pop-in var(--dur) var(--bounce) both; }
+
 /* 尊重系统「减弱动态效果」设置 */
 @media (prefers-reduced-motion: reduce) {
-  .rise, .rise-2, .rise-3, .bar-fill, .btn, .card-tap, .sheet, .sheet-mask { animation: none !important; transition: none !important; }
+  .rise, .rise-2, .rise-3, .page-enter, .fade-in, .fade-in-2, .fade-in-3, .pop-in, .empty,
+  .q-item, .rec, .bar-fill, .bar-col-fill, .rk-fill, .tr-fill, .btn, .card-tap, .seg-item,
+  .list-row, .cell, .sheet, .sheet-mask, .type-seg-i, .cat, .seg-a, .th-item {
+    animation: none !important;
+    transition: none !important;
+  }
   .aurora { display: none; }
+}
+
+/* ---------- 低端设备降级（app.js 按 benchmarkLevel 置 .low-end） ----------
+ * 关闭最重的两类特效：流光合成层 + 毛玻璃 backdrop-filter。
+ * 静态渐变、卡片、高光伪元素全部保留 —— 观感不降级，只去掉持续开销。 */
+.low-end .aurora { display: none !important; }
+.low-end.sheet, .low-end .sheet {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: var(--card) !important;
 }
 
 /* ---------- 流光背景（纯装饰层；禁改暗紫渐变硬约束，叠加在其上） ---------- */

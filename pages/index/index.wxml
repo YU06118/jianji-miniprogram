@@ -1,4 +1,4 @@
-<view class="page {{theme}} {{modeClass}}">
+<view class="page {{theme}} {{modeClass}} {{perf}}">
 
   <view class="aurora" aria-hidden="true">
     <view class="aurora-blob aurora-b1"></view>
@@ -6,7 +6,7 @@
   </view>
 
   <!-- ================= 顶部：本月还能花多少 ================= -->
-  <view class="hero tone-{{bs.tone}}">
+  <view class="hero page-enter tone-{{bs.tone}}">
     <view class="hero-mask1"></view>
     <view class="hero-mask2"></view>
 
@@ -65,7 +65,7 @@
 
   <!-- ================= 预警提示条 ================= -->
   <view class="wrap">
-    <view class="alert tone-{{bs.tone}}" bindtap="onAlertTap">
+    <view class="alert rise-2 tone-{{bs.tone}}" bindtap="onAlertTap">
       <view class="alert-badge">{{bs.tone === 'ok' ? '👍' : (bs.tone === 'over' ? '🛑' : '⚠️')}}</view>
       <view class="alert-body">
         <view class="alert-title">{{bs.advice.title}}</view>
