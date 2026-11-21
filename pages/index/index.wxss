@@ -500,7 +500,10 @@
 .pop-menu {
   position: fixed;
   z-index: 97;
-  width: 200rpx;
+  /* 文字横向平铺：菜单需容纳最长文案「自定义金额/删这个档位」(5×32rpx=160rpx)
+     + 左右 padding(64rpx) + 图标(56rpx) = 280rpx，取 300rpx 留余量。
+     文字区 flex:1 保留自动换行能力，正常单行显示，长文案才折行，不再一字一行。 */
+  width: 300rpx;
   padding: 8rpx 0;
   background: var(--card);
   border: 1rpx solid var(--line);

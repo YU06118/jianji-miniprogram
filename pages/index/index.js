@@ -228,7 +228,8 @@ Page({
     } catch (err) { /* 用兜底值 */ }
 
     const isCustom = !!t.custom
-    const MENU_W = 110                        // 200rpx ≈ 100px，留余量
+    // 与 .pop-menu 的 width:300rpx 对齐，按实际屏宽换算，避免右缘翻转失准
+    const MENU_W = Math.round(300 * winW / 750) + 2   // rpx→px + 边框余量
     const MENU_H = (isCustom ? 3 : 2) * 44 + 16
     const PAD = 8
 
