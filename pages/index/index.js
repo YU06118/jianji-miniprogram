@@ -1,5 +1,6 @@
 // pages/index/index.js —— 首页：一眼看清「这个月还能花多少」
 const store = require('../../utils/store.js')
+const T = require('../../utils/transition.js')
 const M = require('../../utils/money.js')
 const D = require('../../utils/date.js')
 const C = require('../../utils/categories.js')
@@ -28,6 +29,7 @@ Page({
   },
 
   onShow() {
+    T.playEnter(this)  // 页面转场：内容淡入（配合系统右滑/tab切换）
     this.applyAppearance()
     this.refresh()
   },

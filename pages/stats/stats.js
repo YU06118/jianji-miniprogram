@@ -1,5 +1,6 @@
 // pages/stats/stats.js —— 钱去哪了
 const store = require('../../utils/store.js')
+const T = require('../../utils/transition.js')
 const M = require('../../utils/money.js')
 const D = require('../../utils/date.js')
 const C = require('../../utils/categories.js')
@@ -34,6 +35,7 @@ Page({
   },
 
   onShow() {
+    T.playEnter(this)  // 页面转场：内容淡入（配合系统右滑/tab切换）
     this.applyAppearance()
     // 从记账页返回时重新聚合
     if (this.data.ym) this.load(this.data.ym)

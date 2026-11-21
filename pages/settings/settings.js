@@ -1,5 +1,6 @@
 // pages/settings/settings.js —— 统一设置（外观 / 记账 / 数据工具 / 关于）
 const store = require('../../utils/store.js')
+const T = require('../../utils/transition.js')
 const M = require('../../utils/money.js')
 
 Page({
@@ -15,6 +16,7 @@ Page({
   },
 
   onShow() {
+    T.playEnter(this)  // 页面转场：内容淡入（配合系统右滑/tab切换）
     store.initIfEmpty()
     this.applyAppearance()
     this.load()

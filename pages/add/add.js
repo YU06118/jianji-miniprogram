@@ -1,6 +1,7 @@
 // pages/add/add.js —— 记账页
 // 设计目标：打开即可输金额 → 分类已自动猜好 → 完成。全程 3 秒以内。
 const store = require('../../utils/store.js')
+const T = require('../../utils/transition.js')
 const M = require('../../utils/money.js')
 const D = require('../../utils/date.js')
 const C = require('../../utils/categories.js')
@@ -51,6 +52,7 @@ Page({
   },
 
   onShow() {
+    T.playEnter(this)  // 页面转场：内容淡入（配合系统右滑/tab切换）
     this.applyAppearance()
   },
 

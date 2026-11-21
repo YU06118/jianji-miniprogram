@@ -1,5 +1,6 @@
 // pages/goal/goal.js —— 攒钱目标
 const store = require('../../utils/store.js')
+const T = require('../../utils/transition.js')
 const M = require('../../utils/money.js')
 const D = require('../../utils/date.js')
 
@@ -26,6 +27,7 @@ Page({
   },
 
   onShow() {
+    T.playEnter(this)  // 页面转场：内容淡入（配合系统右滑/tab切换）
     store.initIfEmpty()
     this.applyAppearance()
     this.load()

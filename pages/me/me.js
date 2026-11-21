@@ -1,5 +1,6 @@
 // pages/me/me.js —— 我的（概览 + 设置入口）
 const store = require('../../utils/store.js')
+const T = require('../../utils/transition.js')
 const M = require('../../utils/money.js')
 
 Page({
@@ -11,6 +12,7 @@ Page({
   },
 
   onShow() {
+    T.playEnter(this)  // 页面转场：内容淡入（配合系统右滑/tab切换）
     store.initIfEmpty()
     this.applyAppearance()
     this.load()
