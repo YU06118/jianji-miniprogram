@@ -1,5 +1,10 @@
 <view class="page {{theme}} {{modeClass}}">
 
+  <view class="aurora" aria-hidden="true">
+    <view class="aurora-blob aurora-b1"></view>
+    <view class="aurora-blob aurora-b2"></view>
+  </view>
+
   <!-- ============ 月份切换 ============ -->
   <view class="month-bar">
     <view class="mb-btn" hover-class="mb-on" bindtap="prevMonth">‹</view>

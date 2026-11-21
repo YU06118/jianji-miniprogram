@@ -1,4 +1,8 @@
 <view class="add-page {{theme}} {{modeClass}}">
+  <view class="aurora" aria-hidden="true">
+    <view class="aurora-blob aurora-b1"></view>
+    <view class="aurora-blob aurora-b2"></view>
+  </view>
 
   <!-- ========== 顶部输入区 ========== -->
   <view class="head">

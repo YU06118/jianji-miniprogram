@@ -545,4 +545,43 @@ view, text, input, textarea, scroll-view, button {
 /* 尊重系统「减弱动态效果」设置 */
 @media (prefers-reduced-motion: reduce) {
   .rise, .rise-2, .rise-3, .bar-fill, .btn, .card-tap, .sheet, .sheet-mask { animation: none !important; transition: none !important; }
+  .aurora { display: none; }
+}
+
+/* ---------- 流光背景（纯装饰层；禁改暗紫渐变硬约束，叠加在其上） ---------- */
+.page, .add-page { position: relative; z-index: 0; }  /* 建立层叠上下文，aurora(-1) 垫底 */
+.aurora {
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.aurora-blob {
+  position: absolute;
+  width: 640rpx;
+  height: 640rpx;
+  border-radius: 50%;
+  will-change: transform;
+}
+.aurora-b1 {
+  top: -160rpx; left: -180rpx;
+  background: radial-gradient(closest-side, rgba(179, 154, 255, .07), rgba(179, 154, 255, 0));
+  animation: drift-a 26s ease-in-out infinite alternate;
+}
+.aurora-b2 {
+  bottom: -200rpx; right: -160rpx;
+  background: radial-gradient(closest-side, rgba(122, 162, 255, .06), rgba(122, 162, 255, 0));
+  animation: drift-b 22s ease-in-out infinite alternate;
+}
+/* 浅色档：淡紫/淡蓝，透明度更低，保持克制 */
+.mode-light .aurora-b1 { background: radial-gradient(closest-side, rgba(107, 78, 255, .05), rgba(107, 78, 255, 0)); }
+.mode-light .aurora-b2 { background: radial-gradient(closest-side, rgba(0, 120, 212, .04), rgba(0, 120, 212, 0)); }
+@keyframes drift-a {
+  from { transform: translate3d(0, 0, 0); opacity: .8; }
+  to   { transform: translate3d(90rpx, 60rpx, 0); opacity: 1; }
+}
+@keyframes drift-b {
+  from { transform: translate3d(0, 0, 0); opacity: 1; }
+  to   { transform: translate3d(-80rpx, -50rpx, 0); opacity: .7; }
 }

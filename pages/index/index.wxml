@@ -1,5 +1,10 @@
 <view class="page {{theme}} {{modeClass}}">
 
+  <view class="aurora" aria-hidden="true">
+    <view class="aurora-blob aurora-b1"></view>
+    <view class="aurora-blob aurora-b2"></view>
+  </view>
+
   <!-- ================= 顶部：本月还能花多少 ================= -->
   <view class="hero tone-{{bs.tone}}">
     <view class="hero-mask1"></view>
