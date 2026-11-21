@@ -497,6 +497,20 @@ view, text, input, textarea, scroll-view, button {
   margin: 0 auto 24rpx;
 }
 
+/* 底部弹层通用头部：取消 / 标题 / 保存（goal 与 index 共用）
+ * 历史事故：index 页曾因缺这段样式导致头部三件套挤成一行、「保存」淹没。 */
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 32rpx 22rpx;
+  border-bottom: 1rpx solid var(--line);
+  flex-shrink: 0;
+}
+.sh-cancel { font-size: 28rpx; color: var(--ink-3); }
+.sh-title  { font-size: 30rpx; font-weight: 700; color: var(--ink); }
+.sh-ok     { font-size: 28rpx; font-weight: 700; color: var(--pink); }
+
 /* ---------- 头像 / 贴纸 ---------- */
 .avatar {
   width: 88rpx;

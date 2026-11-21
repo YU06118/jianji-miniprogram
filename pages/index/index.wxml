@@ -83,10 +83,6 @@
           <text class="q-add-plus">＋</text>
           <text class="q-add-txt">记一笔</text>
         </view>
-        <view class="q-custom" bindtap="openCqNew" hover-class="q-on" hover-stay-time="60">
-          <text class="q-custom-plus">✎</text>
-          <text class="q-add-txt">自定义</text>
-        </view>
         <view class="q-item" wx:for="{{quickTags}}" wx:key="key"
               hover-class="q-on" hover-stay-time="60"
               data-i="{{index}}" bindtap="onQuick" bindlongpress="onQuickLong">
@@ -222,6 +218,24 @@
       </view>
     </view>
     <view class="sheet-safe"></view>
+  </view>
+
+  <!-- ============ 长按标签的气泡菜单（按压位置下方） ============ -->
+  <view class="pop-mask" wx:if="{{popShow}}" bindtap="closePop" catchtouchmove="noop"></view>
+  <view class="pop-menu pop-in" wx:if="{{popShow}}"
+        style="left:{{popX}}px;top:{{popY}}px" catchtap="noop">
+    <view class="pop-item" bindtap="onPopEdit">
+      <text class="pop-ico">✎</text>
+      <text class="pop-txt">{{popIsCustom ? '改金额' : '自定义金额'}}</text>
+    </view>
+    <view class="pop-item pop-danger" wx:if="{{popIsCustom}}" bindtap="onPopDelete">
+      <text class="pop-ico">✕</text>
+      <text class="pop-txt">删这个档位</text>
+    </view>
+    <view class="pop-item" bindtap="onPopNew">
+      <text class="pop-ico">＋</text>
+      <text class="pop-txt">新建一个</text>
+    </view>
   </view>
 
 </view>

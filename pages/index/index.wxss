@@ -432,10 +432,10 @@
 
 
 /* 内容加载：列表项逐个渐显（合成器 opacity，仅在首次挂载时播放一次） */
-.q-item:nth-child(1) { animation: fade-in var(--dur) var(--ease) both; }
-.q-item:nth-child(2) { animation: fade-in var(--dur) var(--ease) .04s both; }
-.q-item:nth-child(3) { animation: fade-in var(--dur) var(--ease) .08s both; }
-.q-item:nth-child(4) { animation: fade-in var(--dur) var(--ease) .12s both; }
+.q-item:nth-child(2) { animation: fade-in var(--dur) var(--ease) both; }
+.q-item:nth-child(3) { animation: fade-in var(--dur) var(--ease) .04s both; }
+.q-item:nth-child(4) { animation: fade-in var(--dur) var(--ease) .08s both; }
+.q-item:nth-child(5) { animation: fade-in var(--dur) var(--ease) .12s both; }
 .rec:nth-child(1) { animation: fade-in var(--dur) var(--ease) both; }
 .rec:nth-child(2) { animation: fade-in var(--dur) var(--ease) .04s both; }
 .rec:nth-child(3) { animation: fade-in var(--dur) var(--ease) .08s both; }
@@ -445,22 +445,6 @@
 
 
 /* ================= 自定义金额档位 ================= */
-.q-custom {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 168rpx;
-  height: 168rpx;
-  margin-right: var(--sp-4);
-  border-radius: var(--r-card);
-  border: 1rpx dashed var(--ink-3);
-  background: var(--bg-2);
-  flex-shrink: 0;
-}
-.q-custom-plus { font-size: 44rpx; color: var(--ink-2); line-height: 1; }
-.q-custom .q-add-txt { color: var(--ink-2); }
-
 /* 页面级 sheet：保留全局 transform+show 开关，仅补 flex 布局与内部件 */
 .sheet {
   max-height: 86vh;
@@ -471,7 +455,6 @@
 .cq-head {
   padding: 8rpx 0 22rpx;
   border-bottom: 1rpx solid var(--line);
-  flex-shrink: 0;
 }
 .cq-tip { font-size: 24rpx; color: var(--ink-3); line-height: 1.5; padding: 16rpx 0 8rpx; }
 .cq-cats { display: flex; flex-wrap: wrap; gap: 12rpx; padding: 12rpx 0 20rpx; }
@@ -505,3 +488,43 @@
 .cq-row-del { font-size: 30rpx; color: var(--danger); width: 72rpx; text-align: center; flex-shrink: 0; }
 .sheet-body { overflow-y: auto; flex: 1; }
 .sheet-safe { height: constant(safe-area-inset-bottom); height: env(safe-area-inset-bottom); flex-shrink: 0; }
+
+
+/* ================= 长按气泡菜单（按压位置下方） ================= */
+.pop-mask {
+  position: fixed;
+  left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 96;
+  background: transparent;   /* 仅承接点击与挡滚动，不暗化底层 */
+}
+.pop-menu {
+  position: fixed;
+  z-index: 97;
+  width: 200rpx;
+  padding: 8rpx 0;
+  background: var(--card);
+  border: 1rpx solid var(--line);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-raised);
+  overflow: hidden;
+  transform-origin: top center;
+}
+.pop-item {
+  display: flex;
+  align-items: center;
+  min-height: 88rpx;
+  padding: 0 var(--sp-4);
+  font-size: var(--fs-body);
+  color: var(--ink);
+}
+.pop-item:active { background: var(--pink-soft); }
+.pop-item + .pop-item { border-top: 1rpx solid var(--line); }
+.pop-ico {
+  width: 56rpx;
+  font-size: 32rpx;
+  color: var(--pink);
+  flex-shrink: 0;
+}
+.pop-txt { flex: 1; min-width: 0; }
+.pop-danger .pop-ico, .pop-danger .pop-txt { color: var(--danger); }
+.pop-danger:active { background: var(--danger-soft); }

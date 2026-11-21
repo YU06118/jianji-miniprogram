@@ -33,7 +33,12 @@ Page({
     cqCat: 'food',
     cqNote: '',
     cqAmount: '',
-    cqList: []
+    cqList: [],
+    // 长按气泡菜单
+    popShow: false,
+    popX: 0, popY: 0,          // 视口坐标(px)，fixed 直接定位
+    popIdx: -1,                // 当前操作的 quickTags 下标
+    popIsCustom: false         // 是否自定义档位（决定菜单项）
   },
 
   onShow() {
@@ -203,25 +208,106 @@ Page({
 
   /* ---------------- 自定义金额档位（长按标签进入） ---------------- */
 
-  /** 长按标签：自定义档位进入编辑，其余标签以其为模板新建 */
+  /** 长按标签：在按压位置下方弹气泡菜单（不直接进表单） */
   onQuickLong(e) {
-    const t = this.data.quickTags[e.currentTarget.dataset.i]
+    const idx = Number(e.currentTarget.dataset.i)
+    const t = this.data.quickTags[idx]
     if (!t) return
+    wx.vibrateShort && wx.vibrateShort({ type: 'light', fail() {} })
+
+    // clientX/clientY 是视口坐标，fixed 定位直接用，无需校正 scroll-left
+    const touch = (e.changedTouches && e.changedTouches[0]) || {}
+    const px = Number(touch.clientX) || 0
+    const py = Number(touch.clientY) || 0
+
+    let winW = 375, winH = 667
+    try {
+      const info = wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync()
+      winW = info.windowWidth || winW
+      winH = info.windowHeight || winH
+    } catch (err) { /* 用兜底值 */ }
+
+    const isCustom = !!t.custom
+    const MENU_W = 110                        // 200rpx ≈ 100px，留余量
+    const MENU_H = (isCustom ? 3 : 2) * 44 + 16
+    const PAD = 8
+
+    let x = px + 6                            // 略右偏，贴合手指
+    let y = py + 12                           // 按压点下方
+    if (x + MENU_W > winW - PAD) x = px - MENU_W - 6   // 右缘不足 → 翻到左侧
+    if (y + MENU_H > winH - PAD) y = py - MENU_H - 12  // 底部不足 → 翻到上方
+    if (x < PAD) x = PAD
+    if (y < PAD) y = PAD
+
+    this.setData({
+      popShow: true, popX: x, popY: y,
+      popIdx: idx, popIsCustom: isCustom
+    })
+  },
+
+  closePop() { this.setData({ popShow: false }) },
+  noop() {},   // 拦截冒泡与 touchmove，避免底层 scroll-view 跟着滚
+
+  /** 菜单：改金额 / 自定义金额 → 进大表单 */
+  onPopEdit() {
+    const t = this.data.quickTags[this.data.popIdx]
+    this.closePop()
+    if (!t) return
+    if (t.custom) this._openCqSheet(t.customIndex, null)  // 编辑已有档位
+    else this._openCqSheet(-1, t)                         // 以普通标签为模板新建
+  },
+
+  /** 菜单：删这个档位（仅自定义档位可达） */
+  onPopDelete() {
+    const t = this.data.quickTags[this.data.popIdx]
+    this.closePop()
+    if (!t || !t.custom) return                           // 防御
+    const ci = t.customIndex
     const list = store.getCustomQuick()
-    if (t.custom) {
-      const it = list[t.customIndex] || {}
-      this.setData({
-        cqSheet: true, cqEditIndex: t.customIndex,
-        cqCat: it.cat || 'food', cqNote: it.note || '', cqAmount: M.fmt(it.amount || 0),
-        cqList: this.decorateCq(list)
-      })
-    } else {
-      this.setData({
-        cqSheet: true, cqEditIndex: -1,
-        cqCat: t.cat, cqNote: t.note || '', cqAmount: String(t.amount || ''),
-        cqList: this.decorateCq(list)
-      })
+    if (ci < 0 || ci >= list.length) return
+    const that = this
+    wx.showModal({
+      title: '删掉这个档位？',
+      content: '只删快捷档位，不影响已记的账',
+      confirmText: '删除', confirmColor: '#C42B1C', cancelText: '留着',
+      success(res) {
+        if (!res.confirm) return
+        list.splice(ci, 1)
+        if (!store.saveCustomQuick(list)) {
+          wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+          return
+        }
+        wx.showToast({ title: '已删除', icon: 'none' })
+        that.refresh()
+      }
+    })
+  },
+
+  /** 菜单：新建一个（始终可用） */
+  onPopNew() {
+    this.closePop()
+    this._openCqSheet(-1, null)
+  },
+
+  /** 统一打开大表单：editIndex>=0 编辑，否则新建；templateTag 提供默认值 */
+  _openCqSheet(editIndex, templateTag) {
+    const list = store.getCustomQuick()
+    let cat = 'food', note = '', amount = ''
+    if (editIndex >= 0) {
+      const it = list[editIndex] || {}
+      cat = it.cat || 'food'
+      note = it.note || ''
+      amount = M.fmt(it.amount || 0)
+    } else if (templateTag) {
+      cat = templateTag.cat || 'food'
+      note = templateTag.note || ''
+      amount = String(templateTag.amount || '')
     }
+    this.setData({
+      cqSheet: true, cqEditIndex: editIndex,
+      cqCat: cat, cqNote: note, cqAmount: amount,
+      cqList: this.decorateCq(list)
+    })
   },
 
   /** 给档位渲染层补分类名/emoji/金额文本 */
@@ -232,13 +318,6 @@ Page({
         cat: it.cat, note: it.note, amount: it.amount, index: i,
         name: c.name, emoji: c.emoji, amountText: M.fmt(it.amount)
       }
-    })
-  },
-
-  openCqNew() {
-    this.setData({
-      cqSheet: true, cqEditIndex: -1, cqCat: 'food', cqNote: '', cqAmount: '',
-      cqList: this.decorateCq(store.getCustomQuick())
     })
   },
 
