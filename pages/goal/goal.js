@@ -182,14 +182,18 @@ Page({
 
     if (f.id) {
       store.updateGoal(f.id, { name: name, emoji: f.emoji, target: target, saved: saved, deadline: f.deadline })
-      wx.showToast({ title: '改好了', icon: 'success' })
     } else {
       if (!store.addGoal({ name: name, emoji: f.emoji, target: target, saved: saved, deadline: f.deadline })) {
         wx.showToast({ title: '名称或金额不合规', icon: 'none' })
         return
       }
-      wx.showToast({ title: '目标已定下', icon: 'success' })
     }
+    // P0：写库失败时不弹成功、不关弹层，保留表单
+    if (!store.lastWriteOk()) {
+      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+      return
+    }
+    wx.showToast({ title: f.id ? '改好了' : '目标已定下', icon: 'success' })
     this.setData({ sheetMode: '' })
     this.load()
   },
@@ -201,7 +205,7 @@ Page({
       title: '删掉这个目标？',
       content: '已经存的钱不会自动记账，删了只是不再跟踪',
       confirmText: '删除',
-      confirmColor: '#EF5350',
+      confirmColor: '#C42B1C',
       success(res) {
         if (!res.confirm) return
         store.deleteGoal(id)
@@ -248,7 +252,17 @@ Page({
       return
     }
     const delta = this.data.depositMode === 'out' ? -amt : amt
+    const goal = store.getGoals().filter(function (g) { return g.id === this.data.depositGoal.id }.bind(this))[0]
+    if (!goal) {
+      wx.showToast({ title: '目标已不存在', icon: 'none' })
+      return
+    }
     store.depositToGoal(this.data.depositGoal.id, delta)
+    // P0：写库失败或目标 id 无效时不弹成功
+    if (!store.lastWriteOk()) {
+      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+      return
+    }
     wx.showToast({
       title: (delta > 0 ? '存进 ¥' : '取出 ¥') + M.fmt(amt),
       icon: 'none'

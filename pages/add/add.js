@@ -248,7 +248,8 @@ Page({
       return
     }
 
-    if (this.data.editingId) {
+    const editing = !!this.data.editingId
+    if (editing) {
       store.updateRecord(this.data.editingYm, this.data.editingId, {
         type: payload.type,
         amount: amount,
@@ -256,7 +257,6 @@ Page({
         note: payload.note,
         date: payload.date
       })
-      wx.showToast({ title: '改好了', icon: 'success' })
     } else {
       store.addRecord({
         type: payload.type,
@@ -265,8 +265,13 @@ Page({
         note: payload.note,
         date: payload.date
       })
-      wx.showToast({ title: '记好了', icon: 'success' })
     }
+    // P0：写库失败时不弹成功、不跳页，保留表单让用户重试
+    if (!store.lastWriteOk()) {
+      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+      return
+    }
+    wx.showToast({ title: editing ? '改好了' : '记好了', icon: 'success' })
 
     setTimeout(function () {
       wx.navigateBack({ delta: 1, fail() { wx.switchTab({ url: '/pages/index/index' }) } })

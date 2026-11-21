@@ -11,6 +11,16 @@ App({
     // 首次启动时初始化数据结构
     store.initIfEmpty()
 
+    // P0：关键写失败（存储满/系统异常）时明确告知，不再静默丢数据
+    store.setWriteFailHandler(function () {
+      wx.showModal({
+        title: '保存失败',
+        content: '手机存储空间可能已满，这次改动没有保存成功。建议先备份，再清理旧数据。',
+        showCancel: false,
+        confirmText: '知道了'
+      })
+    })
+
     // 记录打开次数，用于「我的」页展示
     const meta = store.getMeta()
     meta.openCount = (meta.openCount || 0) + 1

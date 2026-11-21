@@ -45,6 +45,34 @@ const storage = {
   }
 }
 
+/* ---------------- 写入结果可观测性 ----------------
+ * P0：storage.set 失败原本静默返回 false，12+ 调用方无一检查，
+ * 存储满时页面仍弹「记好了」，用户以为已保存实则丢数据。
+ * 关键写走 writeOrWarn（记录结果 + 通知 UI）；尽力写（meta/索引）仍用 storage.set。
+ */
+let _lastCriticalOk = true
+let _writeFailHandler = null
+
+/** app.js 启动时注册一次；仅关键写失败才回调 */
+function setWriteFailHandler(fn) {
+  _writeFailHandler = typeof fn === 'function' ? fn : null
+}
+
+/** 紧邻一次用户写操作后调用：false = 这次真的没落盘 */
+function lastWriteOk() { return _lastCriticalOk }
+
+/** 关键写：记录结果并通知 UI，返回是否成功 */
+function writeOrWarn(key, val) {
+  let ok = false
+  try { wx.setStorageSync(key, val); ok = true }
+  catch (e) { ok = false }
+  _lastCriticalOk = ok
+  if (!ok && _writeFailHandler) {
+    try { _writeFailHandler(key) } catch (ignore) { }
+  }
+  return ok
+}
+
 function uid(prefix) {
   return (prefix || 'r') + Date.now().toString(36) + Math.random().toString(36).slice(2, 7)
 }
@@ -200,7 +228,7 @@ function getRecords(ym) {
 function saveRecords(ym, list) {
   if (!S.isMonthKey(ym)) return
   const safeList = (Array.isArray(list) ? list : []).slice(0, S.LIMITS.RECORDS_PER_MONTH)
-  storage.set(K_REC + ym, safeList)
+  writeOrWarn(K_REC + ym, safeList)
   if (safeList.length) ensureMonthKey(ym)
   else dropMonthKey(ym)
 }
@@ -283,7 +311,7 @@ function getSettings() {
 /** 设置写库前先过白名单，未知字段一律不落盘 */
 function saveSettings(s) {
   const merged = Object.assign(defaultSettings(), getSettings(), S.cleanSettings(s))
-  storage.set(K_SETTINGS, merged)
+  writeOrWarn(K_SETTINGS, merged)
   return merged
 }
 
@@ -306,7 +334,7 @@ function getGoals() {
 
 function saveGoals(list) {
   const safeList = (Array.isArray(list) ? list : []).slice(0, S.LIMITS.GOALS)
-  storage.set(K_GOALS, safeList)
+  writeOrWarn(K_GOALS, safeList)
   return safeList
 }
 
@@ -787,6 +815,9 @@ function seedDemo() {
 }
 
 module.exports = {
+  // 写入结果可观测性（P0）
+  setWriteFailHandler,
+  lastWriteOk,
   // 基础
   initIfEmpty,
   getMonthKeys,

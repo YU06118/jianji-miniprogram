@@ -170,6 +170,11 @@ Page({
     const s = store.getSettings()
     s.budget = { total: total, cats: cats }
     store.saveSettings(s)
+    // P0：写库失败时不弹成功、不跳页
+    if (!store.lastWriteOk()) {
+      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+      return
+    }
 
     wx.showToast({ title: total > 0 ? '预算存好了' : '已保存', icon: 'success' })
     setTimeout(function () {
@@ -183,12 +188,16 @@ Page({
       title: '清空预算？',
       content: '账目记录不会受影响',
       confirmText: '清空',
-      confirmColor: '#EF5350',
+      confirmColor: '#C42B1C',
       success(res) {
         if (!res.confirm) return
         const s = store.getSettings()
         s.budget = { total: 0, cats: {} }
         store.saveSettings(s)
+        if (!store.lastWriteOk()) {
+          wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+          return
+        }
         that.setData({
           total: '',
           cats: that.data.cats.map(function (c) { return Object.assign({}, c, { value: '' }) }),

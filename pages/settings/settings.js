@@ -74,11 +74,18 @@ Page({
   /* ---------------- 备份 / 恢复 ---------------- */
 
   doBackup() {
-    const text = store.exportJSON()
-    if (text.length < 60) {
+    // P0：空骨架 JSON 本身就有 160+ 字符，原 text.length < 60 永远不触发。
+    // 改为按真实内容判断：有记录 / 有目标 / 有预算才算可备份。
+    let recCount = 0
+    const keys = store.getMonthKeys()
+    for (let i = 0; i < keys.length; i++) recCount += store.getRecords(keys[i]).length
+    const goalCount = store.getGoals().length
+    const total = (store.getSettings().budget && store.getSettings().budget.total) || 0
+    if (!recCount && !goalCount && !(M.parse(total) > 0)) {
       wx.showToast({ title: '还没有数据可以备份', icon: 'none' })
       return
     }
+    const text = store.exportJSON()
     wx.setClipboardData({
       data: text,
       success() {
@@ -108,13 +115,17 @@ Page({
           title: '确认恢复？',
           content: '同一个月的记录会被备份里的内容替换掉，其他月份不受影响。',
           confirmText: '恢复',
-          confirmColor: '#EF5478',
+          confirmColor: '#C42B1C',
           success(r) {
             if (!r.confirm) return
             const out = store.importJSON(text)
+            // P0：部分月份写入失败时明确提示，不能只报「恢复完成」
+            const writeFailed = out.ok && !store.lastWriteOk()
             wx.showModal({
-              title: out.ok ? '恢复完成' : '没能恢复',
-              content: out.msg,
+              title: out.ok ? (writeFailed ? '部分恢复' : '恢复完成') : '没能恢复',
+              content: writeFailed
+                ? out.msg + '。但部分月份写入失败（空间可能已满），建议清理旧数据后重试。'
+                : out.msg,
               showCancel: false
             })
             if (out.ok) that.load()
@@ -131,22 +142,49 @@ Page({
 
   doSeed() {
     const that = this
+    const keys = store.getMonthKeys()
+    const thisMonth = keys.length ? keys[0] : ''
+    const exist = thisMonth ? store.getRecords(thisMonth).length : 0
+    const content = exist
+      ? '本月已有 ' + exist + ' 笔真实记录，填入示例会先把它们清空并覆盖。建议先「备份数据」。确定继续？'
+      : '会填入 26 笔示例账，方便你先看看效果。'
+
     wx.showModal({
       title: '填入示例数据？',
-      content: '会先清空本月已有记录，换成一份 26 笔的示例账，方便你先看看效果。',
-      confirmText: '填入',
-      confirmColor: '#EF5478',
+      content: content,
+      confirmText: '继续',
+      confirmColor: '#C42B1C',
       success(res) {
         if (!res.confirm) return
-        const n = store.seedDemo()
-        that.load()
-        wx.showModal({
-          title: '已填入 ' + n + ' 笔',
-          content: '回到「记账」页看看效果：首页有本月进度，去「钱去哪了」能看分类占比。',
-          showCancel: false,
-          confirmText: '好'
-        })
+        // P0：有真实记录时必须二次确认，避免一次手滑丢掉整月数据
+        if (exist) {
+          wx.showModal({
+            title: '最后确认',
+            content: '真的要清空本月 ' + exist + ' 笔记录吗？此操作不可恢复。',
+            confirmText: '确定填入',
+            confirmColor: '#C42B1C',
+            success(r2) { if (r2.confirm) that._reallySeed() }
+          })
+        } else {
+          that._reallySeed()
+        }
       }
+    })
+  },
+
+  _reallySeed() {
+    const that = this
+    const n = store.seedDemo()
+    if (!store.lastWriteOk()) {
+      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+      return
+    }
+    that.load()
+    wx.showModal({
+      title: '已填入 ' + n + ' 笔',
+      content: '回到「记账」页看看效果：首页有本月进度，去「钱去哪了」能看分类占比。',
+      showCancel: false,
+      confirmText: '好'
     })
   },
 
@@ -158,14 +196,14 @@ Page({
       title: '清空所有数据？',
       content: '所有账目、预算、攒钱目标都会被删除，无法恢复。',
       confirmText: '继续',
-      confirmColor: '#E8453F',
+      confirmColor: '#C42B1C',
       success(res) {
         if (!res.confirm) return
         wx.showModal({
           title: '最后确认一次',
           content: '真的要把全部数据删掉吗？建议先做一次备份。',
           confirmText: '确定删除',
-          confirmColor: '#E8453F',
+          confirmColor: '#C42B1C',
           success(r2) {
             if (!r2.confirm) return
             store.clearAll()

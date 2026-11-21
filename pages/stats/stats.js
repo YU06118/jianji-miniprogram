@@ -202,10 +202,13 @@ Page({
         const r = (Math.min(w, h) / 2 - margin) / (1 + ringRatio / 2)
         const lw = r * ringRatio
 
+        // P0：canvas 不认 CSS 变量，按当前外观换色（暗色下中心金额必须可读）
+        const dark = store.isDark()
+
         // 底圈
         ctx.beginPath()
         ctx.arc(cx, cy, r, 0, Math.PI * 2)
-        ctx.strokeStyle = '#F6EEED'
+        ctx.strokeStyle = dark ? '#3A3A3C' : '#F6EEED'
         ctx.lineWidth = lw
         ctx.lineCap = 'butt'
         ctx.stroke()
@@ -229,10 +232,10 @@ Page({
         // 中心文字
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillStyle = '#A2939A'
+        ctx.fillStyle = dark ? '#9E9E9E' : '#A2939A'
         ctx.font = '12px sans-serif'
         ctx.fillText('共花', cx, cy - 17)
-        ctx.fillStyle = '#2E2A2B'
+        ctx.fillStyle = dark ? '#F5F5F5' : '#2E2A2B'
         ctx.font = 'bold 21px sans-serif'
         ctx.fillText('¥' + M.short(total), cx, cy + 11)
       })
@@ -265,6 +268,10 @@ Page({
     const m = store.modeClass()
     if (t !== this.data.theme) patch.theme = t
     if (m !== this.data.modeClass) patch.modeClass = m
-    if (Object.keys(patch).length) this.setData(patch)
+    if (Object.keys(patch).length) {
+      this.setData(patch)
+      // P0：暗/浅切换后 canvas 需重绘，否则中心金额仍是旧色
+      if (patch.modeClass) this.drawDonut()
+    }
   }
 })

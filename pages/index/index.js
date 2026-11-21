@@ -162,6 +162,11 @@ Page({
     const t = this.data.quickTags[e.currentTarget.dataset.i]
     if (!t) return
     store.addRecord({ type: t.type, amount: t.amount, cat: t.cat, note: t.note, date: D.today() })
+    // P0：写库失败时不弹成功，避免误导
+    if (!store.lastWriteOk()) {
+      wx.showToast({ title: '保存失败，空间可能已满', icon: 'none' })
+      return
+    }
     wx.vibrateShort && wx.vibrateShort({ type: 'light', fail() {} })
     wx.showToast({ title: '记好了 ' + t.emoji + ' ¥' + t.amountText, icon: 'none' })
     this.refresh()
@@ -179,7 +184,7 @@ Page({
       title: '删掉这笔？',
       content: '删掉就找不回来了',
       confirmText: '删除',
-      confirmColor: '#EF5350',
+      confirmColor: '#C42B1C',
       cancelText: '留着',
       success(res) {
         if (!res.confirm) return
