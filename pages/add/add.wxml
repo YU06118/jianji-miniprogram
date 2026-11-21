@@ -56,23 +56,20 @@
   <!-- ========== 中部滚动区 ========== -->
   <scroll-view class="mid" scroll-y enable-flex>
 
-    <!-- 常用：点一下就记好 -->
-    <view class="sec" wx:if="{{quickTags.length}}">
-      <view class="sec-t">
-        <text>⚡ 常用</text>
-        <text class="sec-hint">点一下直接记好</text>
+    <!-- 今日概览：记前瞄一眼当日累计 -->
+    <view class="stat-row">
+      <view class="stat">
+        <text class="stat-k">今日花掉</text>
+        <text class="stat-v num">¥{{todayText}}</text>
       </view>
-      <scroll-view class="quick-scroll" scroll-x show-scrollbar="{{false}}">
-        <view class="quick-wrap">
-          <view class="quick" wx:for="{{quickTags}}" wx:key="key"
-                hover-class="quick-on" hover-stay-time="60"
-                data-i="{{index}}" bindtap="onQuick">
-          <image class="q-ico" src="/assets/icons/{{item.cat}}.svg" mode="aspectFit"/>
-          <text class="q-note">{{item.note}}</text>
-            <text class="q-amt num">¥{{item.amountText}}</text>
-          </view>
-        </view>
-      </scroll-view>
+      <view class="stat">
+        <text class="stat-k">本月支出</text>
+        <text class="stat-v num">¥{{monthText}}</text>
+      </view>
+      <view class="stat">
+        <text class="stat-k">今日已记</text>
+        <text class="stat-v num">{{todayCountText}} 笔</text>
+      </view>
     </view>
 
     <!-- 分类 -->
@@ -94,7 +91,7 @@
     </view>
 
     <view class="tip">
-      <text class="tip-txt">连记账也嫌麻烦？把最常买的那几样记一次，下次点「常用」就完事了。</text>
+      <text class="tip-txt">备注里写「菜市场」「奶茶」，下次输入时会自动猜中分类。</text>
     </view>
   </scroll-view>
 

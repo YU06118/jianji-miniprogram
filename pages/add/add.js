@@ -43,7 +43,9 @@ Page({
     dateLabel: '',
     today: '',
     cats: [],
-    quickTags: [],
+    todayText: '0',
+    monthText: '0',
+    todayCountText: '0',
     curCat: C.getCat('food'),
     catTouched: false,
     autoHint: false,
@@ -54,6 +56,7 @@ Page({
   onShow() {
     T.playEnter(this)  // 页面转场：内容淡入（配合系统右滑/tab切换）
     this.applyAppearance()
+    this.loadTodaySummary()  // 从首页/别页返回时刷新当日累计
   },
 
   onLoad(q) {
@@ -95,7 +98,7 @@ Page({
 
     this.setData(patch, () => {
       this.refreshCats()
-      this.refreshQuick()
+      this.loadTodaySummary()
     })
   },
 
@@ -113,24 +116,20 @@ Page({
     })
   },
 
-  refreshQuick() {
-    const type = this.data.type
-    const tags = store.quickTags(8).filter(function (t) { return t.type === type })
-    const out = tags.map(function (t) {
-      const c = C.getCat(t.cat)
-      return {
-        key: t.cat + '|' + t.note,
-        type: t.type,
-        cat: t.cat,
-        note: t.note,
-        amount: t.amount,
-        amountText: M.fmt(t.amount),
-        emoji: c.emoji,
-        color: c.color,
-        learned: t.learned
-      }
+  /** 今日概览：记前瞄一眼当日累计（现成 store API，零数据层改动） */
+  loadTodaySummary() {
+    const today = D.today()
+    const ym = today.slice(0, 7)
+    const days = store.recentDays(1)
+    const todayExpense = days.length && days[0].date === today ? days[0].amount : 0
+    const sum = store.summary(ym)
+    const recs = store.getRecords(ym)
+    const count = recs.filter(function (r) { return r.date === today }).length
+    this.setData({
+      todayText: M.fmt(todayExpense),
+      monthText: M.fmt(sum.expense),
+      todayCountText: String(count)
     })
-    this.setData({ quickTags: out })
   },
 
   /* ---------------- 交互 ---------------- */
@@ -145,10 +144,8 @@ Page({
       cat: cats[0].key,
       curCat: cats[0],
       catTouched: false,
-      autoHint: false,
-      quickTags: []
+      autoHint: false
     }, () => {
-      this.refreshQuick()
       this.reguess()
     })
   },
@@ -206,21 +203,6 @@ Page({
   onDate(e) {
     const d = e.detail.value
     this.setData({ date: d, dateLabel: D.human(d) })
-  },
-
-  /** 点常用标签：金额、分类、备注一起带上，直接存 */
-  onQuick(e) {
-    const i = e.currentTarget.dataset.i
-    const t = this.data.quickTags[i]
-    if (!t) return
-    wx.vibrateShort && wx.vibrateShort({ type: 'light', fail() {} })
-    this.commit({
-      type: t.type,
-      amount: t.amount,
-      cat: t.cat,
-      note: t.note,
-      date: this.data.date
-    })
   },
 
   onConfirm() {

@@ -154,50 +154,31 @@
   color: var(--mint);
 }
 
-/* 常用标签 */
-.quick-scroll {
-  white-space: nowrap;
-  width: 100%;
-}
-.quick-wrap {
-  display: inline-flex;
-  padding-bottom: 10rpx;
-}
-.quick {
-  display: inline-flex;
-  flex-direction: column;
+/* 今日概览三格：记前瞄一眼当日累计（与首页 stat-row 同规格） */
+.stat-row {
+  display: flex;
   align-items: center;
-  min-width: 148rpx;
-  padding: 20rpx 22rpx;
+  margin: var(--sp-4) 28rpx;
+  padding: var(--sp-4) 0;
   background: var(--card);
-  border: 2rpx solid var(--line);
   border-radius: var(--r-card);
-  margin-right: 16rpx;
   box-shadow: var(--sh-card);
 }
-.quick-on {
-  background: var(--pink-soft);
-  transform: scale(0.97);
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.q-ico {
-  width: 40rpx;
-  height: 40rpx;
-  flex-shrink: 0;
+.stat-k {
+  font-size: var(--fs-caption);
+  color: var(--ink-3);
+  margin-bottom: var(--sp-2);
 }
-.q-note {
-  font-size: 24rpx;
-  color: var(--ink-2);
-  margin-top: 8rpx;
-  max-width: 170rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.q-amt {
-  font-size: 26rpx;
+.stat-v {
+  font-size: 36rpx;
   font-weight: 700;
-  color: var(--pink);
-  margin-top: 4rpx;
+  color: var(--ink);
 }
 
 /* 分类网格 4 列 */
