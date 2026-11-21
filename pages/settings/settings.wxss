@@ -33,30 +33,6 @@
 }
 
 /* ============ 分组列表 ============ */
-.group {
-  background: var(--card);
-  border-radius: var(--r-card);
-  margin-top: 24rpx;
-  overflow: hidden;
-  box-shadow: var(--sh-card);
-}
-
-.cell {
-  display: flex;
-  align-items: center;
-  padding: 32rpx 30rpx;
-  border-bottom: 2rpx solid var(--line);
-}
-.cell:last-child {
-  border-bottom: none;
-}
-.cell.no-tap {
-  border-bottom: none;
-  padding-bottom: 14rpx;
-}
-.cell-on {
-  background: var(--pink-soft);
-}
 
 /* ---------- 主题色选择 ---------- */
 .theme-row {
@@ -66,7 +42,7 @@
 }
 .th-item {
   flex: 1;
-  height: 116rpx;
+  height: 124rpx;
   border-radius: var(--r-card);
   background: var(--bg-2);
   display: flex;
@@ -81,7 +57,7 @@
 }
 .th-item.on {
   background: var(--pink-soft);
-  box-shadow: inset 0 0 0 3rpx var(--pink);
+  box-shadow: inset 0 0 0 2rpx var(--pink);
 }
 .th-dot {
   width: 40rpx;
@@ -107,31 +83,10 @@
   color: var(--pink-deep);
   font-weight: 700;
 }
-.c-ico {
-  width: 56rpx;
-  font-size: 34rpx;
-  flex-shrink: 0;
-}
-.c-t {
-  font-size: 29rpx;
-  color: var(--ink);
-  font-weight: 500;
-}
 .c-sub {
   font-size: 22rpx;
   color: var(--ink-3);
   margin-left: 16rpx;
-}
-.c-v {
-  margin-left: auto;
-  font-size: 26rpx;
-  color: var(--ink-3);
-}
-.c-go {
-  font-size: 34rpx;
-  color: var(--ink-3);
-  margin-left: 14rpx;
-  flex-shrink: 0;
 }
 .cell.danger .c-t {
   color: var(--danger);
@@ -139,8 +94,7 @@
 
 /* ============ 使用说明 ============ */
 .how {
-  padding: 8rpx 30rpx 28rpx;
-  background: var(--bg-2);
+  padding: var(--sp-2) var(--sp-4) var(--sp-4);
 }
 .how-line {
   font-size: 24rpx;

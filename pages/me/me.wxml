@@ -10,12 +10,10 @@
         <text class="hc-v num">{{stats.records}}</text>
         <text class="hc-k">记账笔数</text>
       </view>
-      <view class="hc-line"></view>
       <view class="hc-i">
         <text class="hc-v num">{{stats.months}}</text>
         <text class="hc-k">记账月数</text>
       </view>
-      <view class="hc-line"></view>
       <view class="hc-i">
         <text class="hc-v num">{{stats.days}}</text>
         <text class="hc-k">使用天数</text>

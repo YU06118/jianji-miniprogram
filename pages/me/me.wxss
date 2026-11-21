@@ -3,20 +3,20 @@
 /* ============ 概览卡 ============ */
 .head-card {
   position: relative;
-  margin: 24rpx 28rpx 8rpx;
-  padding: 40rpx 36rpx 32rpx;
-  border-radius: var(--r-card);
+  margin: var(--sp-4) var(--sp-gutter) var(--sp-2);
+  padding: var(--sp-5) var(--sp-4);
+  border-radius: var(--r-card-lg);
   overflow: hidden;
-  color: #FFFFFF;
+  color: var(--on-accent);
   background: var(--accent-solid);
-  box-shadow: var(--sh-pop);
+  box-shadow: var(--sh-raised);
 }
 .hc-mask {
   position: absolute;
   width: 320rpx;
   height: 320rpx;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.05);
   top: -150rpx;
   right: -100rpx;
 }
@@ -24,26 +24,25 @@
   position: relative;
   z-index: 1;
   display: block;
-  font-size: 42rpx;
+  font-size: var(--fs-title);
   font-weight: 700;
-  letter-spacing: 1rpx;
+  letter-spacing: -2rpx;
 }
 .hc-s {
   position: relative;
   z-index: 1;
   display: block;
-  font-size: 24rpx;
-  opacity: 0.92;
-  margin-top: 10rpx;
+  font-size: var(--fs-footnote);
+  opacity: 0.94;
+  margin-top: var(--sp-2);
 }
 .hc-grid {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
-  margin-top: 34rpx;
-  padding-top: 28rpx;
-  border-top: 2rpx solid rgba(255, 255, 255, 0.22);
+  margin-top: var(--sp-5);
+  padding-top: var(--sp-3);
 }
 .hc-i {
   flex: 1;
@@ -61,29 +60,5 @@
   opacity: 0.88;
   margin-top: 8rpx;
 }
-.hc-line {
-  width: 2rpx;
-  height: 46rpx;
-  background: rgba(255, 255, 255, 0.24);
-}
 
 /* ============ 设置入口行 ============ */
-.group {
-  background: var(--card);
-  border-radius: var(--r-card);
-  margin-top: 24rpx;
-  overflow: hidden;
-  box-shadow: var(--sh-card);
-}
-.cell {
-  display: flex;
-  align-items: center;
-  padding: 32rpx 30rpx;
-  border-bottom: 2rpx solid var(--line);
-}
-.cell:last-child { border-bottom: none; }
-.cell-on { background: var(--pink-soft); }
-.c-ico { width: 56rpx; font-size: 34rpx; flex-shrink: 0; }
-.c-t { font-size: 29rpx; color: var(--ink); font-weight: 500; }
-.c-v { margin-left: auto; font-size: 26rpx; color: var(--ink-3); }
-.c-go { font-size: 34rpx; color: var(--ink-3); margin-left: 14rpx; flex-shrink: 0; }

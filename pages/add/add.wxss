@@ -8,29 +8,29 @@
 /* ========== 顶部 ========== */
 .head {
   flex-shrink: 0;
-  padding: 22rpx 28rpx 26rpx;
-  background: var(--bg-2);
-  border-radius: 0 0 var(--r-card) var(--r-card);
-  box-shadow: var(--sh-card);
+  padding: var(--sp-4) var(--sp-gutter) var(--sp-4);
+  background: var(--card);
+  border-radius: 0 0 var(--r-card-lg) var(--r-card-lg);
+  box-shadow: var(--sh-raised);
 }
 
-.seg {
+.type-seg {
   display: inline-flex;
   background: var(--bg-2);
-  border-radius: var(--r-card);
+  border-radius: var(--r-ctrl);
   padding: 6rpx;
 }
-.seg-i {
-  padding: 10rpx 34rpx;
+.type-seg-i {
+  padding: 14rpx 40rpx;
   border-radius: var(--r-ctrl);
-  font-size: 26rpx;
+  font-size: var(--fs-footnote);
   color: var(--ink-2);
-  transition: all .18s var(--ease);
+  transition: all var(--dur) var(--ease);
 }
-.seg-i.on {
-  color: #FFFFFF;
+.type-seg-i.on {
+  color: var(--on-accent);
   background: var(--accent-solid);
-  font-weight: 600;
+  font-weight: 700;
   box-shadow: var(--sh-pop);
 }
 
@@ -116,8 +116,8 @@
   font-size: 25rpx;
 }
 .note-clear {
-  width: 44rpx;
-  height: 44rpx;
+  width: 88rpx;
+  height: 88rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -259,5 +259,5 @@
   padding: 16rpx 28rpx calc(16rpx + constant(safe-area-inset-bottom));
   padding: 16rpx 28rpx calc(16rpx + env(safe-area-inset-bottom));
   background: var(--bg-2);
-  border-top: 2rpx solid var(--line);
+  border-top: 1rpx solid var(--line);
 }

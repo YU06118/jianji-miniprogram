@@ -30,7 +30,7 @@
           <text class="gc-name">{{item.name}}</text>
           <text class="gc-sub">{{item.subline}}</text>
         </view>
-        <text class="gc-pct num" style="color:{{item.done ? '#3FAE9F' : '#EF5478'}}">{{item.pct}}%</text>
+        <text class="gc-pct num {{item.done ? 'done' : 'pending'}}">{{item.pct}}%</text>
       </view>
 
       <view class="bar bar-dark">
@@ -75,7 +75,7 @@
       <view class="fl">
         <text class="fl-k">叫什么</text>
         <input class="fl-in" value="{{form.name}}" data-k="name" bindinput="onFormInput"
-               placeholder="比如：宝宝教育金" placeholder-class="ph" maxlength="12" />
+               placeholder="比如：宝宝教育金" placeholder-class="ph" maxlength="20" />
       </view>
 
       <view class="fl">

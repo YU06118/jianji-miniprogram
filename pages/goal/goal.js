@@ -53,8 +53,8 @@ Page({
       let dl = null
       if (g.deadline) {
         dl = D.daysUntil(g.deadline)
-        if (dl > 0) subline = '目标日 ' + g.deadline + ' · 还剩 ' + dl + ' 天'
-        else subline = '目标日 ' + g.deadline + '（已过期）'
+        if (dl > 0) subline = '目标日 ' + D.fmtMD(g.deadline) + ' · 还剩 ' + dl + ' 天'
+        else subline = '目标日 ' + D.fmtMD(g.deadline) + '（已过期）'
       }
       if (!subline || done) {
         subline = done ? '已经达成了' : ('还差 ¥' + M.fmt(need))
@@ -83,7 +83,6 @@ Page({
       }
       if (!tip) tip = '还差 ¥' + M.fmt(need) + '，存一笔就开始积累吧'
 
-      const meta = EMOJIS.indexOf(g.emoji) >= 0 ? null : null // 保留用户原样
       return {
         id: g.id,
         name: g.name,

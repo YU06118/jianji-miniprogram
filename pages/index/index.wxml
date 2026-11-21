@@ -99,12 +99,10 @@
         <text class="stat-k">今日花掉</text>
         <text class="stat-v num">¥{{todayText}}</text>
       </view>
-      <view class="stat-line"></view>
       <view class="stat" bindtap="goStats">
         <text class="stat-k">{{monthLabelText}}支出</text>
         <text class="stat-v num">¥{{usedText}}</text>
       </view>
-      <view class="stat-line"></view>
       <view class="stat" bindtap="goStats">
         <text class="stat-k">收入</text>
         <text class="stat-v num income">¥{{incomeText}}</text>

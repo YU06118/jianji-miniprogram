@@ -49,11 +49,11 @@
   margin-top: 22rpx;
 }
 .sug-pill {
-  font-size: 23rpx;
+  font-size: var(--fs-caption);
   color: var(--pink);
   background: var(--pink-mist);
-  border-radius: var(--r-card);
-  padding: 10rpx 22rpx;
+  border-radius: var(--r-chip);
+  padding: 14rpx var(--sp-3);
   margin-right: 14rpx;
   margin-bottom: 12rpx;
 }
@@ -65,16 +65,16 @@
 .cb-item {
   display: flex;
   align-items: center;
-  padding: 20rpx 0;
-  border-bottom: 2rpx solid var(--line);
+  padding: var(--sp-3) 0;
+  border-bottom: 1rpx solid var(--line);
 }
 .cb-item:last-of-type {
   border-bottom: none;
 }
 .cb-ico {
-  width: 66rpx;
-  height: 66rpx;
-  border-radius: var(--r-ctrl);
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: var(--r-card);
   background: var(--bg-2);
   display: flex;
   align-items: center;
@@ -144,11 +144,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 20rpx 28rpx;
-  padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  padding: var(--sp-3) var(--sp-gutter);
+  padding-bottom: calc(var(--sp-3) + constant(safe-area-inset-bottom));
+  padding-bottom: calc(var(--sp-3) + env(safe-area-inset-bottom));
   background: var(--card);
-  border-top: 2rpx solid var(--line);
+  border-radius: var(--r-card-lg) var(--r-card-lg) 0 0;
+  box-shadow: var(--sh-raised);
   display: flex;
   align-items: center;
 }

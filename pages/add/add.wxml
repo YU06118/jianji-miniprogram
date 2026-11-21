@@ -3,10 +3,10 @@
   <!-- ========== 顶部输入区 ========== -->
   <view class="head">
     <!-- 支出 / 收入 -->
-    <view class="seg">
-      <view class="seg-i {{type === 'expense' ? 'on' : ''}}"
+    <view class="type-seg">
+      <view class="type-seg-i {{type === 'expense' ? 'on' : ''}}"
             data-t="expense" bindtap="onType">支出</view>
-      <view class="seg-i {{type === 'income' ? 'on' : ''}}"
+      <view class="type-seg-i {{type === 'income' ? 'on' : ''}}"
             data-t="income" bindtap="onType">收入</view>
     </view>
 
@@ -41,7 +41,7 @@
                value="{{note}}"
                placeholder="加个备注，我会自动猜分类"
                placeholder-class="ph"
-               maxlength="20"
+               maxlength="30"
                confirm-type="done"
                bindinput="onNote" />
         <view class="note-clear" wx:if="{{note}}" catchtap="clearNote">✕</view>

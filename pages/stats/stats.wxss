@@ -54,43 +54,47 @@
   background: var(--card);
 }
 .total-num {
-  font-size: 76rpx;
+  font-size: var(--fs-title);
   font-weight: 700;
   letter-spacing: -2rpx;
-  line-height: 1.15;
-  margin: 10rpx 0 6rpx;
+  line-height: 1.1;
+  margin: var(--sp-3) 0 var(--sp-2);
   color: var(--ink);
 }
 .total-cur {
-  font-size: 36rpx;
+  font-size: 44rpx;
   font-weight: 700;
-  margin-right: 6rpx;
+  margin-right: var(--sp-1);
 }
 .total-sub {
-  font-size: 24rpx;
+  font-size: var(--fs-footnote);
   color: var(--ink-3);
+}
+.total-foot {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
 }
 
 /* ============ 环形图 ============ */
 .donut-box {
   display: flex;
   align-items: center;
-  margin-top: 28rpx;
+  margin-top: var(--sp-4);
 }
 .donut {
-  width: 300rpx;
-  height: 300rpx;
+  width: 320rpx;
+  height: 320rpx;
   flex-shrink: 0;
 }
 .donut-legend {
   flex: 1;
   min-width: 0;
-  padding-left: 26rpx;
+  padding-left: var(--sp-4);
 }
 .lg {
   display: flex;
   align-items: center;
-  padding: 9rpx 0;
+  padding: 12rpx 0;
 }
 .lg-dot {
   width: 18rpx;
@@ -182,8 +186,8 @@
 .rd-row {
   display: flex;
   align-items: center;
-  padding: 16rpx 0;
-  border-bottom: 2rpx solid var(--line);
+  padding: var(--sp-3) 0;
+  border-bottom: 1rpx solid var(--line);
 }
 .rd-row:last-child {
   border-bottom: none;
