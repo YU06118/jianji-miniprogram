@@ -3,7 +3,7 @@
   <view class="wrap">
 
     <!-- ============ 外观 ============ -->
-    <view class="group-title">外观</view>
+    <view class="group-title rise">外观</view>
     <view class="group">
       <view class="cell no-tap">
         <text class="c-ico">🌗</text>

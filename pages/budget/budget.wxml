@@ -2,7 +2,7 @@
 
   <!-- ============ 总预算 ============ -->
   <view class="wrap">
-    <view class="card">
+    <view class="card rise">
       <text class="card-title">每月总预算</text>
       <view class="sub">设一个数，我每天帮你看住它</view>
 

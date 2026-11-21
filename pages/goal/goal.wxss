@@ -186,7 +186,10 @@
   right: 0;
   bottom: 0;
   z-index: 101;
-  background: var(--card);
+  /* 与 app.wxss .sheet 同步：液态玻璃 */
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
   border-radius: var(--r-card) var(--r-card) 0 0;
   max-height: 88vh;
   display: flex;
