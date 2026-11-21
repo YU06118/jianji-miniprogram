@@ -143,12 +143,6 @@ Page({
     wx.navigateTo({ url: '/pages/budget/budget' })
   },
 
-  onAlertTap() {
-    const action = this.data.bs.advice.action
-    if (action === '去设预算' || action === '调整预算') this.goBudget()
-    else this.goStats()
-  },
-
   /* ---------------- 记一笔弹窗 ---------------- */
 
   noop() {},   // 拦截冒泡与 touchmove，避免底层 scroll-view 跟着滚

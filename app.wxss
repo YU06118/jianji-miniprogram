@@ -533,8 +533,8 @@ view, text, input, textarea, scroll-view, button {
   background: linear-gradient(160deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, 0) 55%);
   pointer-events: none;
 }
-.alert, .q-item { position: relative; }
-.alert::after, .q-item::after {
+.q-item { position: relative; }
+.q-item::after {
   content: "";
   position: absolute;
   inset: 0;

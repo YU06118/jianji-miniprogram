@@ -63,18 +63,6 @@
     </block>
   </view>
 
-  <!-- ================= 预警提示条 ================= -->
-  <view class="wrap">
-    <view class="alert rise-2 tone-{{bs.tone}}" bindtap="onAlertTap">
-      <view class="alert-badge">{{bs.tone === 'ok' ? '👍' : (bs.tone === 'over' ? '🛑' : '⚠️')}}</view>
-      <view class="alert-body">
-        <view class="alert-title">{{bs.advice.title}}</view>
-        <view class="alert-text">{{bs.advice.body}}</view>
-      </view>
-      <view class="alert-go" wx:if="{{bs.advice.action}}">›</view>
-    </view>
-  </view>
-
   <!-- ================= 一键记账 ================= -->
   <view class="wrap">
     <view class="q-add" bindtap="goAdd" hover-class="q-add-on" hover-stay-time="60">

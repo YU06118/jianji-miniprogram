@@ -155,53 +155,6 @@
   transform: translateY(-2rpx);
 }
 
-/* ================= 预警条 ================= */
-.alert {
-  display: flex;
-  align-items: flex-start;
-  margin-top: var(--sp-4);
-  padding: var(--sp-4);
-  border-radius: var(--r-card);
-  box-shadow: var(--sh-card);
-}
-.alert.tone-ok {
-  background: var(--mint-soft);
-}
-.alert.tone-warn {
-  background: var(--amber-soft);
-}
-.alert.tone-over {
-  background: var(--danger-soft);
-}
-.alert-badge {
-  font-size: 36rpx;
-  line-height: 1.05;
-  margin-right: 18rpx;
-  flex-shrink: 0;
-}
-.alert-body {
-  flex: 1;
-  min-width: 0;
-}
-.alert-title {
-  font-size: var(--fs-body);
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: var(--sp-1);
-}
-.alert-text {
-  font-size: var(--fs-footnote);
-  color: var(--ink-2);
-  line-height: 1.55;
-}
-.alert-go {
-  font-size: 38rpx;
-  color: var(--ink-3);
-  align-self: center;
-  margin-left: 12rpx;
-  flex-shrink: 0;
-}
-
 /* ================= 快捷记账：全宽「记一笔」 ================= */
 .q-add {
   display: flex;
