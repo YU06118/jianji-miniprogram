@@ -442,3 +442,66 @@
 .rec:nth-child(4) { animation: fade-in var(--dur) var(--ease) .12s both; }
 .rec:nth-child(5) { animation: fade-in var(--dur) var(--ease) .16s both; }
 .rec:nth-child(6) { animation: fade-in var(--dur) var(--ease) .2s both; }
+
+
+/* ================= 自定义金额档位 ================= */
+.q-custom {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 168rpx;
+  height: 168rpx;
+  margin-right: var(--sp-4);
+  border-radius: var(--r-card);
+  border: 1rpx dashed var(--ink-3);
+  background: var(--bg-2);
+  flex-shrink: 0;
+}
+.q-custom-plus { font-size: 44rpx; color: var(--ink-2); line-height: 1; }
+.q-custom .q-add-txt { color: var(--ink-2); }
+
+/* 页面级 sheet：保留全局 transform+show 开关，仅补 flex 布局与内部件 */
+.sheet {
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  padding: 32rpx 32rpx 0;
+}
+.cq-head {
+  padding: 8rpx 0 22rpx;
+  border-bottom: 1rpx solid var(--line);
+  flex-shrink: 0;
+}
+.cq-tip { font-size: 24rpx; color: var(--ink-3); line-height: 1.5; padding: 16rpx 0 8rpx; }
+.cq-cats { display: flex; flex-wrap: wrap; gap: 12rpx; padding: 12rpx 0 20rpx; }
+.cq-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 20rpx;
+  border-radius: var(--r-chip);
+  background: var(--bg-2);
+  border: 2rpx solid transparent;
+  font-size: 26rpx;
+  color: var(--ink-2);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.cq-cat.on { background: var(--pink-mist); border-color: var(--pink); color: var(--pink-deep); font-weight: 700; }
+.cq-cat-emoji { font-size: 28rpx; }
+.cq-amt-in { font-size: 40rpx; font-weight: 700; }
+.cq-existing { margin-top: 24rpx; padding-bottom: 24rpx; }
+.cq-existing-title { font-size: 24rpx; color: var(--ink-3); margin-bottom: 8rpx; }
+.cq-row {
+  display: flex;
+  align-items: center;
+  min-height: 88rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+.cq-row:last-child { border-bottom: none; }
+.cq-row-emoji { font-size: 34rpx; width: 64rpx; flex-shrink: 0; }
+.cq-row-note { font-size: 30rpx; color: var(--ink); flex: 1; min-width: 0; }
+.cq-row-amt { font-size: 32rpx; font-weight: 700; color: var(--ink); margin-left: 16rpx; }
+.cq-row-del { font-size: 30rpx; color: var(--danger); width: 72rpx; text-align: center; flex-shrink: 0; }
+.sheet-body { overflow-y: auto; flex: 1; }
+.sheet-safe { height: constant(safe-area-inset-bottom); height: env(safe-area-inset-bottom); flex-shrink: 0; }

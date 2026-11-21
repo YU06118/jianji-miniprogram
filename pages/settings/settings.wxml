@@ -43,11 +43,6 @@
         <text class="c-v">{{budgetText}}</text>
         <text class="c-go">›</text>
       </view>
-      <view class="cell" bindtap="goStats" hover-class="cell-on">
-        <text class="c-ico">📊</text>
-        <text class="c-t">钱去哪了</text>
-        <text class="c-go">›</text>
-      </view>
     </view>
 
     <!-- ============ 数据工具 ============ -->

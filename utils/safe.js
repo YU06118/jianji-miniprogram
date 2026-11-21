@@ -22,6 +22,7 @@ const LIMITS = {
   RECORDS_PER_MONTH: 2000,// 单月最多多少笔
   RECORDS_TOTAL: 20000,   // 备份合计最多多少笔
   GOALS: 30,              // 攒钱目标最多个数
+  CUSTOM_QUICK: 8,        // 首页自定义金额档位最多个数
   ID_LEN: 32,
   AMOUNT_MAX: 9999999.99, // 单笔金额上限（约一千万元）
   DELTA_MAX: 9999999.99,  // 目标存取单次变动上限
@@ -199,6 +200,17 @@ function cleanSettings(s) {
   if (typeof s.nickname === 'string') out.nickname = cleanText(s.nickname, 12)
   if (typeof s.theme === 'string' && /^[a-z]{2,12}$/.test(s.theme)) out.theme = s.theme
   if (['dark', 'light', 'system'].indexOf(s.appearance) >= 0) out.appearance = s.appearance
+  // 自定义金额档位：只认合法分类/备注/金额，最多 CUSTOM_QUICK 个
+  if (Array.isArray(s.customQuick)) {
+    out.customQuick = s.customQuick.slice(0, LIMITS.CUSTOM_QUICK).map(function (it) {
+      if (!it || typeof it !== 'object') return null
+      const cat = cleanCat(it.cat, 'expense')
+      if (!cat) return null
+      const amount = cleanAmount(it.amount)
+      if (!(amount > 0)) return null
+      return { cat: cat, note: cleanText(it.note, LIMITS.NOTE), amount: amount }
+    }).filter(Boolean)
+  }
   return out
 }
 

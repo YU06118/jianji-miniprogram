@@ -65,10 +65,6 @@ Page({
     wx.navigateTo({ url: '/pages/budget/budget' })
   },
 
-  goStats() {
-    wx.switchTab({ url: '/pages/stats/stats' })
-  },
-
   toggleHow() {
     this.setData({ showHow: !this.data.showHow })
   },
@@ -184,7 +180,7 @@ Page({
     that.load()
     wx.showModal({
       title: '已填入 ' + n + ' 笔',
-      content: '回到「记账」页看看效果：首页有本月进度，去「钱去哪了」能看分类占比。',
+      content: '回到「记账」页看看效果：首页有本月进度，去底部「统计」能看分类占比。',
       showCancel: false,
       confirmText: '好'
     })

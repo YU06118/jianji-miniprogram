@@ -83,17 +83,21 @@
           <text class="q-add-plus">＋</text>
           <text class="q-add-txt">记一笔</text>
         </view>
+        <view class="q-custom" bindtap="openCqNew" hover-class="q-on" hover-stay-time="60">
+          <text class="q-custom-plus">✎</text>
+          <text class="q-add-txt">自定义</text>
+        </view>
         <view class="q-item" wx:for="{{quickTags}}" wx:key="key"
               hover-class="q-on" hover-stay-time="60"
-              data-i="{{index}}" bindtap="onQuick">
+              data-i="{{index}}" bindtap="onQuick" bindlongpress="onQuickLong">
           <image class="q-ico" src="/assets/icons/{{item.cat}}.svg" mode="aspectFit"/>
           <text class="q-note">{{item.displayNote}}</text>
           <text class="q-amt num">¥{{item.amountText}}</text>
         </view>
       </view>
     </scroll-view>
-    <view class="quick-sub" wx:if="{{learnedCount > 0}}">
-      带 ⚡ 的是按你的习惯学出来的，点一下就记好
+    <view class="quick-sub">
+      点一下就记好，长按可自定义金额档位<block wx:if="{{learnedCount > 0}}">，⚡ 是按习惯学出来的</block>
     </view>
   </view>
 
@@ -172,5 +176,52 @@
   </view>
 
   <view class="foot-tip">数据只存在你自己的手机里，不上传、不联网 🌿</view>
+
+  <!-- ============ 自定义金额档位 sheet ============ -->
+  <view class="sheet-mask {{cqSheet ? 'show' : ''}}" wx:if="{{cqSheet}}" bindtap="closeCq"></view>
+  <view class="sheet {{cqSheet ? 'show' : ''}}" wx:if="{{cqSheet}}">
+    <view class="sheet-handle"></view>
+    <view class="sheet-head cq-head">
+      <text class="sh-cancel" bindtap="closeCq">取消</text>
+      <text class="sh-title">{{cqEditIndex >= 0 ? '修改档位' : '自定义金额档位'}}</text>
+      <text class="sh-ok" bindtap="saveCq">保存</text>
+    </view>
+
+    <view class="sheet-body">
+      <view class="cq-tip">选分类、写备注、填金额，保存后点一下即可记账</view>
+
+      <view class="cq-cats">
+        <view class="cq-cat {{cqCat === item.key ? 'on' : ''}}"
+              wx:for="{{cqCats}}" wx:key="key"
+              data-cat="{{item.key}}" bindtap="onCqCat">
+          <text class="cq-cat-emoji">{{item.emoji}}</text>
+          <text class="cq-cat-name">{{item.name}}</text>
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">备注</text>
+        <input class="field-input" type="text" maxlength="30" value="{{cqNote}}"
+               bindinput="onCqNote" placeholder="如：早餐" placeholder-class="ph"/>
+      </view>
+      <view class="field">
+        <text class="field-label">金额</text>
+        <input class="field-input num cq-amt-in" type="digit" value="{{cqAmount}}"
+               bindinput="onCqAmount" placeholder="0" placeholder-class="ph"/>
+        <text class="field-unit">元</text>
+      </view>
+
+      <view class="cq-existing" wx:if="{{cqList.length}}">
+        <view class="cq-existing-title">已有档位（点 ✕ 删除）</view>
+        <view class="cq-row" wx:for="{{cqList}}" wx:key="index">
+          <text class="cq-row-emoji">{{item.emoji}}</text>
+          <text class="cq-row-note">{{item.note}}</text>
+          <text class="cq-row-amt num">¥{{item.amountText}}</text>
+          <text class="cq-row-del" data-i="{{item.index}}" bindtap="delCq">✕</text>
+        </view>
+      </view>
+    </view>
+    <view class="sheet-safe"></view>
+  </view>
 
 </view>

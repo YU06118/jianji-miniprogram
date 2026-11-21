@@ -96,7 +96,8 @@ function defaultSettings() {
     theme: 'pink',          // 主题色：pink / lilac / blue / matcha
     appearance: 'dark',     // 外观模式：dark / light / system（默认深色）
     nickname: '',
-    seeded: false
+    seeded: false,
+    customQuick: []         // 首页长按添加的自定义金额档位 [{cat,note,amount}]
   }
 }
 
@@ -313,6 +314,20 @@ function saveSettings(s) {
   const merged = Object.assign(defaultSettings(), getSettings(), S.cleanSettings(s))
   writeOrWarn(K_SETTINGS, merged)
   return merged
+}
+
+/** 首页自定义金额档位（存于 settings，随备份自动往返） */
+function getCustomQuick() {
+  const s = getSettings()
+  return Array.isArray(s.customQuick) ? s.customQuick : []
+}
+
+/** 保存自定义档位：过白名单清洗 + 关键写失败可观测；返回是否成功 */
+function saveCustomQuick(list) {
+  const s = getSettings()
+  s.customQuick = Array.isArray(list) ? list : []
+  const merged = saveSettings(s)
+  return Array.isArray(merged.customQuick) && !!lastWriteOk()
 }
 
 function getMeta() {
@@ -834,6 +849,8 @@ module.exports = {
   // 设置
   getSettings,
   saveSettings,
+  getCustomQuick,
+  saveCustomQuick,
   getMeta,
   saveMeta,
   defaultSettings,
