@@ -8,9 +8,10 @@
   <!-- ============ 月份切换 ============ -->
   <view class="month-bar">
     <view class="mb-btn" hover-class="mb-on" bindtap="prevMonth">‹</view>
-    <view class="mb-txt">
+    <view class="mb-txt" bindtap="openMonthPicker" hover-class="mb-tap">
       <text>{{monthLabelText}}</text>
       <text class="mb-live" wx:if="{{isThisMonth}}">进行中</text>
+      <text class="mb-caret">▾</text>
     </view>
     <view class="mb-btn {{canNext ? '' : 'off'}}" hover-class="{{canNext ? 'mb-on' : ''}}" bindtap="nextMonth">›</view>
   </view>
@@ -138,6 +139,46 @@
         花得最多的是 <text class="bold">{{trendTopLabel}}</text>，¥{{trendTopText}}
       </view>
     </view>
+  </view>
+
+  <!-- ============ 年月选择器（两级抽屉） ============ -->
+  <view class="sheet-mask {{pickerShow ? 'show' : ''}}" wx:if="{{pickerShow}}"
+        bindtap="closePicker" catchtouchmove="noop"></view>
+  <view class="sheet {{pickerShow ? 'show' : ''}}" wx:if="{{pickerShow}}" catchtap="noop">
+    <view class="sheet-handle"></view>
+    <view class="sheet-head">
+      <text class="sh-cancel" bindtap="closePicker">取消</text>
+      <text class="sh-title">选择年月</text>
+      <text class="sh-ok" wx:if="{{pickerStep === 'month'}}" bindtap="backToYears">选年份</text>
+      <text class="sh-ok dim" wx:else>{{decadeStart}} - {{decadeStart + 9}}</text>
+    </view>
+
+    <!-- 年份视图：十年分页网格 -->
+    <view class="py-body" wx:if="{{pickerStep === 'year'}}">
+      <view class="py-nav">
+        <view class="py-nav-btn" bindtap="prevDecade">‹</view>
+        <text class="py-nav-label">{{decadeStart}} - {{decadeStart + 9}}</text>
+        <view class="py-nav-btn {{canNextDecade ? '' : 'off'}}" bindtap="nextDecade">›</view>
+      </view>
+      <view class="py-grid">
+        <view class="py-cell {{item === pickedYear ? 'on' : ''}} {{item > maxYear || item < minYear ? 'off' : ''}}"
+              wx:for="{{years}}" wx:key="*this" data-y="{{item}}"
+              bindtap="pickYear">{{item}}</view>
+      </view>
+      <view class="py-tip">选择年份后，再选月份</view>
+    </view>
+
+    <!-- 月份视图：1-12 月网格 -->
+    <view class="py-body" wx:else>
+      <view class="py-month-title">{{pickedYear}} 年</view>
+      <view class="py-grid month">
+        <view class="py-cell month {{item === pickedMonth ? 'on' : ''}} {{item > maxMonth ? 'off' : ''}}"
+              wx:for="{{months}}" wx:key="*this" data-m="{{item}}"
+              bindtap="pickMonth">{{item}}月</view>
+      </view>
+      <view class="py-tip">灰色月份尚无记录，也可选择查看空账</view>
+    </view>
+    <view class="sheet-safe"></view>
   </view>
 
 </view>

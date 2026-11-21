@@ -26,7 +26,19 @@ Page({
     trend: [],
     trendAvgText: '',
     trendTopLabel: '',
-    trendTopText: ''
+    trendTopText: '',
+    // 年月选择器：两级抽屉（年份网格 → 月份网格）
+    pickerShow: false,
+    pickerStep: 'year',
+    years: [],
+    months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    decadeStart: 2020,
+    pickedYear: 0,
+    pickedMonth: 0,
+    minYear: 0,
+    maxYear: 0,
+    maxMonth: 12,
+    canNextDecade: false
   },
 
   onLoad() {
@@ -241,6 +253,82 @@ Page({
         ctx.font = 'bold 21px sans-serif'
         ctx.fillText('¥' + M.short(total), cx, cy + 11)
       })
+  },
+
+  /* ---------------- 年月选择器 ---------------- */
+
+  /** 生成某个十年页的年份数组（起始年 → 起始年+9） */
+  buildDecade(start) {
+    const out = []
+    for (let y = start; y < start + 10; y++) out.push(y)
+    return out
+  },
+
+  /** 打开抽屉：范围 = [最早有记录月, 当前月]，默认定位到当前所选年月的十年页 */
+  openMonthPicker() {
+    const cur = D.parseMonth(D.thisMonth())
+    const keys = store.getMonthKeys().filter(function (k) { return k <= D.thisMonth() })
+    const first = keys.length ? D.parseMonth(keys[keys.length - 1]) : cur
+    const sel = D.parseMonth(this.data.ym || D.thisMonth())
+    const decade = Math.floor(sel.y / 10) * 10     // 落在所选年份所在十年页
+    const maxDecade = Math.floor(cur.y / 10) * 10
+    this.setData({
+      pickerShow: true,
+      pickerStep: 'year',
+      years: this.buildDecade(decade),
+      decadeStart: decade,
+      pickedYear: sel.y,
+      pickedMonth: sel.m,
+      minYear: first.y,
+      maxYear: cur.y,
+      maxMonth: cur.y === sel.y ? cur.m : 12,
+      canNextDecade: decade < maxDecade
+    })
+  },
+
+  closePicker() { this.setData({ pickerShow: false }) },
+  noop() {},   // 拦截冒泡与 touchmove，避免底层滚动
+
+  prevDecade() {
+    const start = this.data.decadeStart - 10
+    // 不允许翻到早于最早记录年的十年页
+    if (start + 9 < this.data.minYear) return
+    this.setData({
+      decadeStart: start,
+      years: this.buildDecade(start),
+      canNextDecade: true
+    })
+  },
+
+  nextDecade() {
+    if (!this.data.canNextDecade) return
+    const start = this.data.decadeStart + 10
+    const maxDecade = Math.floor(this.data.maxYear / 10) * 10
+    this.setData({
+      decadeStart: start,
+      years: this.buildDecade(start),
+      canNextDecade: start < maxDecade
+    })
+  },
+
+  pickYear(e) {
+    const y = Number(e.currentTarget.dataset.y)
+    if (y > this.data.maxYear || y < this.data.minYear) return
+    this.setData({
+      pickerStep: 'month',
+      pickedYear: y,
+      maxMonth: y === this.data.maxYear ? D.parseMonth(D.thisMonth()).m : 12
+    })
+  },
+
+  backToYears() { this.setData({ pickerStep: 'year' }) },
+
+  pickMonth(e) {
+    const m = Number(e.currentTarget.dataset.m)
+    if (m > this.data.maxMonth) return
+    const ym = this.data.pickedYear + '-' + (m < 10 ? '0' + m : m)
+    this.closePicker()
+    this.load(ym)   // 一处联动全部统计区块 + 环形图重绘
   },
 
   /* ---------------- 交互 ---------------- */

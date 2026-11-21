@@ -40,6 +40,7 @@
   align-items: center;
   justify-content: center;
 }
+.mb-tap { opacity: .7; }
 .mb-live {
   font-size: 20rpx;
   font-weight: 500;
@@ -48,6 +49,12 @@
   border-radius: var(--r-chip);
   padding: 3rpx 12rpx;
   margin-left: 12rpx;
+}
+.mb-caret {
+  font-size: 20rpx;
+  color: var(--pink);
+  margin-left: 10rpx;
+  font-weight: 400;
 }
 
 /* ============ 总额卡 ============ */
@@ -313,4 +320,73 @@
   font-size: 24rpx;
   color: var(--ink-2);
   margin-top: 8rpx;
+}
+
+
+/* ============ 年月选择器（两级抽屉，复用公共 .sheet/.sheet-head） ============ */
+.sh-ok.dim { color: var(--ink-3); font-weight: 400; }
+.py-body { max-height: 60vh; overflow-y: auto; }
+.py-nav, .py-month-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-3) 0 var(--sp-2);
+}
+.py-month-title {
+  font-size: var(--fs-headline);
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -1rpx;
+}
+.py-nav-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  color: var(--pink);
+  background: var(--card);
+  border-radius: var(--r-full);
+  box-shadow: var(--sh-card);
+}
+.py-nav-btn.off { color: var(--ink-3); background: var(--bg-2); box-shadow: none; }
+.py-nav-label {
+  min-width: 240rpx;
+  text-align: center;
+  font-size: var(--fs-body);
+  font-weight: 700;
+  color: var(--ink);
+}
+.py-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  padding: var(--sp-2) 0 var(--sp-3);
+}
+.py-cell {
+  width: 148rpx;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-body-lg);
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--bg-2);
+  border-radius: var(--r-card);
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.py-cell.month { font-size: var(--fs-body); }
+.py-cell.on {
+  background: var(--accent-solid);
+  color: var(--on-accent);
+  box-shadow: var(--sh-pop);
+}
+.py-cell.off { color: var(--ink-3); background: transparent; border: 1rpx solid var(--line); }
+.py-tip {
+  font-size: var(--fs-caption);
+  color: var(--ink-3);
+  text-align: center;
+  padding: var(--sp-2) 0 var(--sp-4);
 }
