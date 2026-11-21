@@ -551,6 +551,16 @@ view, text, input, textarea, scroll-view, button {
 }
 .page-enter { animation: page-enter 320ms var(--ease) both; }
 
+/* 页面转场内容淡入（配合系统右滑/tab 切换）。
+ * 关键：animation-fill-mode:both 锁定终态 opacity:1，绝不会卡在中途的半透明
+ * （历史事故：wx.createAnimation 两段式在真机卡在 .55 导致整页发灰，已废弃）。
+ * 只动 opacity，不碰 transform，避免破坏 fixed 装饰层的包含块。 */
+@keyframes page-fade {
+  from { opacity: .6; }
+  to   { opacity: 1; }
+}
+.page-fade { animation: page-fade 260ms var(--ease) both; }
+
 /* 内容加载：列表项逐个渐显（animation-fill-mode: both 避免闪烁） */
 @keyframes fade-in {
   from { opacity: 0; }
@@ -569,7 +579,7 @@ view, text, input, textarea, scroll-view, button {
 
 /* 尊重系统「减弱动态效果」设置 */
 @media (prefers-reduced-motion: reduce) {
-  .rise, .rise-2, .rise-3, .page-enter, .fade-in, .fade-in-2, .fade-in-3, .pop-in, .empty,
+  .rise, .rise-2, .rise-3, .page-enter, .page-fade, .fade-in, .fade-in-2, .fade-in-3, .pop-in, .empty,
   .q-item, .rec, .bar-fill, .bar-col-fill, .rk-fill, .tr-fill, .btn, .card-tap, .seg-item,
   .list-row, .cell, .sheet, .sheet-mask, .type-seg-i, .cat, .seg-a, .th-item {
     animation: none !important;

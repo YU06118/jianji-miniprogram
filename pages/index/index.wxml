@@ -1,4 +1,4 @@
-<view class="page {{theme}} {{modeClass}} {{perf}}" animation="{{pageAnim}}">
+<view class="page {{theme}} {{modeClass}} {{perf}} {{pageFade ? 'page-fade' : ''}}">
 
   <view class="aurora" aria-hidden="true">
     <view class="aurora-blob aurora-b1"></view>
@@ -6,7 +6,7 @@
   </view>
 
   <!-- ================= 顶部：本月还能花多少 ================= -->
-  <view class="hero page-enter tone-{{bs.tone}}">
+  <view class="hero tone-{{bs.tone}}">
     <view class="hero-mask1"></view>
     <view class="hero-mask2"></view>
 
