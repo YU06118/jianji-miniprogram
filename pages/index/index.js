@@ -24,6 +24,8 @@ Page({
     weekText: '0',
     weekMaxText: '0',
     recent: [],
+    // 新手必读：默认收起，低调展示
+    showHow: false,
     // 记一笔弹窗：表单保存即记账；常用档位在面板内一点即记
     cqSheet: false,
     cqCats: C.catsOf('expense'),
@@ -137,6 +139,10 @@ Page({
 
   goStats() {
     wx.switchTab({ url: '/pages/stats/stats' })
+  },
+
+  toggleHow() {
+    this.setData({ showHow: !this.data.showHow })
   },
 
   goBudget() {
