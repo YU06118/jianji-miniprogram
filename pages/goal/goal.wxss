@@ -3,11 +3,13 @@
 /* ============ 汇总卡 ============ */
 .hero {
   position: relative;
-  margin: 24rpx 28rpx 0;
+  /* 首屏顶距由 .page padding-top 承载；translateZ 修渲染裁切伪影 */
+  margin: 0 28rpx 0;
   padding: 36rpx 36rpx 34rpx;
   border-radius: var(--r-card);
   overflow: hidden;
-  color: #FFFFFF;
+  transform: translateZ(0);
+  color: var(--on-accent);
   background: var(--amber-solid);
   box-shadow: var(--sh-card);
 }
@@ -42,7 +44,7 @@
   font-size: 86rpx;
   font-weight: 700;
   letter-spacing: -2rpx;
-  line-height: 1;
+  line-height: 1.05;
 }
 .hero-sub {
   position: relative;
@@ -343,6 +345,9 @@
 }
 .dp-in {
   flex: 1;
+  /* input 默认内容高约 52.5rpx 且裁字：显式给高（≥1.4×72≈100rpx） */
+  height: 104rpx;
+  line-height: 104rpx;
   font-size: 72rpx;
   font-weight: 700;
   color: var(--ink);

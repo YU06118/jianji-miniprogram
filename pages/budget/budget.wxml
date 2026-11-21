@@ -1,4 +1,4 @@
-<view class="page {{theme}} {{modeClass}}">
+<view class="page {{theme}} {{modeClass}} page-has-bar">
 
   <!-- ============ 总预算 ============ -->
   <view class="wrap">

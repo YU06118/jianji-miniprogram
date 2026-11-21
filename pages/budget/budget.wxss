@@ -13,7 +13,7 @@
 /* ============ 总预算输入 ============ */
 .total-input {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   margin-top: 26rpx;
   padding-bottom: 20rpx;
   border-bottom: 4rpx solid var(--pink-soft);
@@ -26,6 +26,9 @@
 }
 .ti-in {
   flex: 1;
+  /* 小程序 input 默认内容高约 52.5rpx 且裁字：必须显式给高（≥1.4×字号），否则字形被压成竖椭圆 */
+  height: 100rpx;
+  line-height: 100rpx;
   font-size: 68rpx;
   font-weight: 700;
   color: var(--ink);
@@ -101,6 +104,8 @@
 }
 .cb-in {
   width: 200rpx;
+  height: 44rpx;
+  line-height: 44rpx;
   font-size: 30rpx;
   font-weight: 600;
   color: var(--ink);
@@ -129,7 +134,13 @@
 
 /* ============ 提示 ============ */
 .tip-box {
-  padding: 4rpx 40rpx 220rpx;
+  padding: 4rpx 40rpx var(--sp-5);
+}
+/* 底部固定保存条的显式预留：按钮 88 + 上下 padding 48 + 余量 64 = 200rpx + 安全区。
+   预留职责集中在页级类，替代原 tip-box 220rpx 经验值。 */
+.page-has-bar {
+  padding-bottom: calc(200rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(200rpx + env(safe-area-inset-bottom));
 }
 .tip-line {
   font-size: 23rpx;
@@ -144,6 +155,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 80;
   padding: var(--sp-3) var(--sp-gutter);
   padding-bottom: calc(var(--sp-3) + constant(safe-area-inset-bottom));
   padding-bottom: calc(var(--sp-3) + env(safe-area-inset-bottom));

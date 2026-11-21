@@ -3,10 +3,12 @@
 /* ============ 概览卡 ============ */
 .head-card {
   position: relative;
-  margin: var(--sp-4) var(--sp-gutter) var(--sp-2);
+  /* 首屏顶距由 .page padding-top 承载；translateZ 修渲染裁切伪影 */
+  margin: 0 var(--sp-gutter) var(--sp-2);
   padding: var(--sp-5) var(--sp-4);
   border-radius: var(--r-card-lg);
   overflow: hidden;
+  transform: translateZ(0);
   color: var(--on-accent);
   background: var(--accent-solid);
   box-shadow: var(--sh-raised);

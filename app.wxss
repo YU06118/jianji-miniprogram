@@ -234,6 +234,9 @@ view, text, input, textarea, scroll-view, button {
   background: var(--bg);
   color: var(--ink);
 }
+/* 切断首元素 margin-top 与 page 的外边距塌陷（否则渐变顶露出一条 window 底色缝）。
+   add-page 不加：其头部卡片自带内边距。 */
+.page { padding-top: var(--sp-4); }
 /* 深底紫→黑渐变：仅 mode-dark（显式深色 / 跟随系统深色）生效；
    浅色档 mode-light 不命中，回退上面的 var(--bg) 浅底。
    复合选择器（0,2,0）压过 add.wxss 后加载的 .add-page。 */

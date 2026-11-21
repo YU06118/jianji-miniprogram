@@ -3,10 +3,13 @@
 /* ================= 顶部主卡 ================= */
 .hero {
   position: relative;
-  margin: var(--sp-4) var(--sp-gutter) 0;
+  /* 首屏顶距由 .page 的 padding-top 承载（防 margin 塌陷露色缝）；
+     translateZ 强制独立合成层，修 devtools/WebView 对 overflow+负偏移装饰圆的裁切伪影 */
+  margin: 0 var(--sp-gutter) 0;
   padding: var(--sp-5) var(--sp-5) var(--sp-4);
   border-radius: var(--r-card-lg);
   overflow: hidden;
+  transform: translateZ(0);
   color: var(--on-accent);
   background: var(--accent-solid);
   box-shadow: var(--sh-raised);

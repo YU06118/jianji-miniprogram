@@ -5,7 +5,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 22rpx 0 10rpx;
+  /* 顶部留白由 .page padding-top 承载 */
+  padding: 0 0 10rpx;
 }
 .mb-btn {
   width: 72rpx;
