@@ -72,13 +72,14 @@
       <view class="cell" bindtap="toggleHow" hover-class="cell-on">
         <text class="c-ico">❓</text>
         <text class="c-t">怎么用</text>
-        <text class="c-go">{{showHow ? '⌄' : '›'}}</text>
+        <text class="pill-brand how-badge">新手必读</text>
+        <text class="c-go how-go">{{showHow ? '⌄' : '›'}}</text>
       </view>
       <view class="how" wx:if="{{showHow}}">
-        <view class="how-line">1 · 点「记一笔」，输金额 → 选分类 → 完成。备注里写「菜市场」，分类会自动跳过去。</view>
-        <view class="how-line">2 · 记过两次的东西会自动变成常用标签，以后点一下就记好了。</view>
-        <view class="how-line">3 · 首页最上面是「本月还能花多少」。花超了会提前提醒你，不用等到月底才发现。</view>
-        <view class="how-line">4 · 数据只存在这台手机上，不上传也不联网。换手机前记得先「备份数据」。</view>
+        <view class="how-line"><text class="how-n">1 ·</text> 点「记一笔」，输金额 → 选分类 → 完成。备注里写「菜市场」，分类会自动跳过去。</view>
+        <view class="how-line"><text class="how-n">2 ·</text> 记过两次的东西会自动变成常用标签，以后点一下就记好了。</view>
+        <view class="how-line"><text class="how-n">3 ·</text> 首页最上面是「本月还能花多少」。花超了会提前提醒你，不用等到月底才发现。</view>
+        <view class="how-line"><text class="how-n">4 ·</text> 数据只存在这台手机上，不上传也不联网。换手机前记得先「备份数据」。</view>
       </view>
     </view>
 

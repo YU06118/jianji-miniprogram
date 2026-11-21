@@ -92,15 +92,32 @@
   color: var(--danger);
 }
 
-/* ============ 使用说明 ============ */
+/* ============ 使用说明（显眼化：徽章 + 浅底卡） ============ */
+.how-badge {
+  margin-left: var(--sp-2);
+  padding: 4rpx 14rpx;
+  font-size: 22rpx;
+  font-weight: 700;
+  border-radius: var(--r-chip);
+}
+.how-go { color: var(--pink); }
 .how {
-  padding: var(--sp-2) var(--sp-4) var(--sp-4);
+  margin: var(--sp-2) var(--sp-4) var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--pink-soft);
+  border-radius: var(--r-card);
 }
 .how-line {
-  font-size: 24rpx;
+  font-size: 26rpx;
   color: var(--ink-2);
-  line-height: 1.75;
-  margin-top: 14rpx;
+  line-height: 1.7;
+  margin-top: var(--sp-2);
+}
+.how-line:first-child { margin-top: 0; }
+.how-n {
+  color: var(--pink-deep);
+  font-weight: 700;
+  margin-right: 6rpx;
 }
 
 /* ============ 关于 ============ */
