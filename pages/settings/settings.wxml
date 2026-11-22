@@ -98,7 +98,7 @@
       <view class="about">
         <text class="about-t">简记 · 数据只在本机</text>
         <text class="about-s">不联网 · 不上传 · 不注册</text>
-        <text class="about-s">v1.0.0</text>
+        <text class="about-s">v1.0.3</text>
       </view>
     </view>
 
