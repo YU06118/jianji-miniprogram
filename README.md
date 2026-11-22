@@ -9,6 +9,21 @@
 
 ---
 
+## 多端仓库导航（本端为主端）
+
+「简记」已按平台拆分为四个仓库，四端文档集合与直达入口见总导航仓库 [`YU06118/jianji`](https://github.com/YU06118/jianji)：
+
+| 平台 | 仓库 | 说明 |
+|---|---|---|
+| **微信小程序（主端，本仓库）** | [`jianji-miniprogram`](https://github.com/YU06118/jianji-miniprogram) | 移动场景快速记账 |
+| Windows 桌面端 | [`jianji-windows`](https://github.com/YU06118/jianji-windows) | Tauri v2 + SQLite，含热更新 |
+| macOS 桌面端 | [`jianji-macos`](https://github.com/YU06118/jianji-macos) | Intel + Apple Silicon，v0.1.8 |
+| Android | [`jianji-android`](https://github.com/YU06118/jianji-android) | Tauri v2 移动端骨架（APK 待产出） |
+
+各端数据口径一致：全部存本机、零网络请求；跨端迁移走 JSON 备份/导入（小票图片需手动复制）。
+
+---
+
 ## 三份文档（改代码 / 测之前先看对应的那份）
 
 | 文档 | 管什么 | 什么时候看 |
