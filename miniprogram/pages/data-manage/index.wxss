@@ -1,21 +1,11 @@
-.dm-title {
-  font-size: var(--fs-title);
-  font-weight: 600;
-  color: var(--color-text-1);
-}
+/* 数据管理：数字前置 + 两段式卡片 + 分组靠间距；全部走 theme token（INV-6） */
 
 .dm-stats {
   display: flex;
-  gap: var(--sp-2);
-  margin-top: var(--sp-4);
-}
-
-.dm-stat {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: baseline;
+  flex-wrap: wrap;
   gap: var(--sp-1);
+  margin-bottom: var(--sp-6);
 }
 
 .dm-stat__num {
@@ -24,33 +14,132 @@
   color: var(--color-accent);
 }
 
-.dm-stat__label {
-  font-size: var(--fs-caption);
-  color: var(--color-text-3);
+.dm-stat__unit {
+  font-size: var(--fs-body);
+  color: var(--color-text-1);
 }
 
-.dm-hint {
-  font-size: var(--fs-caption);
+.dm-stat__sep {
+  font-size: var(--fs-body);
   color: var(--color-text-3);
-  margin-top: var(--sp-4);
+  margin: 0 var(--sp-2);
 }
 
 .dm-actions {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
-  margin-top: var(--sp-4);
+  gap: var(--card-gap);
 }
 
 .dm-action__title {
   font-size: var(--fs-body);
   font-weight: 600;
   color: var(--color-text-1);
+  margin-bottom: var(--sp-3);
 }
 
-.dm-action__desc {
+/* B-4 能力降级 / 不可逆后果：唯一一行 caption，不堆叠成段 */
+.dm-action__risk {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+  margin-bottom: var(--sp-3);
+}
+
+.dm-paste {
+  width: 100%;
+  min-height: calc(var(--sp-7) * 2);
+  margin-top: var(--sp-3);
+  padding: var(--sp-3);
+  box-sizing: border-box;
+  font-size: var(--fs-caption);
+  color: var(--color-text-1);
+  background: var(--color-glass-fill);
+  border-radius: var(--radius-input);
+}
+
+.dm-paste__ph {
+  color: var(--color-text-3);
+}
+
+.dm-paste__row {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.dm-paste__fill,
+.dm-paste__go {
+  flex: 1;
+  text-align: center;
+  padding: var(--sp-2) 0;
+  font-size: var(--fs-caption);
+  border-radius: var(--radius-button);
+  background: var(--color-glass-fill);
+  color: var(--color-text-2);
+}
+
+.dm-paste__go {
+  color: var(--color-accent);
+}
+
+/* 预览弹层：三层数字 + 展开层，状态带文字（INV-8） */
+.dm-sheet {
+  padding: 0 var(--sp-1) var(--sp-2);
+}
+
+.dm-counts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.dm-counts__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.dm-counts__label {
+  font-size: var(--fs-body);
+  color: var(--color-text-2);
+}
+
+.dm-counts__num {
+  font-size: var(--fs-title);
+  font-weight: 700;
+  color: var(--color-text-1);
+}
+
+.dm-expand__toggle {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-caption);
+  color: var(--color-accent);
+}
+
+.dm-expand {
+  margin-top: var(--sp-2);
+  padding: var(--sp-3);
+  border-radius: var(--radius-input);
+  background: var(--color-glass-fill);
+}
+
+.dm-expand__row {
   font-size: var(--fs-caption);
   color: var(--color-text-2);
-  margin: var(--sp-2) 0 var(--sp-4);
   line-height: 1.6;
+}
+
+.dm-sheet__risk {
+  font-size: var(--fs-caption);
+  color: var(--color-expense);
+  margin-bottom: var(--sp-4);
+}
+
+.dm-sheet__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
 }

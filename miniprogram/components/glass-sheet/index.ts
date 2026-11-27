@@ -9,6 +9,11 @@ Component({
     title: { type: String, value: '' },
     /** 是否显示顶部拖拽条 */
     handle: { type: Boolean, value: true },
+    /**
+     * 语义模式：区分「覆盖导入」与「微信账单合并导入」，避免同一种弹窗混用覆盖文案。
+     * 由调用方传入，组件本身不内置任何业务文案。
+     */
+    mode: { type: String, value: '' },
   },
   data: {
     visible: false,

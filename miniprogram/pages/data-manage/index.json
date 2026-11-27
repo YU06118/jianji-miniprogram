@@ -4,6 +4,7 @@
     "glass-card": "../../components/glass-card/index",
     "glass-button": "../../components/glass-button/index",
     "glass-cell": "../../components/glass-cell/index",
+    "glass-sheet": "../../components/glass-sheet/index",
     "nav-bar": "../../components/nav-bar/index"
   }
 }

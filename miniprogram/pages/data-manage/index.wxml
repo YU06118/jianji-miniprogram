@@ -2,48 +2,103 @@
   <view class="bg-glow" />
   <nav-bar title="数据管理" />
   <view class="page-content page-content--under-nav page-stack">
-    <glass-card padded>
-      <view class="dm-title">本地数据</view>
-      <view class="dm-stats">
-        <view class="dm-stat">
-          <text class="dm-stat__num num">{{recordCount}}</text>
-          <text class="dm-stat__label">账单</text>
-        </view>
-        <view class="dm-stat">
-          <text class="dm-stat__num num">{{accountCount}}</text>
-          <text class="dm-stat__label">分类</text>
-        </view>
-        <view class="dm-stat">
-          <text class="dm-stat__num num">{{budgetCount}}</text>
-          <text class="dm-stat__label">预算</text>
-        </view>
-        <view class="dm-stat">
-          <text class="dm-stat__num num">{{tombstoneCount}}</text>
-          <text class="dm-stat__label">删除标记</text>
-        </view>
-      </view>
-      <view class="dm-hint">删除标记用于跨设备同步，不会被清除。</view>
-    </glass-card>
+    <!-- B-3 数字前置：首行即「N 条账单」，位于所有卡片之前 -->
+    <view class="dm-stats">
+      <text class="dm-stat__num num">{{recordCount}}</text>
+      <text class="dm-stat__unit">条账单</text>
+      <text class="dm-stat__sep">/</text>
+      <text class="dm-stat__num num">{{accountCount}}</text>
+      <text class="dm-stat__unit">个分类</text>
+      <text class="dm-stat__sep">/</text>
+      <text class="dm-stat__num num">{{budgetCount}}</text>
+      <text class="dm-stat__unit">项预算</text>
+    </view>
 
     <view class="dm-actions">
       <glass-card padded>
         <view class="dm-action__title">导出备份</view>
-        <view class="dm-action__desc">导出全部数据为 JSON 文件，含删除标记，可分享保存。</view>
-        <glass-button variant="primary" block bind:tapbutton="onExport">导出并分享</glass-button>
+        <glass-button variant="primary" block bind:tapbutton="onExport">备份</glass-button>
       </glass-card>
 
       <glass-card padded>
-        <view class="dm-action__title">导入恢复</view>
-        <view class="dm-action__desc">从 JSON 文件恢复数据。校验失败不写入；覆盖前需二次确认。</view>
-        <glass-button variant="secondary" block bind:tapbutton="onImport">选择文件导入</glass-button>
+        <view class="dm-action__title">导入备份</view>
+        <view class="dm-action__risk">覆盖当前全部数据，不可撤销</view>
+        <glass-button variant="danger" block bind:tapbutton="onImport">恢复</glass-button>
+      </glass-card>
+
+      <glass-card padded>
+        <view class="dm-action__title">导入微信账单</view>
+        <view class="dm-action__risk">先把 csv 发到文件传输助手</view>
+        <glass-button variant="primary" block bind:tapbutton="onImportWechat">选文件</glass-button>
+        <textarea
+          class="dm-paste"
+          placeholder="或粘贴账单内容"
+          placeholder-class="dm-paste__ph"
+          value="{{pasteText}}"
+          bindinput="onPasteInput"
+          maxlength="-1"
+        />
+        <view class="dm-paste__row">
+          <view class="dm-paste__fill" bindtap="onFillClipboard">填入剪贴板</view>
+          <view class="dm-paste__go" bindtap="onPreviewPaste">预览</view>
+        </view>
       </glass-card>
 
       <glass-cell
         title="云同步设置"
-        desc="默认关闭，P1 可插拔"
         icon="☁"
         bind:tapcell="goToCloud"
       />
     </view>
   </view>
+
+  <!-- 覆盖确认（mode=cover）：风险句 + 覆盖类动作 -->
+  <glass-sheet show="{{coverShow}}" title="导入备份" mode="cover" bind:close="onCoverCancel">
+    <view class="dm-sheet">
+      <view class="dm-sheet__risk">将覆盖 {{coverRecordCount}} 条账单、{{coverAccountCount}} 个分类，不可撤销</view>
+      <view class="dm-sheet__actions">
+        <glass-button variant="secondary" block bind:tapbutton="onCoverCancel">取消</glass-button>
+        <glass-button variant="danger" block bind:tapbutton="onCoverConfirm">覆盖导入</glass-button>
+      </view>
+    </view>
+  </glass-sheet>
+
+  <!-- 微信账单预览（mode=merge）：三层数字 + 展开层，无「覆盖」字样 -->
+  <glass-sheet show="{{mergeShow}}" title="{{previewTitle}}" mode="merge" bind:close="onMergeCancel">
+    <view class="dm-sheet" wx:if="{{preview}}">
+      <view class="dm-counts">
+        <view class="dm-counts__row">
+          <text class="dm-counts__label">新增</text>
+          <text class="dm-counts__num">{{preview.added}}</text>
+        </view>
+        <view class="dm-counts__row">
+          <text class="dm-counts__label">跳过重复</text>
+          <text class="dm-counts__num">{{preview.skippedByTxnId + preview.skippedByCount}}</text>
+        </view>
+        <view class="dm-counts__row">
+          <text class="dm-counts__label">不计入</text>
+          <text class="dm-counts__num">{{preview.neutral + preview.refundFull + preview.errorRows}}</text>
+        </view>
+      </view>
+
+      <view class="dm-expand__toggle" bindtap="onToggleExpand">{{expanded ? '收起' : '明细'}}</view>
+      <view class="dm-expand" wx:if="{{expanded}}">
+        <view class="dm-expand__row">中性交易 {{preview.neutral}}</view>
+        <view class="dm-expand__row">已退款 {{preview.refundFull}}</view>
+        <view class="dm-expand__row">无法识别行 {{preview.errorRows}}</view>
+        <view class="dm-expand__row">跳过(单号) {{preview.skippedByTxnId}}</view>
+        <view class="dm-expand__row">跳过(计数对齐) {{preview.skippedByCount}}</view>
+        <view class="dm-expand__row" wx:if="{{preview.fromPaste}}">未做笔数校验</view>
+        <view class="dm-expand__row" wx:if="{{!preview.selfChecked}}">声明与解析不一致</view>
+        <view class="dm-expand__row" wx:for="{{preview.differences}}" wx:key="category">
+          {{item.category}} {{item.parsedCount}} 笔
+        </view>
+      </view>
+
+      <view class="dm-sheet__actions">
+        <glass-button variant="secondary" block bind:tapbutton="onMergeCancel">取消</glass-button>
+        <glass-button variant="primary" block disabled="{{importing}}" bind:tapbutton="onMergeConfirm">导入 {{preview.added}} 笔</glass-button>
+      </view>
+    </view>
+  </glass-sheet>
 </view>
