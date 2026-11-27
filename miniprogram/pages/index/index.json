@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "简记",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "light",
+  "usingComponents": {
+    "glass-card": "../../components/glass-card/index",
+    "number-roller": "../../components/number-roller/index"
+  }
+}

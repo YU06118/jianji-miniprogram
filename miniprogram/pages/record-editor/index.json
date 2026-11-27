@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "记一笔",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "glass-card": "../../components/glass-card/index",
+    "glass-button": "../../components/glass-button/index",
+    "amount-pad": "../../components/amount-pad/index",
+    "date-wheel": "../../components/date-wheel/index"
+  }
+}

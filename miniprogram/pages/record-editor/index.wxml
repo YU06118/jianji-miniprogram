@@ -1,0 +1,100 @@
+<view class="theme-root editor-root {{compat && compat.rootClass ? compat.rootClass : ''}} {{closing ? 'editor-root--closing' : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <!-- 收入/支出切换 -->
+  <view class="editor-header">
+    <view class="editor-close" bindtap="onClose">✕</view>
+    <view class="editor-tabs">
+      <view
+        class="editor-tab {{type === 'expense' ? 'editor-tab--active' : ''}}"
+        data-type="expense"
+        bindtap="onTypeChange"
+      >支出</view>
+      <view
+        class="editor-tab {{type === 'income' ? 'editor-tab--active editor-tab--income' : ''}}"
+        data-type="income"
+        bindtap="onTypeChange"
+      >收入</view>
+    </view>
+    <view class="editor-header-spacer" />
+  </view>
+
+  <!-- 金额大字区：符号 + 金额，不靠颜色区分 -->
+  <glass-card padded extClass="editor-amount">
+    <view class="editor-amount__label">{{type === 'income' ? '收入金额' : '支出金额'}}</view>
+    <view class="editor-amount__value {{type === 'income' ? 'text-income' : 'text-expense'}}">
+      <text class="editor-amount__sign">{{type === 'income' ? '+' : '−'}}</text>
+      <text class="num">{{amountText}}</text>
+    </view>
+  </glass-card>
+
+  <!-- 分类玻璃网格：选中态 transform scale + 颜色过渡 -->
+  <scroll-view class="editor-categories" scroll-y>
+    <view class="editor-section-title">选择分类</view>
+    <view class="editor-grid">
+      <view
+        wx:for="{{accounts}}"
+        wx:key="_id"
+        class="editor-grid__item {{selectedAccountId === item._id ? 'editor-grid__item--active' : ''}}"
+        data-id="{{item._id}}"
+        bindtap="onSelectAccount"
+      >
+        <view class="editor-grid__icon">{{item.icon}}</view>
+        <view class="editor-grid__name">{{item.name}}</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 备注/日期/图片 -->
+  <glass-card padded extClass="editor-meta">
+    <view class="editor-meta__row" hover-class="editor-meta__row--hover" hover-start-time="0" hover-stay-time="120" bindtap="onOpenDate">
+      <text class="editor-meta__label">日期</text>
+      <view class="editor-meta__value editor-meta__value--date">
+        {{date}}<text class="editor-meta__chevron"> ›</text>
+      </view>
+      <view
+        class="editor-meta__today {{todayPressed ? 'editor-meta__today--pressed' : ''}}"
+        data-key="today"
+        catch:touchstart="onTodayTouchStart"
+        catch:touchend="onTodayTouchEnd"
+        catch:touchcancel="onTodayTouchEnd"
+        catch:tap="onToday"
+      >今天</view>
+    </view>
+    <view class="editor-meta__row">
+      <text class="editor-meta__label">备注</text>
+      <input
+        class="editor-meta__input"
+        value="{{note}}"
+        placeholder="添加备注（选填）"
+        maxlength="100"
+        bindinput="onNoteInput"
+      />
+    </view>
+    <view class="editor-meta__row editor-meta__row--images">
+      <text class="editor-meta__label">凭证</text>
+      <view class="editor-images">
+        <view wx:for="{{images}}" wx:key="*this" class="editor-images__item">
+          <image src="{{item}}" mode="aspectFill" lazy-load class="editor-images__img" />
+          <view class="editor-images__remove" data-index="{{index}}" bindtap="onRemoveImage">✕</view>
+        </view>
+        <view wx:if="{{images.length < 3}}" class="editor-images__add" bindtap="onAddImages">＋</view>
+      </view>
+    </view>
+  </glass-card>
+
+  <!-- 键盘区与内容区分层：键盘固定在底部 -->
+  <view class="editor-footer">
+    <glass-button variant="primary" block disabled="{{!canSave}}" bind:tapbutton="onSave">保存</glass-button>
+    <amount-pad show bind:key="onKey" />
+  </view>
+</view>
+
+<!-- 自绘日期滚轮（交互修复第三轮）：页面同级节点，不能放在 .editor-root 内——
+     其 editor-slide-in 动画的 transform 会使 position:fixed 相对该祖先解析，弹层可能落在视口外；
+     wx:if 显隐，关闭时节点不存在，杜绝 opacity:0 隐藏层拦截点击。 -->
+<date-wheel
+  wx:if="{{dateWheelShow}}"
+  value="{{date}}"
+  bindchange="onDateWheelChange"
+  bindclose="onDateWheelClose"
+/>

@@ -1,0 +1,13 @@
+{
+  "desc": "简记 - 记账工具小程序，仅索引公开说明页，数据页不索引",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "pages/about/index"
+    },
+    {
+      "action": "disallow",
+      "page": "*"
+    }
+  ]
+}

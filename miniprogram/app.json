@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/stats/index",
+    "pages/mine/index",
+    "pages/record-editor/index",
+    "pages/record-detail/index",
+    "pages/category-manage/index",
+    "pages/budget-manage/index",
+    "pages/search/index",
+    "pages/data-manage/index",
+    "pages/privacy/index",
+    "pages/terms/index",
+    "pages/about/index"
+  ],
+  "subpackages": [
+    {
+      "root": "subpackages/cloud",
+      "name": "cloud",
+      "pages": ["pages/settings/index"]
+    }
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#05030A",
+    "backgroundTextStyle": "light",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#A9A3C4",
+    "selectedColor": "#8B7BE8",
+    "backgroundColor": "#0B0716",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/stats/index", "text": "统计" },
+      { "pagePath": "pages/mine/index", "text": "我的" }
+    ]
+  },
+  "usingComponents": {},
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

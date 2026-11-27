@@ -1,0 +1,77 @@
+<view class="theme-root {{compat && compat.rootClass ? compat.rootClass : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <view class="page-content {{enterSeq === 1 ? 'anim-tab-enter-a' : (enterSeq === 2 ? 'anim-tab-enter-b' : '')}}">
+    <!-- 月份切换 + 搜索 -->
+    <view class="home-toolbar">
+      <view class="home-toolbar__month">
+        <view class="home-toolbar__arrow" bindtap="onPrevMonth">‹</view>
+        <text class="home-toolbar__label">{{currentMonth}}</text>
+        <view class="home-toolbar__arrow" bindtap="onNextMonth">›</view>
+      </view>
+      <view class="home-toolbar__search" bindtap="goToSearch">⌕ 搜索</view>
+    </view>
+
+    <!-- 概览卡：本月支出 / 收入 / 结余，数字滚动 -->
+    <glass-card padded extClass="home-overview">
+      <view class="home-overview__col">
+        <text class="home-overview__label">支出</text>
+        <view class="home-overview__value text-expense">
+          <text>− ¥</text><number-roller value="{{expenseCents}}" />
+        </view>
+      </view>
+      <view class="home-overview__divider" />
+      <view class="home-overview__col">
+        <text class="home-overview__label">收入</text>
+        <view class="home-overview__value text-income">
+          <text>+ ¥</text><number-roller value="{{incomeCents}}" />
+        </view>
+      </view>
+      <view class="home-overview__divider" />
+      <view class="home-overview__col">
+        <text class="home-overview__label">结余</text>
+        <view class="home-overview__value">
+          <text>¥</text><number-roller value="{{balanceCents}}" />
+        </view>
+      </view>
+    </glass-card>
+
+    <!-- 按日分组账单列表：日分组吸顶 -->
+    <view wx:if="{{empty}}" class="home-empty">
+      <view class="home-empty__icon">◌</view>
+      <view class="home-empty__text">本月还没有记录</view>
+      <view class="home-empty__hint">点右下角「＋」记第一笔</view>
+    </view>
+
+    <view wx:else class="home-groups">
+      <view wx:for="{{groups}}" wx:for-item="group" wx:key="date" class="home-group">
+        <view class="home-group__header">
+          <text class="home-group__date">{{group.date}}</text>
+          <text class="home-group__total num">− ¥{{group.totalText}}</text>
+        </view>
+        <view
+          wx:for="{{group.records}}"
+          wx:for-item="record"
+          wx:key="_id"
+          class="home-record {{collapsingId === record._id ? 'home-record--collapsing' : ''}}"
+          data-id="{{record._id}}"
+          bindtap="onEditRecord"
+          bindlongpress="onDeleteRecord"
+        >
+          <view class="home-record__icon">{{record.icon}}</view>
+          <view class="home-record__body">
+            <view class="home-record__name">{{record.name}}</view>
+            <view wx:if="{{record.note}}" class="home-record__note">{{record.note}}</view>
+          </view>
+          <view class="home-record__amount {{record.type === 'income' ? 'text-income' : 'text-expense'}}">
+            {{record.type === 'income' ? '+' : '−'}} ¥{{record.amountText}}
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{loading}}" class="home-loading">加载中…</view>
+      <view wx:elif="{{!hasMore}}" class="home-loading">没有更多了</view>
+    </view>
+  </view>
+
+  <!-- 悬浮记一笔 -->
+  <view class="home-fab" bindtap="goToEditor">＋</view>
+</view>

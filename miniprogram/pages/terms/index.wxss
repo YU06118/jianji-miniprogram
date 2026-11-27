@@ -1,0 +1,4 @@
+.legal-title { font-size: var(--fs-title-lg); font-weight: 700; color: var(--color-text-1); }
+.legal-date { font-size: var(--fs-caption); color: var(--color-text-3); margin-top: var(--sp-2); margin-bottom: var(--sp-4); }
+.legal-h { font-size: var(--fs-body); font-weight: 600; color: var(--color-accent); margin-top: var(--sp-4); }
+.legal-p { font-size: var(--fs-body); color: var(--color-text-2); line-height: 1.8; margin-top: var(--sp-2); }

@@ -1,0 +1,36 @@
+<view class="theme-root {{pageEnterSeq === 1 ? 'anim-page-enter-a' : (pageEnterSeq === 2 ? 'anim-page-enter-b' : 'anim-page-enter-idle')}} {{compat && compat.rootClass ? compat.rootClass : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <nav-bar title="预算设置" />
+  <view class="page-content page-content--under-nav">
+    <view class="budget-head">
+      <view class="budget-head__month">{{month}} 预算</view>
+      <view class="budget-head__hint">选择条目后设置金额</view>
+    </view>
+
+    <glass-card padded extClass="budget-list">
+      <view
+        wx:for="{{items}}"
+        wx:key="accountId"
+        class="budget-item {{selectedIndex === index ? 'budget-item--active' : ''}}"
+        data-index="{{index}}"
+        bindtap="onSelect"
+      >
+        <view class="budget-item__name">{{item.name}}</view>
+        <view class="budget-item__value num">{{item.amountText}}</view>
+      </view>
+    </glass-card>
+
+    <glass-card padded extClass="budget-editor">
+      <view class="budget-editor__label">{{selectedName}} · 预算金额</view>
+      <view class="budget-editor__amount num">¥ {{amountText}}</view>
+      <view class="budget-editor__actions">
+        <glass-button variant="primary" block bind:tapbutton="onSave">保存</glass-button>
+        <glass-button variant="secondary" block bind:tapbutton="onClear">清除</glass-button>
+      </view>
+    </glass-card>
+  </view>
+
+  <view class="budget-footer">
+    <amount-pad show bind:key="onKey" />
+  </view>
+</view>

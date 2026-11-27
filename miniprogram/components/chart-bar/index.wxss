@@ -1,0 +1,57 @@
+/* 趋势柱图：canvas 主渲染 + view 降级 */
+.bar-wrap {
+  position: relative;
+  width: 100%;
+  height: 160px;
+}
+
+.bar-canvas {
+  width: 100%;
+  height: 160px;
+}
+
+.bar-canvas--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bar-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-1);
+}
+
+.bar-fallback__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.bar-fallback__track {
+  flex: 1;
+  width: 60%;
+  display: flex;
+  align-items: flex-end;
+  background: var(--color-divider);
+  border-radius: var(--radius-input);
+  overflow: hidden;
+}
+
+.bar-fallback__fill {
+  width: 100%;
+  background: var(--color-accent);
+}
+
+.bar-fallback__fill--highlight {
+  background: var(--color-expense);
+}
+
+.bar-fallback__label {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+  margin-top: var(--sp-1);
+}

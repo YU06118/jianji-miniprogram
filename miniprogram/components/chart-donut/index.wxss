@@ -1,0 +1,12 @@
+/* 环形图：canvas 2d 节点，尺寸由父容器约束 */
+.donut-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.donut-canvas {
+  width: 240px;
+  height: 240px;
+}

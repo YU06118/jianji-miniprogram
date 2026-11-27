@@ -1,0 +1,93 @@
+/* GlassButton：按压态 scale(0.98) + 轻微透明度，回弹不突变 */
+.glass-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--sp-7);
+  padding: var(--sp-3) var(--sp-5);
+  border-radius: var(--radius-button);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--color-text-1);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  transition:
+    transform var(--dur-micro) var(--ease-standard),
+    opacity var(--dur-micro) var(--ease-standard);
+}
+
+.glass-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(160deg, var(--color-glass-highlight), var(--color-divider));
+  -webkit-mask:
+    linear-gradient(var(--color-mask-solid) 0 0) content-box,
+    linear-gradient(var(--color-mask-solid) 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.glass-btn--block {
+  display: flex;
+  width: 100%;
+}
+
+.glass-btn--primary {
+  background: var(--color-brand-gradient);
+  box-shadow: var(--shadow-card);
+}
+
+.glass-btn--secondary {
+  background: var(--color-glass-fill);
+}
+
+.glass-btn--danger {
+  background: var(--color-danger-tint);
+  color: var(--color-expense);
+}
+
+.glass-btn--pressed {
+  transform: scale(var(--scale-press));
+  opacity: 0.9;
+}
+
+.glass-btn--disabled {
+  color: var(--color-text-weak);
+  pointer-events: none;
+}
+
+.glass-btn__content {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.glass-btn__spinner {
+  width: var(--sp-4);
+  height: var(--sp-4);
+  border: 2px solid var(--color-divider);
+  border-top-color: var(--color-accent);
+  border-radius: var(--radius-pill);
+  animation: glass-spin var(--dur-long) linear infinite;
+}
+
+@keyframes glass-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.glass--fallback .glass-btn {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: var(--color-glass-fallback);
+}
+
+.glass--fallback .glass-btn--primary {
+  background: var(--color-brand-gradient);
+}

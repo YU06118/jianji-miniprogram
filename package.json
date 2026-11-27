@@ -1,0 +1,31 @@
+{
+  "name": "jianji-miniprogram",
+  "version": "0.1.0",
+  "private": true,
+  "description": "简记 - 轻量个人记账小程序（原生 + TypeScript）",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint \"miniprogram/**/*.ts\"",
+    "format:check": "prettier --check \"miniprogram/**/*.{ts,json}\"",
+    "format": "prettier --write \"miniprogram/**/*.{ts,json}\"",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "verify:static": "node scripts/verify-static.js",
+    "verify:all": "npm run verify:static && npm run typecheck && npm run lint && npm run test -- --runInBand"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "jest": "^29.7.0",
+    "miniprogram-api-typings": "^3.12.0",
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

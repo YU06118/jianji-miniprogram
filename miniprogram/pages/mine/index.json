@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "简记",
+  "usingComponents": {
+    "glass-card": "../../components/glass-card/index",
+    "glass-button": "../../components/glass-button/index",
+    "glass-cell": "../../components/glass-cell/index"
+  }
+}

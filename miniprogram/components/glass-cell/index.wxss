@@ -1,0 +1,70 @@
+/* GlassCell：cell 按压反馈，分隔线只用 divider token */
+.glass-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--sp-7);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--color-glass-fill);
+  border-radius: var(--radius-card);
+  transition:
+    transform var(--dur-micro) var(--ease-standard),
+    opacity var(--dur-micro) var(--ease-standard);
+}
+
+.glass-cell--pressed {
+  transform: scale(var(--scale-press));
+  opacity: 0.9;
+}
+
+.glass-cell__icon {
+  width: var(--sp-6);
+  text-align: center;
+  font-size: var(--fs-title);
+  color: var(--color-accent);
+}
+
+.glass-cell__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.glass-cell__title {
+  font-size: var(--fs-body);
+  color: var(--color-text-1);
+}
+
+.glass-cell__title--danger {
+  color: var(--color-expense);
+}
+
+.glass-cell__desc {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+  margin-top: var(--sp-1);
+}
+
+.glass-cell__right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-shrink: 0;
+}
+
+.glass-cell__value {
+  font-size: var(--fs-caption);
+  color: var(--color-text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.glass-cell__arrow {
+  width: var(--sp-2);
+  height: var(--sp-2);
+  border-top: 2px solid var(--color-text-weak);
+  border-right: 2px solid var(--color-text-weak);
+  transform: rotate(45deg);
+}
+
+.glass--fallback .glass-cell {
+  background: var(--color-glass-fallback);
+}

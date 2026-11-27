@@ -1,0 +1,16 @@
+<view class="bar-wrap">
+  <!-- 降级视图：canvas 节点未就绪时显示 -->
+  <view wx:if="{{!canvasReady}}" class="bar-fallback">
+    <view wx:for="{{fallbackBars}}" wx:key="label" class="bar-fallback__col">
+      <view class="bar-fallback__track">
+        <view
+          class="bar-fallback__fill {{item.highlight ? 'bar-fallback__fill--highlight' : ''}}"
+          style="height: {{item.heightPercent}}%"
+        />
+      </view>
+      <view class="bar-fallback__label">{{item.label}}</view>
+    </view>
+  </view>
+  <!-- canvas 2d 主渲染：节点常驻 DOM（否则首次查询不到），就绪后覆盖降级视图 -->
+  <canvas type="2d" id="bar-canvas" class="bar-canvas {{canvasReady ? '' : 'bar-canvas--hidden'}}" />
+</view>

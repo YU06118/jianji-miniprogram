@@ -1,0 +1,107 @@
+/*
+ * DateWheel（交互修复第二轮 A / 第三轮改造）：
+ * - 显隐由页面侧 wx:if 控制（本组件不再有 show 属性）：关闭时节点不存在，
+ *   杜绝 opacity:0 全屏隐藏层拦截点击（第三轮定位的可能性三）；
+ * - 组件内用 visible 两段式：节点创建后下一拍再加 --show，让进场过渡生效；
+ * - 定位用显式 top/left/right/bottom（不用 inset 简写，规避旧内核）；
+ * - 行高 36px = calc(var(--sp-7) + var(--sp-1))，与 index.ts 的 ITEM_H 严格对齐；
+ * - 只动 transform/opacity；时长走 token。
+ */
+.date-wheel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-sheet);
+  opacity: 0;
+  transition: opacity var(--dur-medium) var(--ease-standard);
+}
+
+.date-wheel--show {
+  opacity: 1;
+}
+
+.date-wheel__mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-overlay);
+}
+
+.date-wheel__panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-tab-bg-solid);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  transform: translateY(100%);
+  transition: transform var(--dur-medium) var(--ease-standard);
+}
+
+.date-wheel--show .date-wheel__panel {
+  transform: translateY(0);
+}
+
+.date-wheel__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-3) var(--page-gutter);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.date-wheel__btn {
+  min-width: calc(var(--sp-7) + var(--sp-3));
+  padding: var(--sp-2) var(--sp-3);
+  text-align: center;
+  font-size: var(--fs-body);
+  color: var(--color-text-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-glass-fill);
+}
+
+.date-wheel__btn--accent {
+  color: var(--color-accent);
+}
+
+.date-wheel__btn--ok {
+  color: var(--color-text-1);
+  background: var(--color-glass-highlight);
+  font-weight: 600;
+}
+
+.date-wheel__cols {
+  display: flex;
+  padding: var(--sp-3) var(--page-gutter) var(--sp-5);
+}
+
+/* 列高 = 5 项 × 36px = calc((var(--sp-7) + var(--sp-1)) * 5) */
+.date-wheel__col {
+  flex: 1;
+  height: calc((var(--sp-7) + var(--sp-1)) * 5);
+}
+
+.date-wheel__item {
+  height: calc(var(--sp-7) + var(--sp-1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-title);
+  color: var(--color-text-2);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-short) var(--ease-standard);
+}
+
+.date-wheel__item--sel {
+  color: var(--color-text-1);
+  font-weight: 600;
+}
+
+.date-wheel__pad {
+  height: calc(var(--sp-7) + var(--sp-1));
+}

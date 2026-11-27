@@ -1,0 +1,36 @@
+<view class="theme-root {{pageEnterSeq === 1 ? 'anim-page-enter-a' : (pageEnterSeq === 2 ? 'anim-page-enter-b' : 'anim-page-enter-idle')}} {{compat && compat.rootClass ? compat.rootClass : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <nav-bar title="账单详情" />
+  <view class="page-content page-content--under-nav">
+    <view wx:if="{{notFound}}" class="detail-empty">记录不存在或已删除</view>
+    <block wx:else>
+      <glass-card padded extClass="detail-card">
+        <view class="detail-card__type">{{type === 'income' ? '收入' : '支出'}}</view>
+        <view class="detail-card__amount {{type === 'income' ? 'text-income' : 'text-expense'}}">
+          {{type === 'income' ? '+' : '−'}} ¥{{amountText}}
+        </view>
+        <view class="divider detail-card__divider" />
+        <view class="detail-row"><text class="detail-row__label">分类</text><text>{{accountIcon}} {{accountName}}</text></view>
+        <view class="detail-row"><text class="detail-row__label">日期</text><text>{{date}}</text></view>
+        <view class="detail-row"><text class="detail-row__label">备注</text><text>{{note || '无'}}</text></view>
+        <view wx:if="{{images.length}}" class="detail-images">
+          <image
+            wx:for="{{images}}"
+            wx:key="*this"
+            src="{{item}}"
+            mode="aspectFill"
+            lazy-load
+            class="detail-images__img"
+            data-src="{{item}}"
+            bindtap="onPreviewImage"
+          />
+        </view>
+      </glass-card>
+
+      <view class="detail-actions">
+        <glass-button variant="secondary" block bind:tapbutton="onEdit">编辑</glass-button>
+        <glass-button variant="danger" block bind:tapbutton="onDelete">删除</glass-button>
+      </view>
+    </block>
+  </view>
+</view>

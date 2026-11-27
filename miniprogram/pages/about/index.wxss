@@ -1,0 +1,17 @@
+.about-logo {
+  width: var(--sp-7);
+  height: var(--sp-7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-button);
+  background: var(--color-brand-gradient);
+  color: var(--color-text-1);
+  font-size: var(--fs-title);
+  font-weight: 700;
+}
+.about-name { font-size: var(--fs-title-lg); font-weight: 700; color: var(--color-text-1); margin-top: var(--sp-3); }
+.about-slogan { font-size: var(--fs-body); color: var(--color-text-2); margin-top: var(--sp-1); }
+.about-divider { margin: var(--sp-4) 0; }
+.about-row { display: flex; justify-content: space-between; font-size: var(--fs-body); color: var(--color-text-2); padding: var(--sp-2) 0; }
+.about-desc { font-size: var(--fs-caption); color: var(--color-text-3); line-height: 1.8; margin-top: var(--sp-4); }

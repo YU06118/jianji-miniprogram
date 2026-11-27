@@ -1,0 +1,3 @@
+<view class="donut-wrap">
+  <canvas type="2d" id="donut-canvas" class="donut-canvas" />
+</view>

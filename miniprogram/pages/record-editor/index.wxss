@@ -1,0 +1,264 @@
+/* 记一笔：底部抽屉式全屏页，进入用 translateY + opacity */
+.editor-root {
+  position: relative;
+  min-height: 100vh;
+  animation: editor-slide-in var(--dur-enter) var(--ease-standard);
+}
+
+@keyframes editor-slide-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Q6 抽屉退出：反向滑出，动画结束才 navigateBack（见 index.ts closeWithAnimation） */
+.editor-root--closing {
+  animation: editor-slide-out var(--dur-medium) var(--ease-standard) forwards;
+  pointer-events: none;
+}
+
+@keyframes editor-slide-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* 阶段 6：优先 JS 计算的 --nav-safe-top（Android 可靠），未注入时退 env() */
+  padding: calc(var(--nav-safe-top, env(safe-area-inset-top)) + var(--sp-3)) var(--page-gutter) var(--sp-3);
+}
+
+.editor-close,
+.editor-header-spacer {
+  width: var(--sp-6);
+  font-size: var(--fs-title);
+  color: var(--color-text-2);
+}
+
+.editor-tabs {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+.editor-tab {
+  padding: var(--sp-2) var(--sp-4);
+  font-size: var(--fs-body);
+  color: var(--color-text-2);
+  border-radius: var(--radius-pill);
+  transition:
+    transform var(--dur-short) var(--ease-standard),
+    color var(--dur-short) var(--ease-standard);
+}
+
+.editor-tab--active {
+  color: var(--color-text-1);
+  background: var(--color-danger-tint);
+  transform: scale(1.04);
+}
+
+.editor-tab--active.editor-tab--income {
+  background: var(--color-income-tint);
+}
+
+.editor-amount {
+  margin: 0 var(--page-gutter) var(--sp-4);
+}
+
+.editor-amount__label {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+}
+
+.editor-amount__value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  font-size: var(--fs-amount-lg);
+  font-weight: 700;
+  margin-top: var(--sp-2);
+}
+
+.editor-amount__sign {
+  font-size: var(--fs-amount-md);
+}
+
+.editor-categories {
+  max-height: 26vh;
+  padding: 0 var(--page-gutter);
+}
+
+.editor-section-title {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+  margin-bottom: var(--sp-2);
+}
+
+.editor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-2);
+}
+
+.editor-grid__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-3) var(--sp-1);
+  border-radius: var(--radius-button);
+  background: var(--color-glass-fill);
+  transition:
+    transform var(--dur-short) var(--ease-emphasis),
+    background var(--dur-short) var(--ease-standard);
+}
+
+.editor-grid__item--active {
+  transform: scale(1.06);
+  background: var(--color-glass-highlight);
+}
+
+.editor-grid__icon {
+  font-size: var(--fs-title);
+}
+
+.editor-grid__name {
+  font-size: var(--fs-caption);
+  color: var(--color-text-2);
+}
+
+.editor-meta {
+  margin: var(--sp-4) var(--page-gutter);
+}
+
+.editor-meta__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--sp-7);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.editor-meta__row:last-child {
+  border-bottom: none;
+}
+
+.editor-meta__label {
+  flex-shrink: 0;
+  font-size: var(--fs-body);
+  color: var(--color-text-2);
+}
+
+.editor-meta__value,
+.editor-meta__input {
+  flex: 1;
+  font-size: var(--fs-body);
+  color: var(--color-text-1);
+  text-align: right;
+}
+
+/* 日期选择（第二轮 A）：整行可点唤起 date-wheel，按压反馈 */
+.editor-meta__row--hover {
+  opacity: 0.85;
+}
+
+.editor-meta__value--date {
+  padding: var(--sp-3) 0;
+  min-height: calc(var(--sp-7) + var(--sp-3));
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.editor-meta__chevron {
+  color: var(--color-text-3);
+}
+
+.editor-meta__today {
+  flex-shrink: 0;
+  margin-left: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-glass-fill);
+  color: var(--color-text-2);
+  font-size: var(--fs-caption);
+  transition:
+    transform var(--dur-micro) var(--ease-standard),
+    opacity var(--dur-micro) var(--ease-standard);
+}
+
+.editor-meta__today--pressed {
+  transform: scale(var(--scale-press));
+  opacity: 0.85;
+}
+
+.editor-meta__row--images {
+  align-items: flex-start;
+  padding-top: var(--sp-3);
+}
+
+.editor-images {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.editor-images__item,
+.editor-images__add {
+  position: relative;
+  width: var(--sp-7);
+  height: var(--sp-7);
+  border-radius: var(--radius-input);
+  overflow: hidden;
+}
+
+.editor-images__img {
+  width: 100%;
+  height: 100%;
+}
+
+.editor-images__remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--sp-4);
+  height: var(--sp-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-overlay);
+  color: var(--color-text-1);
+  font-size: var(--fs-caption);
+}
+
+.editor-images__add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-glass-fill);
+  color: var(--color-text-2);
+  font-size: var(--fs-title);
+}
+
+.editor-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-content);
+  background: var(--color-bg-bottom);
+  padding: var(--sp-3) var(--page-gutter) 0;
+}

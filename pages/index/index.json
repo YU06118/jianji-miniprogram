@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "简记",
-  "navigationBarBackgroundColor": "@navBgColor",
-  "navigationBarTextStyle": "@navTxtStyle",
-  "enablePullDownRefresh": true,
-  "backgroundColor": "@bgColor",
-  "backgroundTextStyle": "@bgTxtStyle",
-  "usingComponents": {}
-}

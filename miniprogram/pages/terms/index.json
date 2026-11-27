@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "用户协议",
+  "usingComponents": {
+    "glass-card": "../../components/glass-card/index",
+    "nav-bar": "../../components/nav-bar/index"
+  }
+}

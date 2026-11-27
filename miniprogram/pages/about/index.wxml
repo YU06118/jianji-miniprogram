@@ -1,0 +1,15 @@
+<view class="theme-root {{pageEnterSeq === 1 ? 'anim-page-enter-a' : (pageEnterSeq === 2 ? 'anim-page-enter-b' : 'anim-page-enter-idle')}} {{compat && compat.rootClass ? compat.rootClass : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <nav-bar title="关于简记" />
+  <view class="page-content page-content--under-nav">
+    <glass-card padded>
+      <view class="about-logo">简</view>
+      <view class="about-name">简记</view>
+      <view class="about-slogan">轻量、克制，打开即记</view>
+      <view class="divider about-divider" />
+      <view class="about-row"><text>版本</text><text>v{{version}}</text></view>
+      <view class="about-row"><text>最低基础库</text><text>2.30.0</text></view>
+      <view class="about-desc">简记是一款专注于快速记录的个人记账工具。数据默认保存在你的设备本地，云同步由你自主选择开启。</view>
+    </glass-card>
+  </view>
+</view>

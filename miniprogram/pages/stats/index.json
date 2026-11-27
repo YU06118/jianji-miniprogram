@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "统计",
+  "usingComponents": {
+    "glass-card": "../../components/glass-card/index",
+    "glass-button": "../../components/glass-button/index",
+    "number-roller": "../../components/number-roller/index",
+    "chart-donut": "../../components/chart-donut/index",
+    "chart-bar": "../../components/chart-bar/index"
+  }
+}

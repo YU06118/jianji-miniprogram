@@ -1,0 +1,8 @@
+<view wx:if="{{visible}}" class="sheet-root {{animating ? 'sheet-root--active' : ''}}" catchtouchmove="onSheetTap">
+  <view class="sheet-mask" bindtap="onMaskTap" />
+  <view class="sheet-panel" bindtap="onSheetTap">
+    <view wx:if="{{handle}}" class="sheet-handle" />
+    <view wx:if="{{title}}" class="sheet-title">{{title}}</view>
+    <slot />
+  </view>
+</view>

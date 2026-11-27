@@ -1,0 +1,4 @@
+/* 数字滚动：tabular-nums 已在 app.wxss 的 .num 定义，避免宽度跳动 */
+.number-roller {
+  font-variant-numeric: tabular-nums;
+}

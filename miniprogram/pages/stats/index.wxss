@@ -1,0 +1,222 @@
+.stats-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.stats-toolbar__arrow {
+  width: var(--sp-6);
+  height: var(--sp-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-title);
+  color: var(--color-text-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-glass-fill);
+}
+
+.stats-toolbar__label {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--color-text-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.stats-toolbar__budget {
+  margin-left: auto;
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-caption);
+  color: var(--color-accent);
+  border-radius: var(--radius-pill);
+  background: var(--color-glass-fill);
+}
+
+.stats-overview {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: var(--sp-4);
+}
+
+.stats-overview__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+
+.stats-overview__divider {
+  width: 1px;
+  background: var(--color-divider);
+  margin: 0 var(--sp-2);
+}
+
+.stats-overview__label {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+}
+
+.stats-overview__value {
+  display: flex;
+  align-items: baseline;
+  font-size: var(--fs-amount-md);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.stats-overview__value text {
+  font-size: var(--fs-body);
+  flex-shrink: 0;
+}
+
+.stats-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-7) 0;
+}
+
+.stats-empty__icon {
+  font-size: var(--fs-amount-lg);
+  color: var(--color-text-weak);
+}
+
+.stats-empty__text {
+  font-size: var(--fs-body);
+  color: var(--color-text-2);
+  margin-top: var(--sp-3);
+}
+
+.stats-empty__hint {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+  margin-top: var(--sp-2);
+}
+
+.stats-card {
+  margin-bottom: var(--sp-4);
+}
+
+.stats-card__title {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--color-text-1);
+  margin-bottom: var(--sp-4);
+}
+
+.stats-ratios {
+  margin-top: var(--sp-4);
+}
+
+.stats-ratio {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: var(--sp-6);
+}
+
+.stats-ratio__dot {
+  width: var(--sp-2);
+  height: var(--sp-2);
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+}
+
+.stats-ratio__name {
+  width: var(--sp-7);
+  font-size: var(--fs-caption);
+  color: var(--color-text-2);
+  flex-shrink: 0;
+}
+
+.stats-ratio__bar {
+  flex: 1;
+  height: var(--sp-1);
+  border-radius: var(--radius-pill);
+  background: var(--color-divider);
+  overflow: hidden;
+}
+
+.stats-ratio__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  transition: width var(--dur-medium) var(--ease-standard);
+}
+
+.stats-ratio__value,
+.stats-ratio__percent {
+  font-size: var(--fs-caption);
+  color: var(--color-text-2);
+  flex-shrink: 0;
+}
+
+.stats-ratio__percent {
+  width: var(--sp-6);
+  text-align: right;
+}
+
+.stats-budget-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-body);
+  color: var(--color-text-2);
+  padding: var(--sp-4) 0;
+}
+
+.stats-budget {
+  margin-bottom: var(--sp-4);
+}
+
+.stats-budget:last-child {
+  margin-bottom: 0;
+}
+
+.stats-budget__head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--sp-2);
+}
+
+.stats-budget__name {
+  font-size: var(--fs-body);
+  color: var(--color-text-1);
+}
+
+.stats-budget__num {
+  font-size: var(--fs-caption);
+  color: var(--color-text-2);
+}
+
+.stats-budget__track {
+  height: var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: var(--color-divider);
+  overflow: hidden;
+}
+
+.stats-budget__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  transition: width var(--dur-medium) var(--ease-standard);
+}
+
+.stats-budget__fill--warning {
+  background: var(--color-warning);
+}
+
+.stats-budget__fill--over {
+  background: var(--color-expense);
+}
+
+.stats-budget__foot {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+  margin-top: var(--sp-2);
+  text-align: right;
+}

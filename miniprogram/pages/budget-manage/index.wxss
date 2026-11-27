@@ -1,0 +1,75 @@
+.budget-head {
+  margin-bottom: var(--sp-4);
+}
+
+.budget-head__month {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--color-text-1);
+}
+
+.budget-head__hint {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+  margin-top: var(--sp-1);
+}
+
+.budget-list {
+  margin-bottom: var(--sp-4);
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.budget-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-button);
+  transition: background var(--dur-short) var(--ease-standard);
+}
+
+.budget-item--active {
+  background: var(--color-glass-highlight);
+}
+
+.budget-item__name {
+  font-size: var(--fs-body);
+  color: var(--color-text-1);
+}
+
+.budget-item__value {
+  font-size: var(--fs-caption);
+  color: var(--color-text-2);
+}
+
+.budget-editor {
+  margin-bottom: var(--sp-7);
+}
+
+.budget-editor__label {
+  font-size: var(--fs-caption);
+  color: var(--color-text-3);
+}
+
+.budget-editor__amount {
+  font-size: var(--fs-amount-md);
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-top: var(--sp-2);
+}
+
+.budget-editor__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+
+.budget-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-content);
+}

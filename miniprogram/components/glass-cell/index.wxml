@@ -1,0 +1,18 @@
+<view
+  class="glass-cell {{pressed ? 'glass-cell--pressed' : ''}}"
+  bindtouchstart="onTouchStart"
+  bindtouchend="onTouchEnd"
+  bindtouchcancel="onTouchCancel"
+  bindtap="onTap"
+>
+  <view class="glass-cell__icon" wx:if="{{icon}}">{{icon}}</view>
+  <view class="glass-cell__body">
+    <view class="glass-cell__title {{danger ? 'glass-cell__title--danger' : ''}}">{{title}}</view>
+    <view wx:if="{{desc}}" class="glass-cell__desc">{{desc}}</view>
+  </view>
+  <view class="glass-cell__right">
+    <text wx:if="{{value}}" class="glass-cell__value">{{value}}</text>
+    <slot wx:if="{{useSlot}}" name="right" />
+    <view wx:if="{{arrow}}" class="glass-cell__arrow" />
+  </view>
+</view>

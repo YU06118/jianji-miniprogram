@@ -1,0 +1,48 @@
+<view class="date-wheel {{visible ? 'date-wheel--show' : ''}}" catch:tap="onMask" catch:touchmove="noop">
+  <view class="date-wheel__mask" />
+  <view class="date-wheel__panel" catch:tap="noop">
+    <view class="date-wheel__bar">
+      <view class="date-wheel__btn" catch:tap="onCancel">取消</view>
+      <view class="date-wheel__btn date-wheel__btn--accent" catch:tap="onToday">今天</view>
+      <view class="date-wheel__btn date-wheel__btn--ok" catch:tap="onOk">确定</view>
+    </view>
+    <view class="date-wheel__cols">
+      <scroll-view
+        class="date-wheel__col"
+        scroll-y
+        scroll-with-animation
+        scroll-top="{{yearTop}}"
+        data-col="year"
+        bindscroll="onColScroll"
+      >
+        <view class="date-wheel__pad" /><view class="date-wheel__pad" />
+        <view wx:for="{{years}}" wx:key="*this" class="date-wheel__item {{item === selYear ? 'date-wheel__item--sel' : ''}}">{{item}}</view>
+        <view class="date-wheel__pad" /><view class="date-wheel__pad" />
+      </scroll-view>
+      <scroll-view
+        class="date-wheel__col"
+        scroll-y
+        scroll-with-animation
+        scroll-top="{{monthTop}}"
+        data-col="month"
+        bindscroll="onColScroll"
+      >
+        <view class="date-wheel__pad" /><view class="date-wheel__pad" />
+        <view wx:for="{{months}}" wx:key="*this" class="date-wheel__item {{item === selMonth ? 'date-wheel__item--sel' : ''}}">{{item}}</view>
+        <view class="date-wheel__pad" /><view class="date-wheel__pad" />
+      </scroll-view>
+      <scroll-view
+        class="date-wheel__col"
+        scroll-y
+        scroll-with-animation
+        scroll-top="{{dayTop}}"
+        data-col="day"
+        bindscroll="onColScroll"
+      >
+        <view class="date-wheel__pad" /><view class="date-wheel__pad" />
+        <view wx:for="{{days}}" wx:key="*this" class="date-wheel__item {{item === selDay ? 'date-wheel__item--sel' : ''}}">{{item}}</view>
+        <view class="date-wheel__pad" /><view class="date-wheel__pad" />
+      </scroll-view>
+    </view>
+  </view>
+</view>

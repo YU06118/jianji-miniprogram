@@ -1,0 +1,7 @@
+<view
+  class="glass-card {{padded ? 'glass-card--padded' : ''}} {{interactive ? 'glass-card--interactive' : ''}} {{extClass}}"
+  bindtap="onTap"
+>
+  <view class="glass-card__noise" wx:if="{{false}}" />
+  <slot />
+</view>

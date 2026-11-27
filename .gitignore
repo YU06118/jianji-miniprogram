@@ -12,3 +12,15 @@ $RECYCLE.BIN/
 
 # Node.js
 node_modules/
+
+# WeChat DevTools local private config
+project.private.config.json
+
+# WorkBuddy agent memory (not project asset)
+.workbuddy/
+
+# Local sync workspace
+.sync-tmp/
+
+# Logs
+*.log

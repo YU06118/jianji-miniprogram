@@ -1,0 +1,82 @@
+/* GlassSheet：遮罩淡入与面板上滑同步，进入 520ms / 退出 320ms */
+.sheet-root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-sheet);
+  pointer-events: none;
+}
+
+.sheet-mask {
+  position: absolute;
+  inset: 0;
+  background: var(--color-overlay);
+  opacity: 0;
+  transition: opacity var(--dur-medium) var(--ease-exit);
+  pointer-events: auto;
+}
+
+.sheet-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 88vh;
+  overflow: hidden;
+  padding: var(--sp-4) var(--page-gutter) calc(var(--sp-5) + env(safe-area-inset-bottom));
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  background: var(--color-glass-fallback);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-sheet);
+  transform: translateY(100%);
+  opacity: 0;
+  transition:
+    transform var(--dur-enter) var(--ease-standard),
+    opacity var(--dur-enter) var(--ease-standard);
+  pointer-events: auto;
+}
+
+.sheet-panel::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-transparent), var(--color-glass-highlight), var(--color-transparent));
+  pointer-events: none;
+}
+
+.sheet-root--active .sheet-mask {
+  opacity: 1;
+  transition: opacity var(--dur-enter) var(--ease-standard);
+}
+
+.sheet-root--active .sheet-panel {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform var(--dur-enter) var(--ease-standard),
+    opacity var(--dur-enter) var(--ease-standard);
+}
+
+.sheet-handle {
+  width: var(--sp-7);
+  height: var(--sp-1);
+  margin: 0 auto var(--sp-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-divider);
+}
+
+.sheet-title {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--color-text-1);
+  margin-bottom: var(--sp-4);
+}
+
+.glass--fallback .sheet-panel {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: var(--color-glass-fallback);
+}

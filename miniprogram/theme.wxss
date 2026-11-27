@@ -1,0 +1,107 @@
+/* theme.wxss — 设计 token 唯一来源（阶段 0 §5）
+ * 规则：任何页面/组件 wxss 不得出现十六进制色值、rgba 字面量、写死的 duration。
+ * 所有视觉量必须引用本文件变量；语义化命名，为浅色模式预留结构。
+ */
+
+page,
+.theme-root {
+  /* ===== 5.1 颜色 ===== */
+  --color-bg-top: #05030a;
+  --color-bg-bottom: #0b0716;
+  --color-brand-gradient: linear-gradient(160deg, #6d5bd0 0%, #4a3aa8 45%, #1a1330 100%);
+  --color-accent: #8b7be8;
+  --color-purple-2: #5e4fb5;
+  --color-purple-3: #2a2145;
+  --color-income: #39d0a5;
+  --color-expense: #ff6b81;
+  --color-warning: #ffb454;
+  --color-text-1: #f2f0fa;
+  --color-text-2: #a9a3c4;
+  /* #8B84A6 约 5.6:1，符合正文 ≥4.5:1 */
+  --color-text-3: #8b84a6;
+  /* #6E6889 约 3.8:1，仅限分隔符/禁用态/纯装饰，不得用于正文 */
+  --color-text-weak: #6e6889;
+  --color-divider: rgba(255, 255, 255, 0.08);
+  --color-glass-fill: rgba(255, 255, 255, 0.08);
+  --color-glass-fallback: rgba(20, 16, 40, 0.72);
+  --color-glass-highlight: rgba(255, 255, 255, 0.18);
+  /* 阶段 6 tabbar 能见度：未选中色对 tab-bg 对比度约 9:1；bg 更不透明形成面板感 */
+  --color-tab-inactive: #c7c2e0;
+  --color-tab-bg: rgba(13, 9, 26, 0.94);
+  --color-tab-bg-solid: rgba(13, 9, 26, 1);
+  --color-tab-line: rgba(255, 255, 255, 0.3);
+  --color-glow-a: rgba(109, 91, 208, 0.28);
+  --color-glow-b: rgba(94, 79, 181, 0.22);
+  --color-glow-c: rgba(42, 33, 69, 0.35);
+  --color-transparent: transparent;
+  /* 遮罩合成用的不透明掩码色（mask 语法要求，非视觉色值） */
+  --color-mask-solid: #000000;
+  --color-overlay: rgba(5, 3, 10, 0.6);
+  --color-danger-tint: rgba(255, 107, 129, 0.14);
+  --color-income-tint: rgba(57, 208, 165, 0.14);
+  --color-warning-tint: rgba(255, 180, 84, 0.14);
+
+  /* ===== 5.2 圆角 ===== */
+  --radius-card: 20px;
+  --radius-sheet: 24px;
+  --radius-button: 14px;
+  --radius-input: 12px;
+  --radius-pill: 999px;
+
+  /* ===== 5.2 间距 ===== */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --page-gutter: 16px;
+  --card-padding: 16px;
+  --card-gap: 12px;
+
+  /* ===== 5.2 字号 ===== */
+  --fs-amount-lg: 40px;
+  --fs-amount-md: 34px;
+  --fs-title: 20px;
+  --fs-body: 15px;
+  --fs-caption: 12px;
+  --font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+
+  /* ===== 5.2 阴影与层级 ===== */
+  --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.4);
+  --z-content: 1;
+  --z-tabbar: 100;
+  --z-sheet: 200;
+  --z-toast: 300;
+
+  /* ===== 5.3 动效 ===== */
+  --dur-micro: 120ms;
+  --dur-short: 200ms;
+  --dur-page-enter: 220ms;
+  --dur-medium: 320ms;
+  --dur-long: 480ms;
+  --dur-enter: 520ms;
+  --dur-num: 600ms;
+  --ease-standard: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-emphasis: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --scale-press: 0.98;
+
+  /* ===== 5.4 毛玻璃与质感 ===== */
+  --glass-blur: blur(20px) saturate(180%);
+  --noise-opacity: 0.04;
+  --texture-noise: none; /* 噪点png ≤2KB 由资源位提供；none 为无资源时的安全降级 */
+
+  /* ===== 组件尺寸 token ===== */
+  --size-tabbar-h: 56px;
+  --size-fab: 56px;
+  --size-icon: 24px;
+}
+
+/* 浅色模式占位：结构预留，当前不启用（token 值仅占位，禁止页面直接使用色相命名） */
+.theme-root--light {
+  --color-bg-top: #ffffff;
+  --color-bg-bottom: #f2f0fa;
+}

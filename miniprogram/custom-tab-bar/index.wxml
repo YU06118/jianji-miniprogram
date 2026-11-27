@@ -1,0 +1,23 @@
+<view class="theme-root tabbar {{fallback ? 'tabbar--fallback' : ''}}">
+  <view
+    wx:for="{{list}}"
+    wx:key="pagePath"
+    class="tabbar__item {{selected === index ? 'tabbar__item--active' : ''}} {{pressedIndex === index ? 'tabbar__item--pressed' : ''}}"
+    hover-class="tabbar__item--hover"
+    hover-start-time="0"
+    hover-stay-time="300"
+    data-index="{{index}}"
+    data-path="{{item.pagePath}}"
+    bindtouchstart="onTouchStart"
+    bindtouchend="onTouchEnd"
+    bindtouchcancel="onTouchCancel"
+    bindtap="onTap"
+  >
+    <view class="tabbar__icon">{{item.icon}}</view>
+    <view class="tabbar__text">{{item.text}}</view>
+  </view>
+  <!-- 选中指示条：独立元素按 selected 平移，200ms 缓动；按压时 0.9 透明度联动 -->
+  <view class="tabbar__indicator-wrap {{pressedIndex >= 0 ? 'tabbar__indicator-wrap--dim' : ''}}" style="transform: translateX({{selected * 100}}%)">
+    <view class="tabbar__indicator" />
+  </view>
+</view>

@@ -1,0 +1,20 @@
+<view class="theme-root {{pageEnterSeq === 1 ? 'anim-page-enter-a' : (pageEnterSeq === 2 ? 'anim-page-enter-b' : 'anim-page-enter-idle')}} {{compat && compat.rootClass ? compat.rootClass : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <nav-bar title="用户协议" />
+  <view class="page-content page-content--under-nav">
+    <glass-card padded>
+      <view class="legal-title">用户协议</view>
+      <view class="legal-date">更新日期：2026-11-25</view>
+      <view class="legal-h">一、服务说明</view>
+      <view class="legal-p">简记是一款个人记账工具，提供账单记录、分类统计、预算管理、数据备份与可选云同步功能。本服务仅供个人合法使用。</view>
+      <view class="legal-h">二、数据归属</view>
+      <view class="legal-p">你录入的全部记账数据归你所有。默认仅存储在本机；开启云同步后存储于你本人名下的云开发空间。我们不会将你的数据用于其他用途。</view>
+      <view class="legal-h">三、使用规范</view>
+      <view class="legal-p">请勿利用本服务记录违法违规内容，或尝试破坏、窃取他人数据。因你自身操作（如删除、覆盖导入）造成的数据丢失，需自行承担。</view>
+      <view class="legal-h">四、免责声明</view>
+      <view class="legal-p">本服务按「现状」提供。我们尽力保障数据安全，但不对设备损坏、系统故障等不可抗力导致的数据丢失承担责任。请定期导出备份。</view>
+      <view class="legal-h">五、协议变更</view>
+      <view class="legal-p">本协议如有更新，将在本页面公示。继续使用即视为接受更新后的协议。</view>
+    </glass-card>
+  </view>
+</view>

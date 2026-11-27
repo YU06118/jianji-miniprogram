@@ -1,0 +1,13 @@
+<view
+  class="glass-btn glass-btn--{{variant}} {{block ? 'glass-btn--block' : ''}} {{disabled || loading ? 'glass-btn--disabled' : ''}} {{pressed ? 'glass-btn--pressed' : ''}}"
+  bindtouchstart="onTouchStart"
+  bindtouchend="onTouchEnd"
+  bindtouchcancel="onTouchCancel"
+  bindtap="onTap"
+  aria-role="button"
+>
+  <view class="glass-btn__content">
+    <view wx:if="{{loading}}" class="glass-btn__spinner" />
+    <slot />
+  </view>
+</view>

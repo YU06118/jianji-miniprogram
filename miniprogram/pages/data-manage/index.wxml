@@ -1,0 +1,49 @@
+<view class="theme-root {{pageEnterSeq === 1 ? 'anim-page-enter-a' : (pageEnterSeq === 2 ? 'anim-page-enter-b' : 'anim-page-enter-idle')}} {{compat && compat.rootClass ? compat.rootClass : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <nav-bar title="数据管理" />
+  <view class="page-content page-content--under-nav page-stack">
+    <glass-card padded>
+      <view class="dm-title">本地数据</view>
+      <view class="dm-stats">
+        <view class="dm-stat">
+          <text class="dm-stat__num num">{{recordCount}}</text>
+          <text class="dm-stat__label">账单</text>
+        </view>
+        <view class="dm-stat">
+          <text class="dm-stat__num num">{{accountCount}}</text>
+          <text class="dm-stat__label">分类</text>
+        </view>
+        <view class="dm-stat">
+          <text class="dm-stat__num num">{{budgetCount}}</text>
+          <text class="dm-stat__label">预算</text>
+        </view>
+        <view class="dm-stat">
+          <text class="dm-stat__num num">{{tombstoneCount}}</text>
+          <text class="dm-stat__label">删除标记</text>
+        </view>
+      </view>
+      <view class="dm-hint">删除标记用于跨设备同步，不会被清除。</view>
+    </glass-card>
+
+    <view class="dm-actions">
+      <glass-card padded>
+        <view class="dm-action__title">导出备份</view>
+        <view class="dm-action__desc">导出全部数据为 JSON 文件，含删除标记，可分享保存。</view>
+        <glass-button variant="primary" block bind:tapbutton="onExport">导出并分享</glass-button>
+      </glass-card>
+
+      <glass-card padded>
+        <view class="dm-action__title">导入恢复</view>
+        <view class="dm-action__desc">从 JSON 文件恢复数据。校验失败不写入；覆盖前需二次确认。</view>
+        <glass-button variant="secondary" block bind:tapbutton="onImport">选择文件导入</glass-button>
+      </glass-card>
+
+      <glass-cell
+        title="云同步设置"
+        desc="默认关闭，P1 可插拔"
+        icon="☁"
+        bind:tapcell="goToCloud"
+      />
+    </view>
+  </view>
+</view>

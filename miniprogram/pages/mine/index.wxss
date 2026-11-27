@@ -1,0 +1,32 @@
+.mine-logo {
+  width: var(--sp-7);
+  height: var(--sp-7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-button);
+  background: var(--color-brand-gradient);
+  color: var(--color-text-1);
+  font-size: var(--fs-title);
+  font-weight: 700;
+}
+
+.mine-name {
+  font-size: var(--fs-title-lg);
+  font-weight: 700;
+  color: var(--color-text-1);
+  margin-top: var(--sp-3);
+}
+
+.mine-slogan {
+  font-size: var(--fs-body);
+  color: var(--color-text-2);
+  margin-top: var(--sp-1);
+}
+
+.mine-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}

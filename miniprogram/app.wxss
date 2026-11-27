@@ -1,0 +1,156 @@
+/* app.wxss — 全局 reset，仅引入 token 与通用基础类，不放业务样式 */
+@import './theme.wxss';
+
+page {
+  background: linear-gradient(180deg, var(--color-bg-top) 0%, var(--color-bg-bottom) 100%);
+  background-attachment: fixed;
+  color: var(--color-text-1);
+  font-family: var(--font-family);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+view,
+text,
+button,
+input,
+textarea,
+scroll-view {
+  box-sizing: border-box;
+}
+
+/* 数字统一 tabular-nums，避免滚动时宽度跳动 */
+.num,
+.amount {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 底层的低饱和紫色径向光斑：固定不漂移（漂移留待后续阶段用 transform 实现） */
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 18% 12%, var(--color-glow-a) 0%, var(--color-transparent) 42%),
+    radial-gradient(circle at 82% 28%, var(--color-glow-b) 0%, var(--color-transparent) 38%),
+    radial-gradient(circle at 50% 92%, var(--color-glow-c) 0%, var(--color-transparent) 46%);
+}
+
+.page-content {
+  position: relative;
+  z-index: var(--z-content);
+  padding: var(--page-gutter);
+  /* 阶段 6：顶部避让状态栏/胶囊。绑 --nav-safe-top 的页面用 JS 精确值
+     （Android 可靠）；未绑的页面至少有 env() 兜底（iOS/devtools）。 */
+  padding-top: var(--nav-safe-top, calc(env(safe-area-inset-top) + var(--sp-4)));
+  padding-bottom: calc(var(--size-tabbar-h) + var(--sp-7));
+}
+
+/* 收入/支出不仅靠颜色区分：强制配符号前缀 */
+.sign-income::before {
+  content: '+';
+  color: var(--color-income);
+}
+
+.sign-expense::before {
+  content: '\2212'; /* − */
+  color: var(--color-expense);
+}
+
+.text-income {
+  color: var(--color-income);
+}
+
+.text-expense {
+  color: var(--color-expense);
+}
+
+.text-secondary {
+  color: var(--color-text-2);
+}
+
+.text-tertiary {
+  color: var(--color-text-3);
+}
+
+/* 分隔线与禁用态才用弱文本色 */
+.text-weak {
+  color: var(--color-text-weak);
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-divider);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ===== 页面转场（交互修复第一批 / 阶段二加固 / 第四轮收窄）：只动 transform/opacity，时长走 token ===== */
+
+/*
+ * 二级页进入（第四轮 2.3 收窄）：系统 navigateTo 自带右滑，根节点再 translateX 会叠加成"冲"。
+ * 改为根节点不位移，只让内容层 .page-content 做 translateY(8px) + 淡入 220ms（--dur-page-enter）。
+ * idle 首帧 opacity:1（不再 opacity:0），靠位移表达未入场，避免慢设备 onLoad 前先黑一下。
+ * a/b 双类交替由 pageEnterSeq 驱动，类名变化让动画必然重播；onLoad 末尾即触发，不等 onReady。
+ */
+@keyframes anim-page-content-enter-kf {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* idle 首帧：不隐藏，内容层下移 8px（隐藏靠位移不靠透明） */
+.anim-page-enter-idle .page-content {
+  opacity: 1;
+  transform: translateY(8px);
+}
+
+.anim-page-enter-a .page-content,
+.anim-page-enter-b .page-content {
+  animation: anim-page-content-enter-kf var(--dur-page-enter) var(--ease-standard);
+}
+
+/* 二级页返回退出（第四轮 A 方案）：已删除自定义退出动画。
+   返回视觉完全交给 wx.navigateBack() 的系统右滑，不再有 pageExiting / forwards 卡灰。 */
+
+/* tab 切换入场：12px 上移淡入（第三轮：a/b 双类内容相同，由 enterSeq 1/2 交替换类保证每次必然重播） */
+@keyframes anim-tab-enter-kf {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-tab-enter-a {
+  animation: anim-tab-enter-kf var(--dur-medium) var(--ease-standard);
+}
+
+.anim-tab-enter-b {
+  animation: anim-tab-enter-kf var(--dur-medium) var(--ease-standard);
+}
+
+/* 挂 nav-bar 的二级页：顶部避让由 nav-bar 承担，内容区不再重复 */
+.page-content--under-nav {
+  padding-top: var(--sp-4);
+}
+
+/* 多卡片纵向堆叠（第二轮 D）：统一卡间距，替代逐页 margin */
+.page-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}

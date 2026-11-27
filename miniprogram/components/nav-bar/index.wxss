@@ -1,0 +1,66 @@
+/*
+ * nav-bar（交互修复第一批）：二级页返回导航。
+ * 顶部吃 --nav-safe-top 与胶囊对齐；返回热区 44×44
+ * （44px = calc(var(--sp-7) + var(--sp-3))，不新造数值）。
+ */
+.nav-bar {
+  position: relative;
+  z-index: var(--z-content);
+  padding: var(--nav-safe-top, env(safe-area-inset-top)) var(--page-gutter) 0;
+}
+
+.nav-bar__row {
+  position: relative;
+  height: calc(var(--sp-7) + var(--sp-3));
+  display: flex;
+  align-items: center;
+}
+
+.nav-bar__back {
+  width: calc(var(--sp-7) + var(--sp-3));
+  height: calc(var(--sp-7) + var(--sp-3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-1);
+  transition:
+    transform var(--dur-micro) var(--ease-standard),
+    opacity var(--dur-micro) var(--ease-standard);
+}
+
+.nav-bar__back--hover {
+  transform: scale(0.92);
+  opacity: 0.85;
+}
+
+.nav-bar__arrow {
+  font-size: var(--fs-amount-md);
+  line-height: 1;
+  /* 视觉重心修正：字符基线偏上，下移少许与标题行对齐 */
+  transform: translateY(-2px);
+}
+
+/* 右侧操作位：最小 44×44 热区，与左侧返回对称；不传 slot 时留白不影响标题居中 */
+.nav-bar__action {
+  min-width: calc(var(--sp-7) + var(--sp-3));
+  height: calc(var(--sp-7) + var(--sp-3));
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.nav-bar__title {
+  position: absolute;
+  left: calc(var(--sp-7) + var(--sp-3));
+  right: calc(var(--sp-7) + var(--sp-3));
+  text-align: center;
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--color-text-1);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

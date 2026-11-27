@@ -1,0 +1,22 @@
+<view class="theme-root {{pageEnterSeq === 1 ? 'anim-page-enter-a' : (pageEnterSeq === 2 ? 'anim-page-enter-b' : 'anim-page-enter-idle')}} {{compat && compat.rootClass ? compat.rootClass : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <nav-bar title="隐私指引" />
+  <view class="page-content page-content--under-nav">
+    <glass-card padded>
+      <view class="legal-title">隐私指引</view>
+      <view class="legal-date">更新日期：2026-11-25</view>
+      <view class="legal-h">一、我们收集哪些信息</view>
+      <view class="legal-p">简记默认仅在你的设备本地保存记账数据（账单、分类、预算），不上传服务器。仅当你主动开启云同步时，数据才会同步到你本人名下的云开发空间。</view>
+      <view class="legal-h">二、相册与摄像头</view>
+      <view class="legal-p">仅在你主动添加账单凭证图片时，才会申请相册或摄像头权限。你拒绝后，记账主功能仍可正常使用，只是无法附加图片。</view>
+      <view class="legal-h">三、文件分享与导入</view>
+      <view class="legal-p">导出备份时，数据以 JSON 文件形式保存在你的设备，并由你自行选择是否分享。导入仅在本机覆盖写入，我们不会读取你的聊天文件。</view>
+      <view class="legal-h">四、云同步（可选）</view>
+      <view class="legal-p">云同步默认关闭。开启后数据按「仅创建者可读写」权限存储，遵循后写为准与软删除墓碑同步策略。你可以随时关闭并清除云端数据。</view>
+      <view class="legal-h">五、你的权利</view>
+      <view class="legal-p">你可以随时通过「我的 → 数据管理」导出全部数据、导入恢复或删除本地记录。如需删除云端数据，请在云同步设置中操作。</view>
+      <view class="legal-h">六、联系我们</view>
+      <view class="legal-p">如对本指引有疑问，可通过「关于简记」页面提供的联系渠道反馈。</view>
+    </glass-card>
+  </view>
+</view>

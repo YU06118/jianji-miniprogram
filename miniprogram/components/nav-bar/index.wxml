@@ -1,0 +1,20 @@
+<view class="nav-bar">
+  <view class="nav-bar__row">
+    <view
+      wx:if="{{showBack}}"
+      class="nav-bar__back {{pressed ? 'nav-bar__back--hover' : ''}}"
+      bindtouchstart="onTouchStart"
+      bindtouchend="onTouchEnd"
+      bindtouchcancel="onTouchCancel"
+      bindtap="onBack"
+    >
+      <text class="nav-bar__arrow">‹</text>
+    </view>
+    <view wx:else class="nav-bar__back nav-bar__back--spacer" />
+    <text class="nav-bar__title">{{title}}</text>
+    <!-- 右侧可选操作位：页面用 <view slot="action"> 传入，不传则留白 -->
+    <view class="nav-bar__action">
+      <slot name="action" />
+    </view>
+  </view>
+</view>

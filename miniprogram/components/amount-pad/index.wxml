@@ -1,0 +1,15 @@
+<view wx:if="{{show}}" class="amount-pad">
+  <view
+    wx:for="{{keys}}"
+    wx:key="*this"
+    class="amount-pad__key {{item === 'backspace' ? 'amount-pad__key--fn' : ''}} {{pressedKey === item ? 'amount-pad__key--pressed' : ''}}"
+    data-key="{{item}}"
+    bindtouchstart="onKeyTouchStart"
+    bindtouchend="onKeyTouchEnd"
+    bindtouchcancel="onKeyTouchCancel"
+    bindtap="onKeyTap"
+  >
+    <text wx:if="{{item === 'backspace'}}" class="amount-pad__icon">⌫</text>
+    <text wx:else>{{item}}</text>
+  </view>
+</view>

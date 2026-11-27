@@ -1,0 +1,30 @@
+<view class="theme-root {{pageEnterSeq === 1 ? 'anim-page-enter-a' : (pageEnterSeq === 2 ? 'anim-page-enter-b' : 'anim-page-enter-idle')}} {{compat && compat.rootClass ? compat.rootClass : ''}}" style="--nav-safe-top: {{navSafeTop}}px">
+  <view class="bg-glow" />
+  <nav-bar title="云同步" />
+  <view class="page-content page-content--under-nav page-stack">
+    <glass-card padded>
+      <view class="cloud-title">云同步</view>
+      <view class="cloud-desc">可插拔功能，默认关闭。本地数据始终是唯一真源；同步失败不会影响记账。</view>
+      <view class="cloud-status">
+        <view class="cloud-status__dot {{enabled ? 'cloud-status__dot--on' : ''}}" />
+        <text>{{enabled ? '已开启' : '已关闭'}}</text>
+      </view>
+      <glass-button
+        variant="{{enabled ? 'secondary' : 'primary'}}"
+        block
+        bind:tapbutton="onToggle"
+      >{{enabled ? '关闭云同步' : '开启云同步'}}</glass-button>
+    </glass-card>
+
+    <glass-card padded>
+      <view class="cloud-row"><text>上次同步</text><text>{{lastSyncText}}</text></view>
+      <view wx:if="{{lastError}}" class="cloud-error">上次错误：{{lastError}}</view>
+      <glass-button variant="primary" block bind:tapbutton="onSyncNow">立即同步</glass-button>
+    </glass-card>
+
+    <glass-card padded>
+      <view class="cloud-desc">开启前需在云开发控制台初始化集合并部署 sync 云函数，详见 README「云开发初始化」。同步遵循「仅创建者可读写」与后写为准策略，软删除墓碑会一并同步。</view>
+      <view class="cloud-link" bindtap="goToPrivacy">查看隐私指引 ›</view>
+    </glass-card>
+  </view>
+</view>
